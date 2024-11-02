@@ -8,7 +8,7 @@ if (!isset($_SESSION['ma_khach_hang']) || $_SESSION['vai_tro'] !== 'admin') {
 
 echo "Admin";
 ?>
-<a href="../doanhthu/doanhthu.php">Quản lý doanh thu</a>
+<a href="../admin/doanhthu/doanhthu.php">Quản lý doanh thu</a>
 
 
 <a href="../home.php">Trở về trang chủ</a>
