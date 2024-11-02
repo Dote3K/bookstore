@@ -1,0 +1,56 @@
+<?php
+
+require_once 'connect.php';
+$sql = "SELECT * FROM khachhang";
+$result = $conn->query($sql);
+echo "<center><h3>THÔNG TIN TÀI KHOẢN</h3></center>";
+if ($result->num_rows > 0) {
+  while($row = $result->fetch_assoc()) {
+      echo "<div style='border: 1px solid ; padding: 20px; margin-bottom: 20px; width: 60%;  margin-left: auto; margin-right: auto;'>";
+      
+      echo "<div style='border-bottom: 1px solid ; padding: 10px;'><strong>Mã khách hàng:</strong> " . ($row['ma_khach_hang']) . "</div>";
+      echo "<div style='border-bottom: 1px solid ; padding: 10px;'><strong>Tên đăng nhập:</strong> " . htmlspecialchars($row['ten_dang_nhap']) . "</div>";
+      echo "<div style='border-bottom: 1px solid ; padding: 10px;'><strong>Họ và tên:</strong> " . htmlspecialchars($row['ho_va_ten']) . "</div>";
+      echo "<div style='border-bottom: 1px solid ; padding: 10px;'><strong>Giới tính:</strong> " . htmlspecialchars($row["gioi_tinh"]) . "</div>";
+      echo "<div style='border-bottom: 1px solid ; padding: 10px;'><strong>Ngày sinh:</strong> " . htmlspecialchars($row['ngay_sinh']) . "</div>";
+      echo "<div style='border-bottom: 1px solid ; padding: 10px;'><strong>Địa chỉ:</strong> " . htmlspecialchars($row["dia_chi"]) . "</div>";
+      echo "<div style='border-bottom: 1px solid ; padding: 10px;'><strong>Địa chỉ nhận hàng:</strong> " . htmlspecialchars($row['dia_chi_nhan_hang']) . "</div>";
+      echo "<div style='border-bottom: 1px solid ; padding: 10px;'><strong>Số điện thoại:</strong> " . htmlspecialchars($row['so_dien_thoai']) . "</div>";
+      echo "<div style='border-bottom: 1px solid ; padding: 10px;'><strong>Email:</strong> " . htmlspecialchars($row['email']) . "</div>";
+      echo "<div style='border-bottom: 1px solid ; padding: 10px;'><strong>Đăng ký nhận bản tin:</strong> " . htmlspecialchars($row['dang_ky_nhan_ban_tin']) . "</div>";
+
+      echo "</div>";
+      echo "<div><center><a href='suaThongTin.php?id={$row['ma_khach_hang']}'>Sửa</a></center><br>";
+      echo "<center><a href='changePassword.php?id={$row['ma_khach_hang']}'>Đổi mật khẩu</a></center><br>";
+      echo "<center><a href='xoa.php?id={$row['ma_khach_hang']}'>Xóa tài khoản</a></center></div>";
+  }
+} else {
+  echo "<div style='text-align: center;'>Không tìm thấy kết quả.</div>";
+}
+
+$conn->close();
+
+?>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <style>
+      a {
+        width: 60%;  
+        margin-left: auto; 
+        margin-right: auto;
+        background-color: pink;
+        padding: 14px 25px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+      }
+    </style>
+</head>
+<body>
+    
+</body>
+</html>
+
