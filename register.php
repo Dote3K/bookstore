@@ -6,12 +6,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mat_khau = password_hash($_POST['mat_khau'], PASSWORD_BCRYPT);
     $vai_tro = 'khachhang';
 
-    $stmt = $conn->prepare("INSERT INTO khachhang (ten_dang_nhap, mat_khau, vai_tro) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $ten_dang_nhap, $mat_khau, $vai_tro);
+    // Kiem tra ten dang nhap co ton tai khong
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM khachhang WHERE ten_dang_nhap = ?");
+    $stmt->bind_param("s", $ten_dang_nhap);
     $stmt->execute();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $stmt->close();
 
-    echo "Đăng ký thành công!";
-    header("location:login.php");
+    if ($count > 0) {
+        echo "Tên tài khoản đã tồn tại. Vui lòng chọn tên khác.";
+    } else {
+        $sql = "INSERT INTO khachhang (ten_dang_nhap, mat_khau, vai_tro) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sss", $ten_dang_nhap, $mat_khau, $vai_tro);
+        $stmt->execute();
+        $stmt->close();
+
+        echo "Đăng ký thành công!";
+        header("location:login.php");
+        exit();
+    }
 }
 ?>
 
