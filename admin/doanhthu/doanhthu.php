@@ -183,32 +183,29 @@ require '../../checker/kiemtra_admin.php';
 include '../../connect.php';
 
 if(isset($_GET['ngay_dat_hang']) || isset($_GET['month']) || isset($_GET['yearonly'])) {
-    include '../../controllers/RevenueController.php';
-    $controller = new RevenueController($conn);
+    include 'doanhthu_control.php';
+    $controller = new doanhthufunction($conn);
 
     if (isset($_GET['ngay_dat_hang'])) {
-        $result = $controller->showDailyRevenue($_GET['ngay_dat_hang']);
-        $header2 = 'Ngày';
+        $result = $controller->doanhThuNgay($_GET['ngay_dat_hang']);
+        $header = 'Ngày';
     } elseif (isset($_GET['month']) && isset($_GET['year'])) {
-        $result = $controller->showMonthlyRevenue($_GET['month'], $_GET['year']);
-        $header = 'Theo ngày trong tháng';
+        $result = $controller->doanhThuThang($_GET['month'], $_GET['year']);
+        $result2 = $controller->chiTietDoanhThuThang($_GET['month'], $_GET['year']);
+        $header2 = 'Theo ngày trong tháng';
+        $header = 'Tháng';
     } elseif (isset($_GET['yearonly'])) {
-        $result = $controller->showYearlyRevenue($_GET['yearonly']);
-        $header = 'Theo tháng trong năm';
+        $result = $controller->doanhThuNam($_GET['yearonly']);
+        $result2 = $controller->chiTietDoanhThuNam($_GET['yearonly']);
+        $header2 = 'Theo tháng trong năm';
+        $header = 'Năm';
     }
 
-    if (isset($_GET['month']) && isset($_GET['year'])) {
-        $result2 = $controller->showMonthlyRevenueTotal($_GET['month'], $_GET['year']);
-        $header2 = 'Tháng';
-    } elseif (isset($_GET['yearonly'])) {
-        $result2 = $controller->showYearlyRevenueTotal($_GET['yearonly']);
-        $header2 = 'Năm';
-    }
     if ($result && $result->num_rows > 0) {
 
             echo "<table border='1'>
                 <tr>
-                    <th>{$header2}</th>
+                    <th>{$header}</th>
                     <th>Số đơn</th>
                     <th>Số sách đã bán</th>
                     <th>Doanh thu</th>
@@ -225,7 +222,7 @@ if(isset($_GET['ngay_dat_hang']) || isset($_GET['month']) || isset($_GET['yearon
                   </tr>";
             }
             echo "<tr>
-                    <th colspan='5' style='background: darkgray'>{$header}</th>
+                    <th colspan='5' style='background: darkgray'>{$header2}</th>
                     
                 </tr>";
         }

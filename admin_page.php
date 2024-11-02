@@ -6,7 +6,7 @@ if (!isset($_SESSION['ma_khach_hang']) || $_SESSION['vai_tro'] !== 'admin') {
     exit();
 }
 
-echo "Chào mừng Admin đến với trang quản trị.";
+echo "Admin";
 ?>
 
 <a href="home.php">Trở về trang chủ</a>

@@ -1,11 +1,11 @@
 <?php
-class RevenueModel{
+class doanhthuDAO{
     private $conn;
 
     public function __construct($dbConnection) {
         $this->conn = $dbConnection;
     }
-    public function getDailyRevenue($date){
+    public function getDoanhThuNgay($date){
 
         $sql = "
         SELECT 
@@ -32,7 +32,7 @@ GROUP BY
         return $result = $stmt->get_result();
 
     }
-    public function getMonthlyRevenue($month, $year){
+    public function getDoanhThuThang($month, $year){
         $sql = "
         SELECT 
     DATE(dh.ngay_dat_hang) AS ngay_dat_hang,
@@ -60,7 +60,7 @@ GROUP BY
         return $result = $stmt->get_result();
 
     }
-    public function getYearlyRevenue($yearonly){
+    public function getDoanhThuNam($yearonly){
 
         $sql = "
         SELECT 
@@ -87,7 +87,7 @@ GROUP BY
         return $result = $stmt->get_result();
 
     }
-    public function getMonthlyRevenueTotal($month, $year)
+    public function getChiTietDoanhThuThang($month, $year)
     {
         $sql = "SELECT 
     MONTH(dh.ngay_dat_hang) AS ngay_dat_hang,
@@ -119,7 +119,7 @@ GROUP BY
         $stmt->execute();
         return $result = $stmt->get_result();
     }
-    public function getYearlyRevenueTotal($yearonly){
+    public function chiTietDoanhThuNam($yearonly){
         $sql ="SELECT  
     YEAR(dh.ngay_dat_hang) AS ngay_dat_hang,
     SUM(s.gia_ban * ctdh.so_luong) AS doanh_thu,
