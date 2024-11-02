@@ -1,8 +1,20 @@
 <?php
 
-require_once 'connect.php';
-$sql = "SELECT * FROM khachhang";
-$result = $conn->query($sql);
+require '../connect.php';
+session_start();
+
+if (!isset($_SESSION['ma_khach_hang'])) {
+    header("Location: ../login.php");
+    exit();
+}
+$ma_khach_hang = $_SESSION['ma_khach_hang'];
+$sql = "SELECT * FROM khachhang where ma_khach_hang = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $ma_khach_hang);
+$stmt->execute();
+$result = $stmt->get_result();
+
+
 echo "<center><h3>THÔNG TIN TÀI KHOẢN</h3></center>";
 if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) {

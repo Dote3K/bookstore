@@ -14,6 +14,7 @@ if ($_SESSION['vai_tro'] === 'admin') {
 } else {
     echo '<br>Ko em.';
 }
+echo '<a href="user/hienThi.php">Thông tin tài khoản</a>'
 ?>
 
 <a href="logout.php">Đăng xuất</a>

@@ -1,5 +1,5 @@
 <?php 
-    require 'connect.php';
+    require '../connect.php';
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
         $sql = "SELECT * FROM khachhang WHERE ma_khach_hang='$id'";
