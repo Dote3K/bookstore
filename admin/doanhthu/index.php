@@ -1,5 +1,5 @@
 <?php
-require '../../kiemtra_admin.php';
+require '../../checker/kiemtra_admin.php';
 ?>
 <!doctype html>
 <html lang="en">

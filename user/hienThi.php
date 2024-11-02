@@ -1,12 +1,9 @@
 <?php
 
 require '../connect.php';
-session_start();
 
-if (!isset($_SESSION['ma_khach_hang'])) {
-    header("Location: ../login.php");
-    exit();
-}
+
+include '../checker/kiemtra_login.php';
 $ma_khach_hang = $_SESSION['ma_khach_hang'];
 $sql = "SELECT * FROM khachhang where ma_khach_hang = ?";
 $stmt = $conn->prepare($sql);
@@ -33,7 +30,7 @@ if ($result->num_rows > 0) {
 
       echo "</div>";
       echo "<div><center><a href='suaThongTin.php?id={$row['ma_khach_hang']}'>Sửa</a></center><br>";
-      echo "<center><a href='changePassword.php?id={$row['ma_khach_hang']}'>Đổi mật khẩu</a></center><br>";
+      echo "<center><a href='doiMatKhau.php'>Đổi mật khẩu</a></center><br>";
       echo "<center><a href='xoa.php?id={$row['ma_khach_hang']}'>Xóa tài khoản</a></center></div>";
   }
 } else {

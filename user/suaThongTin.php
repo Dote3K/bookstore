@@ -1,5 +1,6 @@
 <?php 
     require '../connect.php';
+
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
         $sql = "SELECT * FROM khachhang WHERE ma_khach_hang='$id'";
@@ -55,8 +56,6 @@
             <label for="ten_dang_nhap">Tên đăng nhập:</label>
             <input type="text" name="ten_dang_nhap" value="<?= $khachhang['ten_dang_nhap'] ?>" required>
 
-            <!-- <label for="mat_khau">Mật khẩu:</label>
-            <input type="password" name="mat_khau" value="<?= $khachhang['mat_khau'] ?>" required> -->
 
             <label for="ho_va_ten">Họ và tên:</label>
             <input type="text" name="ho_va_ten" value="<?= $khachhang['ho_va_ten'] ?>" required>

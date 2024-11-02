@@ -1,5 +1,6 @@
 <?php
 require '../connect.php';
+require 'checker/kiemtra_login.php';
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
