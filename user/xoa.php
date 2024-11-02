@@ -4,7 +4,7 @@ require '../checker/kiemtra_login.php';
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $sql = "DELETE FROM khachhang WHERE ma_khach_hang='$id'";
+    $sql = "DELETE FROM khachhang WHERE ma_khach_hang=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id);
     $stmt->execute();

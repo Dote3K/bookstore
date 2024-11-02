@@ -34,10 +34,10 @@ if ($result->num_rows > 0) {
   }
 } else {
   echo "<div style='text-align: center;'>Không tìm thấy kết quả.<br></div>";
-  echo "<div style='text-align: center;'>Vui lòng <a href='../register.php'>đăng nhập.</a></div>";
+  echo "<div style='text-align: center;'>Vui lòng <a href='../login.php'>đăng nhập.</a></div>";
 }
 
-$conn->close();
+$stmt->close();
 
 ?>
 
