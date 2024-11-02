@@ -1,17 +1,20 @@
 <?php 
     require '../connect.php';
+    require '../checker/kiemtra_login.php';
 
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
-        $sql = "SELECT * FROM khachhang WHERE ma_khach_hang='$id'";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM khachhang WHERE ma_khach_hang=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
         $khachhang = $result->fetch_assoc();
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $ma_khach_hang = $_POST['ma_khach_hang'];
         $ten_dang_nhap = $_POST['ten_dang_nhap'];
-        // $mat_khau = $_POST['mat_khau'];
         $ho_va_ten = $_POST['ho_va_ten'];
         $gioi_tinh = $_POST['gioi_tinh'];
         $ngay_sinh = $_POST['ngay_sinh'];
@@ -19,9 +22,12 @@
         $so_dien_thoai = $_POST['so_dien_thoai'];
         $email = $_POST['email'];
 
-        $sql = "UPDATE khachhang SET ten_dang_nhap='$ten_dang_nhap', ho_va_ten='$ho_va_ten', gioi_tinh='$gioi_tinh', ngay_sinh='$ngay_sinh', dia_chi='$dia_chi', so_dien_thoai='$so_dien_thoai', email='$email' WHERE ma_khach_hang='$ma_khach_hang'";
-        $conn->query($sql);
-        if($conn->query($sql)  === TRUE ){
+        $sql = "UPDATE khachhang SET ho_va_ten='$ho_va_ten', gioi_tinh='$gioi_tinh', ngay_sinh='$ngay_sinh', dia_chi='$dia_chi', so_dien_thoai='$so_dien_thoai', email='$email' WHERE ma_khach_hang=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $ma_khach_hang);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if($stmt->execute()  === TRUE ){
             header('Location: hienThi.php');
         }
         else{
@@ -50,12 +56,7 @@
     <div class="container">
         <h2>Sửa Thông Tin Khách Hàng</h2>
         <form method="POST" action="">
-            <label for="ma_khach_hang">Mã khách hàng:</label>
-            <input type="text" name="ma_khach_hang" value="<?= $khachhang['ma_khach_hang'] ?>" readonly>
-
-            <label for="ten_dang_nhap">Tên đăng nhập:</label>
-            <input type="text" name="ten_dang_nhap" value="<?= $khachhang['ten_dang_nhap'] ?>" required>
-
+            <input type="text" name="ma_khach_hang" value="<?= $khachhang['ma_khach_hang'] ?>" readonly hidden="hidden">
 
             <label for="ho_va_ten">Họ và tên:</label>
             <input type="text" name="ho_va_ten" value="<?= $khachhang['ho_va_ten'] ?>" required>
@@ -72,8 +73,11 @@
             <label for="dia_chi">Địa chỉ:</label>
             <input type="text" name="dia_chi" value="<?= $khachhang['dia_chi'] ?>">
 
+            <label for="dia_chi_nhan_hang">Địa chỉ nhận hàng:</label>
+            <input type="text" name="dia_chi_nhan_hang" value="<?= $khachhang['dia_chi_nhan_hang'] ?>"required>
+
             <label for="so_dien_thoai">Số điện thoại:</label>
-            <input type="text" name="so_dien_thoai" value="<?= $khachhang['so_dien_thoai'] ?>">
+            <input type="text" name="so_dien_thoai" value="<?= $khachhang['so_dien_thoai'] ?>"required>
 
             <label for="email">Email:</label>
             <input type="email" name="email" value="<?= $khachhang['email'] ?>" required>
