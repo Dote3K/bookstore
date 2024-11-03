@@ -105,11 +105,6 @@ if (isset($_GET['search']) || isset($_GET['role'])) {
             <?php
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    // Hiển thị trạng thái tài khoản
-                    $trang_thai = ($row['trang_thai'] == 'active') ? 'Kích hoạt' : 'Đã khóa';
-                    $khoa_link = ($row['trang_thai'] == 'active') ? 'Khóa tài khoản' : 'Mở khóa tài khoản';
-                    $action_link = ($row['trang_thai'] == 'active') ? 'suspend' : 'activate';
-
                     echo "<tr>
                             <td>{$row['ma_khach_hang']}</td>
                             <td>{$row['ten_dang_nhap']}</td>
@@ -124,7 +119,6 @@ if (isset($_GET['search']) || isset($_GET['role'])) {
                             <td>
                                 <a href='chinhsua_khachhang.php?id={$row['ma_khach_hang']}'>Chỉnh sửa</a> | 
                                 <a href='xoakhachhang.php?id={$row['ma_khach_hang']}' onclick='return confirmDelete()'>Xóa</a> | 
-                                <a href='khoataikhoan.php?id={$row['ma_khach_hang']}&action={$action_link}'>{$khoa_link}</a>
                             </td>
                           </tr>";
                 }
