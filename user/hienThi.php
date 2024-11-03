@@ -30,7 +30,7 @@ if ($result->num_rows > 0) {
       echo "</div>";
       echo "<div id='buttoncss'><center><a href='suaThongTin.php?id={$row['ma_khach_hang']}'>Sửa</a></center><br>";
       echo "<center><a href='doiMatKhau.php'>Đổi mật khẩu</a></center><br>";
-      echo "<center><a href='xoa.php?id={$row['ma_khach_hang']}'>Xóa tài khoản</a></center></div>";
+      echo "<center><a href='javascript:void(0);' onclick='xacNhanXoa({$row['ma_khach_hang']});'>Xóa tài khoản</a></center></div>";
   }
 } else {
   echo "<div style='text-align: center;'>Không tìm thấy kết quả.<br></div>";
@@ -59,6 +59,14 @@ $stmt->close();
           }
       }
     </style>
+    <script>
+        function xacNhanXoa(id) {
+            var kq = confirm('Bạn có chắc chắn muốn xóa vĩnh viễn tài khoản này không?');
+            if (kq) {
+                window.location.href = 'xoa.php?id=' + id;
+            }
+        }
+    </script>
 </head>
 <body>
     

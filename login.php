@@ -28,5 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <form method="POST" action="login.php">
     <label>Username: <input type="text" name="ten_dang_nhap" required></label><br>
     <label>Password: <input type="password" name="mat_khau" required></label><br>
-    <button type="submit">Đăng nhập</button>
+    <button type="submit">Đăng nhập</button><br>
+    Chưa có tài khoản ? <a href="register.php">Đăng ký</a>
 </form>
