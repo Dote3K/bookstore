@@ -1,5 +1,6 @@
 <?php
-    require "../nxb/db.php";
+require "../../../connect.php";
+require '../../../checker/kiemtra_admin.php';
     $sql ="SELECT * FROM tacgia ";
     $result = $conn->query($sql);
 ?>
@@ -42,7 +43,7 @@
                 </table>
                 <br>
                 <a href = "add_tg.php"><button type="button">Thêm tác giả</button></a>
-                <a href = "../trang_quan_ly.php"><button type="button">Trang chủ</button></a>
+                <a href = "../../admin_page.php"><button type="button">Trang chủ</button></a>
                       
 
     </body>

@@ -1,5 +1,6 @@
 <?php
-require "db.php";
+require "../../../connect.php";
+require '../../../checker/kiemtra_admin.php';
 $ma_nxb = $_GET['ma_nxb'];
 $sql = "DELETE FROM nxb WHERE ma_nxb = '$ma_nxb' ";
     if ($conn->query($sql) === TRUE) {

@@ -1,5 +1,6 @@
 <?php
-require "../nxb/db.php";
+require "../../../connect.php";
+require '../../../checker/kiemtra_admin.php';
 $ma_the_loai = $_GET['ma_the_loai'];
 $sql = "DELETE FROM theloai WHERE ma_the_loai = '$ma_the_loai' ";
     if ($conn->query($sql) === TRUE) {

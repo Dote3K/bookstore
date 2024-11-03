@@ -1,5 +1,6 @@
 <?php
-require "../nxb/db.php";
+require "../../../connect.php";
+require '../../../checker/kiemtra_admin.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $tieu_su = $_POST['tieu_su'];
 $ten = $_POST['ten'];
@@ -30,6 +31,6 @@ if ($conn->query($sql) === TRUE) {
         <button type="submit">Thêm Tác Giả</button><br><br>
     </form>
     <a href="show_tacgia.php"><button type="button">Trở về trang quản lý tác giả</button></a><br><br>
-    <a href = "../trang_quan_ly.php"><button type="button">Trang chủ</button></a>
+    <a href = "../../admin_page.php"><button type="button">Trang chủ</button></a>
 </body>
 </html>

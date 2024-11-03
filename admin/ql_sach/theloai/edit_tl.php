@@ -1,5 +1,6 @@
 <?php
-require "../nxb/db.php";
+require "../../../connect.php";
+require '../../../checker/kiemtra_admin.php';
 $ma_the_loai = $_GET['ma_the_loai'];
 $sql = "SELECT * FROM theloai WHERE ma_the_loai = $ma_the_loai";
 $result = $conn->query($sql);
@@ -38,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     </form>
     <a href="show_the_loai.php"><button>Trở về trang quản lý thể loại</button></a><br><br>
-    <a href = "../trang_quan_ly.php"><button type="button">Trang chủ</button></a>
+    <a href = "../../admin_page.php"><button type="button">Trang chủ</button></a>
 </body>
 
 </html>

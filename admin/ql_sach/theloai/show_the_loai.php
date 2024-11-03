@@ -1,5 +1,6 @@
 <?php
-    require "../nxb/db.php";
+require "../../../connect.php";
+require '../../../checker/kiemtra_admin.php';
     $sql ="SELECT * FROM theloai ";
     $result = $conn->query($sql);
 ?>
@@ -40,7 +41,7 @@
                 </table>
                 <br>
                 <a href = "add_tl.php"><button type="button">Thêm thể loại</button></a>
-                <a href = "../trang_quan_ly.php"><button type="button">Trang chủ</button></a>
+                <a href = "../../admin_page.php"><button type="button">Trang chủ</button></a>
                       
 
     </body>

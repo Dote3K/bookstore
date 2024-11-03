@@ -1,5 +1,6 @@
 <?php
-require "../nxb/db.php";
+require "../../../connect.php";
+require '../../../checker/kiemtra_admin.php';
 $ma_sach = $_GET['ma_sach'];
 $sql = "SELECT * FROM sach WHERE ma_sach = $ma_sach";
 $result = $conn->query($sql);
@@ -100,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <button>Cập nhật</button><br><br>
     </form>
     <a href="show_sach.php"><button>Trở về trang quản lý sách</button></a><br><br>
-    <a href = "../trang_quan_ly.php"><button type="button">Trang chủ</button></a>
+    <a href = "../../admin_page.php"><button type="button">Trang chủ</button></a>
 </body>
 
 </html>

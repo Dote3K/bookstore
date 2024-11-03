@@ -1,5 +1,6 @@
 <?php
-require "../nxb/db.php";
+require "../../../connect.php";
+require '../../../checker/kiemtra_admin.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $the_loai = $_POST['the_loai'];
 $sql = "INSERT INTO theloai( the_loai) VALUES ( '$the_loai')";
@@ -27,6 +28,6 @@ if ($conn->query($sql) === TRUE) {
         <button type="submit">Thêm thể loại</button><br><br>
     </form>
     <a href="show_the_loai.php"><button>Trở về trang quản lý thể loại</button></a><br><br>
-    <a href = "../trang_quan_ly.php"><button type="button">Trang chủ</button></a>
+    <a href = "../../admin_page.php"><button type="button">Trang chủ</button></a>
 </body>
 </html>

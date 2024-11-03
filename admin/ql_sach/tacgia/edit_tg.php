@@ -1,5 +1,6 @@
 <?php
-require "../nxb/db.php";
+require "../../../connect.php";
+require '../../../checker/kiemtra_admin.php';
 $ma_tac_gia = $_GET['ma_tac_gia'];
 $sql = "SELECT * FROM tacgia WHERE ma_tac_gia = $ma_tac_gia";
 $result = $conn->query($sql);
@@ -41,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     </form>
     <a href="show_tacgia.php"><button type="button">Trở về trang quản lý tác giả</button></a><br><br>
-    <a href = "../trang_quan_ly.php"><button type="button">Trang chủ</button></a>
+    <a href = "../../admin_page.php"><button type="button">Trang chủ</button></a>
 </body>
 
 </html>

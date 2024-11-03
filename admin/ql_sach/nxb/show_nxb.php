@@ -1,5 +1,6 @@
 <?php
-    require "db.php";
+require "../../../connect.php";
+require '../../../checker/kiemtra_admin.php';
     $sql ="SELECT * FROM nxb ";
     $result = $conn->query($sql);
 ?>
@@ -46,7 +47,7 @@
                 </table>
                 <br>
                 <a href = "add_nxb.php"><button type="button">Thêm nhà xuất bản</button></a>
-                <a href = "../trang_quan_ly.php"><button type="button">Trang chủ</button></a>
+                <a href = "../../admin_page.php"><button type="button">Trang chủ</button></a>
                 
                       
 
