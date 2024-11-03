@@ -1,6 +1,6 @@
 <?php
-    require '../connect.php';
-    require '../checker/kiemtra_login.php';
+    require '../../connect.php';
+    require '../../checker/kiemtra_login.php';
 // Xử lý tìm kiếm và lọc theo vai trò
 $search_query = '';
 $role_filter = '';
@@ -97,7 +97,6 @@ if (isset($_GET['search']) || isset($_GET['role'])) {
                 <th>Địa chỉ nhận hàng</th>
                 <th>Đăng ký nhận bản tin</th>
                 <th>Vai trò</th>
-                <th>Trạng thái tài khoản</th>
                 <th>Hành động</th>
             </tr>
         </thead>
@@ -115,7 +114,6 @@ if (isset($_GET['search']) || isset($_GET['role'])) {
                             <td>{$row['dia_chi_nhan_hang']}</td>
                             <td>{$row['dang_ky_nhan_ban_tin']}</td>
                             <td>{$row['vai_tro']}</td>
-                            <td>{$trang_thai}</td>
                             <td>
                                 <a href='chinhsua_khachhang.php?id={$row['ma_khach_hang']}'>Chỉnh sửa</a> | 
                                 <a href='xoakhachhang.php?id={$row['ma_khach_hang']}' onclick='return confirmDelete()'>Xóa</a> | 
