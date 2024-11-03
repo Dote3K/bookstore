@@ -1,6 +1,6 @@
 <?php
 require '../../connect.php';
-require '../../checker/kiemtra_login.php';
+require '../../checker/kiemtra_admin.php';
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $sql = "DELETE FROM khachhang WHERE ma_khach_hang = ?";

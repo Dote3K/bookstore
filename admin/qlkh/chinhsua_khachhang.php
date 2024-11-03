@@ -1,6 +1,6 @@
 <?php
     require '../../connect.php';
-    require '../../checker/kiemtra_login.php';
+    require '../../checker/kiemtra_admin.php';
 $id = $_GET['id'];
 $sql = "SELECT * FROM khachhang WHERE ma_khach_hang = ?";
 $stmt = $conn->prepare($sql);
