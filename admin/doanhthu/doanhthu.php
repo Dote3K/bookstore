@@ -171,7 +171,7 @@ require '../../checker/kiemtra_admin.php';
             <?php
             foreach(range(2020, (int)date("Y")) as $year) {
                 echo "\t<option value='".$year."'>".$year."</option>\n\r";
-            } // https://stackoverflow.com/questions/7083123/populate-a-select-box-with-years-using-php
+            }
             ?>
         </select>
         <input type="submit" value="Hiển thị doanh thu">
@@ -188,22 +188,28 @@ if(isset($_GET['ngay_dat_hang']) || isset($_GET['month']) || isset($_GET['yearon
 
     if (isset($_GET['ngay_dat_hang'])) {
         $result = $controller->doanhThuNgay($_GET['ngay_dat_hang']);
+        $result3 = $controller->bestSellerNgay($_GET['ngay_dat_hang']);
         $header = 'Ngày';
+        $header3 = 'Sách bán chạy trong ngày';
     } elseif (isset($_GET['month']) && isset($_GET['year'])) {
-        $result = $controller->doanhThuThang($_GET['month'], $_GET['year']);
-        $result2 = $controller->chiTietDoanhThuThang($_GET['month'], $_GET['year']);
+        $result = $controller->chiTietDoanhThuThang($_GET['month'], $_GET['year']);
+        $result2 = $controller->doanhThuThang($_GET['month'], $_GET['year']);
+        $result3 = $controller->bestSellerThang($_GET['month'], $_GET['year']);
         $header2 = 'Theo ngày trong tháng';
         $header = 'Tháng';
+        $header3 = 'Sách bán chạy trong tháng';
     } elseif (isset($_GET['yearonly'])) {
-        $result = $controller->doanhThuNam($_GET['yearonly']);
-        $result2 = $controller->chiTietDoanhThuNam($_GET['yearonly']);
+        $result = $controller->chiTietDoanhThuNam($_GET['yearonly']);
+        $result2 = $controller->doanhThuNam($_GET['yearonly']);
+        $result3 = $controller->bestSellerNam($_GET['yearonly']);
         $header2 = 'Theo tháng trong năm';
         $header = 'Năm';
+        $header3 = 'Sách bán chạy trong năm';
     }
 
     if ($result && $result->num_rows > 0) {
 
-            echo "<table border='1'>
+        echo "<table border='1'>
                 <tr>
                     <th>{$header}</th>
                     <th>Số đơn</th>
@@ -221,13 +227,18 @@ if(isset($_GET['ngay_dat_hang']) || isset($_GET['month']) || isset($_GET['yearon
                     <td>{$row['loi_nhuan']}</td>
                   </tr>";
             }
-            echo "<tr>
-                    <th colspan='5' style='background: darkgray'>{$header2}</th>
+            echo "</table><br>";
+            echo "<table border='1'><tr>
+                    <th>{$header2}</th>
+                    <th>Số đơn</th>
+                    <th>Số sách đã bán</th>
+                    <th>Doanh thu</th>
+                    <th>Lợi nhuận</th>
                     
                 </tr>";
         }
-    }
-        while($row = $result->fetch_assoc()) {
+
+        while ($row = $result->fetch_assoc()) {
             if (isset($_GET['yearonly'])) {
                 $date_format = date("m/Y", strtotime($row['ngay_dat_hang']));
             } else {
@@ -242,11 +253,26 @@ if(isset($_GET['ngay_dat_hang']) || isset($_GET['month']) || isset($_GET['yearon
                   </tr>";
         }
         echo "</table>";
+        echo "<table border='1'>
+                <tr>
+                    <th>{$header3}</th>
+                    <th>Số sách đã bán</th>
+                </tr>";
+        while ($row = $result3->fetch_assoc()) {
+            echo "<tr>
+                    <td>{$row['ten_sach']}</td>
+                    <td>{$row['so_luong_ban']}</td>
+                  </tr>";
         }
+        echo "</table>";
 
+    }
     else {
-        echo "<br><br>0 kết quả";
+        echo "<br><br>0 kết quả<br><br>";
+    }
 }
+echo '<button><a href="../admin_page.php">Trở về trang quản lý</a></button>';
 ?>
+
 </body>
 </html>

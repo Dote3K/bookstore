@@ -12,18 +12,27 @@ class doanhthufunction {
         return $this->model->getDoanhThuNgay($date);
     }
 
-    public function doanhThuThang($month, $year) {
-        return $this->model->getDoanhThuThang($month, $year);
-    }
     public function chiTietDoanhThuThang($month, $year) {
         return $this->model->getChiTietDoanhThuThang($month, $year);
     }
+    public function doanhThuThang($month, $year) {
+        return $this->model->getDoanhThuThang($month, $year);
+    }
 
+    public function chiTietDoanhThuNam($yearonly) {
+        return $this->model->getChiTietDoanhThuNam($yearonly);
+    }
     public function doanhThuNam($yearonly) {
         return $this->model->getDoanhThuNam($yearonly);
     }
-    public function chiTietDoanhThuNam($yearonly) {
-        return $this->model->chiTietDoanhThuNam($yearonly);
+    public function bestSellerNgay($date){
+        return $this->model->getBestSellerNgay($date);
+    }
+    public function bestSellerThang($month, $year) {
+        return $this->model->getBestSellerThang($month, $year);
+    }
+    public function bestSellerNam($yearonly) {
+        return $this->model->getBestSellerNam($yearonly);
     }
 }
 ?>

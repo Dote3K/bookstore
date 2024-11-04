@@ -43,7 +43,7 @@ require '../../../checker/kiemtra_admin.php';
                     <td>{$count['so_luong']}</td>
                     <td>{$count['nam_xuat_ban']}</td>
                     <td>{$count['mo_ta']}</td>
-                    <td>{$count['anh_bia']}</td>
+                    <td><img src='{$count['anh_bia']}' alt='Ảnh bìa' style='width: 100px; height: auto;'></td>
                     <td>
                          <a href = 'edit_sach.php?ma_sach={$count['ma_sach']}'><button>Chỉnh Sửa </button></a> 
                          <a href = 'xoa_sach.php?ma_sach={$count['ma_sach']}  onclick= return confirm('Bạn có chắc chắn muốn xóa nxb này')'>Xóa</a>
