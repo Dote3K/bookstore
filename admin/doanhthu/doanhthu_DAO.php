@@ -32,7 +32,7 @@ GROUP BY
         return $result = $stmt->get_result();
 
     }
-    public function getDoanhThuThang($month, $year){
+    public function getChiTietDoanhThuThang($month, $year){
         $sql = "
         SELECT 
     DATE(dh.ngay_dat_hang) AS ngay_dat_hang,
@@ -60,7 +60,7 @@ GROUP BY
         return $result = $stmt->get_result();
 
     }
-    public function getDoanhThuNam($yearonly){
+    public function getChiTietDoanhThuNam($yearonly){
 
         $sql = "
         SELECT 
@@ -87,7 +87,7 @@ GROUP BY
         return $result = $stmt->get_result();
 
     }
-    public function getChiTietDoanhThuThang($month, $year)
+    public function getDoanhThuThang($month, $year)
     {
         $sql = "SELECT 
     MONTH(dh.ngay_dat_hang) AS ngay_dat_hang,
@@ -119,7 +119,7 @@ GROUP BY
         $stmt->execute();
         return $result = $stmt->get_result();
     }
-    public function chiTietDoanhThuNam($yearonly){
+    public function getDoanhThuNam($yearonly){
         $sql ="SELECT  
     YEAR(dh.ngay_dat_hang) AS ngay_dat_hang,
     SUM(s.gia_ban * ctdh.so_luong) AS doanh_thu,
@@ -144,6 +144,74 @@ GROUP BY
     YEAR(dh.ngay_dat_hang);";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("ii", $yearonly, $yearonly);
+        $stmt->execute();
+        return $result = $stmt->get_result();
+    }
+    public function getBestSellerNgay($date){
+        $sql = "SELECT 
+    s.ten_sach,
+    SUM(ctdh.so_luong) AS so_luong_ban
+FROM 
+    donhang dh
+JOIN 
+    chitietdonhang ctdh ON dh.ma_don_hang = ctdh.ma_don_hang
+JOIN 
+    sach s ON ctdh.ma_sach = s.ma_sach
+WHERE 
+    dh.trang_thai = 'DA_GIAO'
+    AND DATE(dh.ngay_dat_hang) = ?
+GROUP BY 
+    s.ma_sach
+ORDER BY 
+    so_luong_ban DESC;
+";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $date);
+        $stmt->execute();
+        return $result = $stmt->get_result();
+    }
+    public function getBestSellerThang($month, $year){
+        $sql = "SELECT 
+    s.ten_sach,
+    SUM(ctdh.so_luong) AS so_luong_ban
+FROM 
+    donhang dh
+JOIN 
+    chitietdonhang ctdh ON dh.ma_don_hang = ctdh.ma_don_hang
+JOIN 
+    sach s ON ctdh.ma_sach = s.ma_sach
+WHERE 
+    dh.trang_thai = 'DA_GIAO'
+    AND MONTH(dh.ngay_dat_hang) = ?
+    AND YEAR(dh.ngay_dat_hang) = ?
+GROUP BY 
+    s.ma_sach
+ORDER BY 
+    so_luong_ban DESC;";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $month, $year);
+        $stmt->execute();
+        return $result = $stmt->get_result();
+    }
+    public function getBestSellerNam($yearonly){
+        $sql = "SELECT 
+    s.ten_sach as ten_sach,
+    SUM(ctdh.so_luong) AS so_luong_ban
+FROM 
+    donhang dh
+JOIN 
+    chitietdonhang ctdh ON dh.ma_don_hang = ctdh.ma_don_hang
+JOIN 
+    sach s ON ctdh.ma_sach = s.ma_sach
+WHERE 
+    dh.trang_thai = 'DA_GIAO'
+    AND YEAR(dh.ngay_dat_hang) = ?
+GROUP BY 
+    s.ma_sach
+ORDER BY 
+    so_luong_ban DESC;";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $yearonly);
         $stmt->execute();
         return $result = $stmt->get_result();
     }
