@@ -1,24 +1,40 @@
 <?php
-require_once '../backend/db.php'; // Kết nối CSDL
+require_once '../../connect.php'; // Kết nối CSDL
 
-function searchBooks($db, $keyword)
+function searchBooks($conn, $keyword)
 {
     // Truy vấn để tìm kiếm sách theo tên sách hoặc tên tác giả
     $sql = "SELECT sach.*, tacgia.ten AS ten_tac_gia
             FROM sach 
             JOIN tacgia ON sach.ma_tac_gia = tacgia.ma_tac_gia
-            WHERE sach.ten_sach LIKE :keyword OR tacgia.ten LIKE :keyword";
+            WHERE sach.ten_sach LIKE ? OR tacgia.ten LIKE ?";
 
-    $stmt = $db->prepare($sql);
-    $stmt->execute(['keyword' => "%$keyword%"]);
+    $stmt = mysqli_prepare($conn, $sql);
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Tạo biến cho tham số
+    $searchKeyword = "%" . $keyword . "%";
+
+    // Gán tham số cho câu lệnh
+    mysqli_stmt_bind_param($stmt, 'ss', $searchKeyword, $searchKeyword);
+
+    // Thực thi câu lệnh
+    mysqli_stmt_execute($stmt);
+
+    // Lấy kết quả
+    $result = mysqli_stmt_get_result($stmt);
+
+    $books = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $books[] = $row;
+    }
+
+    return $books; // Trả về danh sách sách
 }
 
 // Lấy từ khóa tìm kiếm từ form
 if (isset($_GET['keyword'])) {
     $keyword = $_GET['keyword'];
-    $books = searchBooks($db, $keyword);
+    $books = searchBooks($conn, $keyword);
 }
 ?>
 
@@ -32,7 +48,7 @@ if (isset($_GET['keyword'])) {
 
 <body>
     <h1>Kết quả tìm kiếm</h1>
-    <a href="index.php">Quay lại trang chủ</a>
+    <a href="../trangchu/trang_chu.php">Quay lại trang chủ</a>
     <div>
         <?php if (isset($books) && count($books) > 0): ?>
             <?php foreach ($books as $book): ?>
@@ -42,7 +58,7 @@ if (isset($_GET['keyword'])) {
                     <p>Giá: <?= $book['gia_ban'] ?> VND</p>
                     <img src="images/<?= $book['anh_bia'] ?>" alt="<?= $book['ten_sach'] ?>"
                         style="width: 100px; height: 150px;" />
-                    <form action="cart.php" method="post">
+                    <form action="../giohang/form_giohang.php" method="post">
                         <input type="hidden" name="ma_sach" value="<?= $book['ma_sach'] ?>">
                         <input type="hidden" name="ten_sach" value="<?= $book['ten_sach'] ?>">
                         <input type="hidden" name="gia" value="<?= $book['gia_ban'] ?>">
@@ -50,7 +66,7 @@ if (isset($_GET['keyword'])) {
                         <input type="number" name="so_luong" min="1" value="1">
                         <button type="submit" name="add_to_cart">Thêm vào giỏ hàng</button>
                     </form>
-                    <a href="checkout.php?bookId=<?= $book['ma_sach'] ?>">Mua ngay</a>
+                    <a href="../thanhtoan/form_thanhtoan.php$book['ma_sach'] ?>">Mua ngay</a>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>

@@ -1,21 +1,22 @@
 <?php
-require_once '../backend/db.php'; // Kết nối đến cơ sở dữ liệu
-
+require_once '../../connect.php'; // Kết nối đến cơ sở dữ liệu
 // Lấy thông tin khách hàng từ session
 session_start();
-$ma_khach_hang = $_SESSION['ma_khach_hang'] ?? null;
 
+$ma_khach_hang = $_SESSION['ma_khach_hang'] ?? null;
 if (!$ma_khach_hang) {
-    echo "Bạn cần đăng nhập để xem đơn hàng.";
-    exit;
+    header("Location: ../../login.php");
+    exit();
 }
 
 // Truy vấn để lấy thông tin đơn hàng
-$sql = "SELECT * FROM donhang WHERE ma_khach_hang = :ma_khach_hang";
-$stmt = $db->prepare($sql);
-$stmt->bindParam(':ma_khach_hang', $ma_khach_hang, PDO::PARAM_INT);
+$sql = "SELECT * FROM donhang WHERE ma_khach_hang = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $ma_khach_hang);
 $stmt->execute();
-$orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$result = $stmt->get_result();
+$orders = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
 ?>
 
 <!DOCTYPE html>
@@ -24,14 +25,38 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>Thông Tin Đơn Hàng</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            margin: 20px 0;
+            display: inline-block;
+            text-decoration: none;
+            color: blue;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Danh Sách Đơn Hàng</h1>
-    <a href="index.php">Quay về trang chủ</a>
+    <a href="../trangchu/trang_chu.php">Quay về trang chủ</a>
 
     <?php if (count($orders) > 0): ?>
-        <table border="1">
+        <table>
             <thead>
                 <tr>
                     <th>Mã Đơn Hàng</th>
@@ -49,14 +74,14 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <tr>
                         <td><?php echo htmlspecialchars($order['ma_don_hang']); ?></td>
                         <td><?php echo htmlspecialchars($order['ma_khach_hang']); ?></td>
-                        <td><?php echo number_format($order['tong'], 2) . ' VND'; ?></td>
+                        <td><?php echo number_format($order['tong'], 0, ',', '.') . ' VND'; ?></td>
                         <td><?php echo htmlspecialchars($order['ngay_dat_hang']); ?></td>
                         <td><?php echo htmlspecialchars($order['trang_thai']); ?></td>
                         <td><?php echo htmlspecialchars($order['dia_chi_nhan_hang']); ?></td>
-                        <td><?php echo number_format($order['giam_gia'], 2) . ' VND'; ?></td>
+                        <td><?php echo number_format($order['giam_gia'], 0, ',', '.') . ' VND'; ?></td>
                         <td>
                             <?php if (in_array($order['trang_thai'], ['DANG_CHO', 'DA_XAC_NHAN'])): ?>
-                                <form action="../backend/cancel_order.php" method="post" style="display:inline;">
+                                <form action="huy_don_hang.php" method="post" style="display:inline;">
                                     <input type="hidden" name="ma_don_hang"
                                         value="<?php echo htmlspecialchars($order['ma_don_hang']); ?>">
                                     <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">Hủy
