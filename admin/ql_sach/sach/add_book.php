@@ -1,26 +1,46 @@
 <?php
 require "../../../connect.php";
 require '../../../checker/kiemtra_admin.php';
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-$ten_sach = $_POST['ten_sach'];
-$ma_tac_gia = $_POST['ma_tac_gia'];
-$ma_nxb	= $_POST['ma_nxb'];
-$ma_the_loai = $_POST['ma_the_loai'];	
-$gia_mua = $_POST['gia_mua'];	
-$gia_ban = $_POST['gia_ban'];	
-$so_luong = $_POST['so_luong'];	
-$nam_xuat_ban = $_POST['nam_xuat_ban'];	
-$mo_ta = $_POST['mo_ta'];	
-$anh_bia = $_POST['anh_bia'];
-$sql = "INSERT INTO sach( ten_sach,	ma_tac_gia,	ma_nxb,	ma_the_loai, gia_mua, gia_ban, so_luong, nam_xuat_ban,	mo_ta,	anh_bia) VALUES ( '$ten_sach', '$ma_tac_gia', '$ma_nxb', '$ma_the_loai', '$gia_mua', '$gia_ban', '$so_luong', '$nam_xuat_ban', '$mo_ta', '$anh_bia')";
-if ($conn->query($sql) === TRUE) {
-    echo "Thêm thành công";
-} else {
-    echo "Lỗi do : " . $sql . "<br>" . $conn->error;
-   
-}
-}
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $ten_sach = $_POST['ten_sach'];
+    $ma_tac_gia = $_POST['ma_tac_gia'];
+    $ma_nxb = $_POST['ma_nxb'];
+    $ma_the_loai = $_POST['ma_the_loai'];
+    $gia_mua = $_POST['gia_mua'];
+    $gia_ban = $_POST['gia_ban'];
+    $so_luong = $_POST['so_luong'];
+    $nam_xuat_ban = $_POST['nam_xuat_ban'];
+    $mo_ta = $_POST['mo_ta'];
+
+    $anh_bia = '';
+    if (isset($_FILES['anh_bia']) && $_FILES['anh_bia']['error'] == 0) {
+        $target_dir = "anhbia/";
+        $target_file = $target_dir . basename($_FILES["anh_bia"]["name"]);
+
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $allowed_types = array("jpg", "jpeg", "png");
+
+        if (in_array($imageFileType, $allowed_types)) {
+            if (move_uploaded_file($_FILES["anh_bia"]["tmp_name"], $target_file)) {
+                $anh_bia = $target_file;
+            } else {
+                echo "Lỗi.";
+            }
+        } else {
+            echo "Chỉ cho phép các định dạng JPG, JPEG, PNG";
+        }
+    }
+
+    $sql = "INSERT INTO sach(ten_sach, ma_tac_gia, ma_nxb, ma_the_loai, gia_mua, gia_ban, so_luong, nam_xuat_ban, mo_ta, anh_bia) 
+            VALUES ('$ten_sach', '$ma_tac_gia', '$ma_nxb', '$ma_the_loai', '$gia_mua', '$gia_ban', '$so_luong', '$nam_xuat_ban', '$mo_ta', '$anh_bia')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Thêm thành công";
+    } else {
+        echo "Lỗi do: " . $sql . "<br>" . $conn->error;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +50,7 @@ if ($conn->query($sql) === TRUE) {
 </head>
 <body>
     <h1>Thêm Sách Mới</h1>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <label>Tên Sách </label><br>
         <input type="text" name="ten_sach" required><br>
         <label>Mã tác giả</label><br>
@@ -85,7 +105,7 @@ if ($conn->query($sql) === TRUE) {
         <label>Số lượng</label><br>
         <input type="number" name="so_luong" required><br><br>
         <label>Năm xuất bản</label><br>
-        <input type="number" name="nam_xuat_ban" required><br><br>    
+        <input type="number" name="nam_xuat_ban" required><br><br>
         <label>Mô tả</label><br>
         <input type="text" name="mo_ta" required><br><br>
         <label>Ảnh bìa</label>
