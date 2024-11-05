@@ -30,7 +30,6 @@ if (isset($_GET['search']) || isset($_GET['role'])) {
     $sql = "SELECT * FROM khachhang";
     $result = $conn->query($sql);
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -41,14 +40,22 @@ if (isset($_GET['search']) || isset($_GET['role'])) {
     <link rel="stylesheet" href="../../css/qlkhcss.css">
 </head>
 <body>
+    <header class="header">
+        <div class="logo">
+            <img src="path/to/logo.png" alt="Logo">
+        </div>
+        
+        <div class="nav-links">
+            <a href="../../home.php">👤 Tài khoản</a>
+        </div>
+    </header>
+
     <h1>Quản lý khách hàng</h1>
 
     <!-- Form tìm kiếm và lọc theo vai trò -->
     <form class="search-filter" method="GET" action="quanlikhachhang.php">
         <input type="text" name="search" placeholder="Tìm kiếm khách hàng..." value="<?php echo htmlspecialchars($search_query); ?>">
         <button type="submit">Tìm kiếm</button>
-        
-        <!-- Dropdown để lọc theo vai trò -->
         <select name="role">
             <option value="">Tất cả vai trò</option>
             <option value="admin" <?php if ($role_filter == 'admin') echo 'selected'; ?>>Admin</option>

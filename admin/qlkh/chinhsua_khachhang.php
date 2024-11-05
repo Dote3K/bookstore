@@ -50,6 +50,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="../../css/csuakhang.css">
 </head>
 <body>
+<header class="header">
+        <div class="logo">
+            <img src="path/to/logo.png" alt="Logo">
+        </div>
+        
+        <div class="nav-links">
+            <a href="../../home.php">👤 Tài khoản</a>
+        </div>
+    </header>
     <h1>Chỉnh sửa khách hàng</h1>
 
     <form method="POST" action="">
