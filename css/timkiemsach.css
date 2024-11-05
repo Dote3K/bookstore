@@ -1,0 +1,90 @@
+/* Định dạng tổng quan */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.back-link {
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: #007aff;
+    font-weight: bold;
+}
+.back-link:hover {
+    color: #005ecb;
+}
+.search-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+.book-item {
+    width: 200px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+.book-item img {
+    width: 100px;
+    height: 150px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+.book-info h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0 5px;
+}
+.book-info p {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+}
+.add-to-cart, .buy-now {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 4px;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.add-to-cart {
+    background-color: #4CAF50;
+    border: none;
+}
+.add-to-cart:hover {
+    background-color: #45a049;
+}
+.buy-now {
+    background-color: #007aff;
+    margin-left: 10px;
+}
+.buy-now:hover {
+    background-color: #005ecb;
+}
+.no-results {
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+    margin-top: 20px;
+}

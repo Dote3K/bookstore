@@ -8,6 +8,7 @@ $stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ten_dang_nhap = $_POST['ten_dang_nhap'];
     $ho_va_ten = $_POST['ho_va_ten'];
@@ -17,12 +18,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $dia_chi_nhan_hang = $_POST['dia_chi_nhan_hang'];
     $dang_ky_nhan_ban_tin = $_POST['dang_ky_nhan_ban_tin'];
     $vai_tro = $_POST['vai_tro'];
+
     // Kiểm tra trùng tên đăng nhập (ngoại trừ tài khoản hiện tại)
     $check_username = "SELECT * FROM khachhang WHERE ten_dang_nhap = ? AND ma_khach_hang != ?";
     $stmt_check = $conn->prepare($check_username);
     $stmt_check->bind_param("si", $ten_dang_nhap, $id);
     $stmt_check->execute();
     $result_check = $stmt_check->get_result();
+
     if ($result_check->num_rows > 0) {
         echo "<script>alert('Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.');</script>";
     } else {
@@ -44,81 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chỉnh sửa khách hàng</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: #f2f2f7;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            width: 320px;
-            margin: auto;
-            transition: box-shadow 0.3s ease;
-        }
-        form:hover {
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-        }
-        h1 {
-            font-size: 24px;
-            font-weight: 600;
-            color: #1c1c1e;
-            text-align: center;
-            margin: 20px 0;
-        }
-        input[type="text"], input[type="email"], select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-            font-size: 14px;
-            color: #1c1c1e;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-        input[type="text"]:focus, input[type="email"]:focus, select:focus {
-            border-color: #007aff;
-            background-color: #fff;
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
-        }
-        button {
-            width: 100%;
-            background-color: #007aff;
-            color: white;
-            padding: 12px 0;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        button:hover {
-            background-color: #005ecb;
-            transform: translateY(-2px);
-        }
-        button:active {
-            background-color: #003eaa;
-            transform: translateY(0);
-        }
-        label {
-            font-size: 14px;
-            color: #3c3c43;
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-    </style>
+    <link rel="stylesheet" href="../../css/csuakhang.css">
 </head>
 <body>
     <h1>Chỉnh sửa khách hàng</h1>
@@ -158,3 +87,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </form>
 </body>
 </html>
+

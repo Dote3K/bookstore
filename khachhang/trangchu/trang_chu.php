@@ -1,12 +1,12 @@
 <?php
 require_once '../../connect.php'; // Kết nối CSDL
-require '../../login.php';
+ require '../../login.php';
 
-// Kiểm tra xem người dùng đã đăng nhập chưa
-if (!isset($_SESSION['ma_khach_hang'])) {
+ // Kiểm tra xem người dùng đã đăng nhập chưa
+ if (!isset($_SESSION['ma_khach_hang'])) {
     header('Location: ../login.php'); // Chuyển hướng đến trang đăng nhập
-    exit();
-}
+     exit();
+ }
 ?>
 
 <!DOCTYPE html>
@@ -15,6 +15,7 @@ if (!isset($_SESSION['ma_khach_hang'])) {
 <head>
     <meta charset="UTF-8">
     <title>Trang Chủ</title>
+    <link rel="stylesheet" href="../../css/trangchu.css">
 </head>
 
 <body>

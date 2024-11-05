@@ -3,7 +3,7 @@ session_start();
 require_once '../../connect.php';
 
 if (!isset($_SESSION['ma_khach_hang'])) {
-    echo "Vui lòng đăng nhập để xem giỏ hàng của bạn";
+ echo "Vui lòng đăng nhập để xem giỏ hàng của bạn";
 }
 
 // Khởi tạo giỏ hàng trong session nếu chưa có
@@ -40,6 +40,7 @@ $cartItems = $_SESSION['cart'];
 <head>
     <meta charset="UTF-8">
     <title>Giỏ Hàng</title>
+    <link rel="stylesheet" href="../../css/formgiohang.css">
 </head>
 
 <body>

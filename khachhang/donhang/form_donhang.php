@@ -1,15 +1,15 @@
 <?php
 require_once '../../connect.php'; // Kết nối đến cơ sở dữ liệu
-// Lấy thông tin khách hàng từ session
 session_start();
 
+// Lấy mã khách hàng từ session
 $ma_khach_hang = $_SESSION['ma_khach_hang'] ?? null;
 if (!$ma_khach_hang) {
     header("Location: ../../login.php");
     exit();
 }
 
-// Truy vấn để lấy thông tin đơn hàng
+// Truy vấn để lấy thông tin đơn hàng của khách hàng
 $sql = "SELECT * FROM donhang WHERE ma_khach_hang = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $ma_khach_hang);
@@ -21,39 +21,14 @@ $stmt->close();
 
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <title>Thông Tin Đơn Hàng</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th,
-        td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        a {
-            margin: 20px 0;
-            display: inline-block;
-            text-decoration: none;
-            color: blue;
-        }
-    </style>
+    <link rel="stylesheet" href="../../css/formdonhang.css">
 </head>
-
 <body>
     <h1>Danh Sách Đơn Hàng</h1>
-    <a href="../trangchu/trang_chu.php">Quay về trang chủ</a>
+    <a href="../trangchu/trang_chu.php" class="back-link">Quay về trang chủ</a>
 
     <?php if (count($orders) > 0): ?>
         <table>
@@ -78,17 +53,15 @@ $stmt->close();
                         <td><?php echo htmlspecialchars($order['ngay_dat_hang']); ?></td>
                         <td><?php echo htmlspecialchars($order['trang_thai']); ?></td>
                         <td><?php echo htmlspecialchars($order['dia_chi_nhan_hang']); ?></td>
-                        <td><?php echo number_format($order['giam_gia'], 0, ',', '.') . ' VND'; ?></td>
+                        <td><?php echo number_format($order['giam_gia'] * $order['tong'], 0, ',', '.') . ' VND'; ?></td>
                         <td>
                             <?php if (in_array($order['trang_thai'], ['DANG_CHO', 'DA_XAC_NHAN'])): ?>
                                 <form action="huy_don_hang.php" method="post" style="display:inline;">
-                                    <input type="hidden" name="ma_don_hang"
-                                        value="<?php echo htmlspecialchars($order['ma_don_hang']); ?>">
-                                    <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">Hủy
-                                        Đơn Hàng</button>
+                                    <input type="hidden" name="ma_don_hang" value="<?php echo htmlspecialchars($order['ma_don_hang']); ?>">
+                                    <button type="submit" class="cancel-button" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">Hủy Đơn Hàng</button>
                                 </form>
                             <?php else: ?>
-                                Đơn hàng không thể hủy
+                                <span class="not-cancelable">Đơn hàng không thể hủy</span>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -96,8 +69,7 @@ $stmt->close();
             </tbody>
         </table>
     <?php else: ?>
-        <p>Không có đơn hàng nào.</p>
+        <p class="no-orders">Không có đơn hàng nào.</p>
     <?php endif; ?>
 </body>
-
 </html>
