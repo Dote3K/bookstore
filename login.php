@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'connect.php';
+require_once 'connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ten_dang_nhap = $_POST['ten_dang_nhap'];
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['vai_tro'] = $user['vai_tro'];
 
         echo "Đăng nhập thành công!";
-        header("Location: home.php");
+        header("Location: khachhang/trangchu/trang_chu.php");
         exit();
     } else {
         echo "Tên đăng nhập hoặc mật khẩu không đúng!";

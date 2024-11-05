@@ -1,5 +1,10 @@
 <?php
 session_start();
+require_once '../../connect.php';
+
+if (!isset($_SESSION['ma_khach_hang'])) {
+ echo "Vui lòng đăng nhập để xem giỏ hàng của bạn";
+}
 
 // Khởi tạo giỏ hàng trong session nếu chưa có
 if (!isset($_SESSION['cart'])) {
@@ -35,6 +40,7 @@ $cartItems = $_SESSION['cart'];
 <head>
     <meta charset="UTF-8">
     <title>Giỏ Hàng</title>
+    <link rel="stylesheet" href="../../css/formgiohang.css">
 </head>
 
 <body>
@@ -61,7 +67,7 @@ $cartItems = $_SESSION['cart'];
                         <td><?= $item['so_luong'] ?></td>
                         <td><?= $item['gia'] * $item['so_luong'] ?> VND</td>
                         <td>
-                            <form action="../backend/remove_from_cart.php" method="post">
+                            <form action="xoa_khoi_gio_hang.php" method="post">
                                 <input type="hidden" name="ma_sach" value="<?= $maSach ?>">
                                 <button type="submit" name="remove_item">Xóa</button>
                             </form>
@@ -70,7 +76,7 @@ $cartItems = $_SESSION['cart'];
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <form action="checkout.php" method="post">
+        <form action="../thanhtoan/form_thanhtoan.php" method="post">
             <?php foreach ($cartItems as $maSach => $item): ?>
                 <input type="hidden" name="cart[<?= $maSach ?>][ten_sach]" value="<?= $item['ten_sach'] ?>">
                 <input type="hidden" name="cart[<?= $maSach ?>][gia]" value="<?= $item['gia'] ?>">
@@ -80,7 +86,7 @@ $cartItems = $_SESSION['cart'];
         </form>
     <?php endif; ?>
 
-    <a href="index.php">Quay về trang chủ</a>
+    <a href="../trangchu/trang_chu.php">Quay về trang chủ</a>
 </body>
 
 </html>
