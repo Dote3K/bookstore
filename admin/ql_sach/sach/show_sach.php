@@ -16,9 +16,9 @@ require '../../../checker/kiemtra_admin.php';
                     <tr>
                         <th>Mã Sách</th>
                         <th>Tên Sách</th>
-                        <th>Mã tác giả</th>
-                        <th>Mã nhà xuất bản</th>
-                        <th>Mã thể loại</th>
+                        <th>Tác giả</th>
+                        <th>Nhà xuất bản</th>
+                        <th>Thể loại</th>
                         <th>Giá mua</th>
                         <th>Giá bán</th>
                         <th>Số lượng</th>
@@ -32,12 +32,33 @@ require '../../../checker/kiemtra_admin.php';
                     if ($sach > 0) {
                         while ($count = $result->fetch_array()) {
                             $image = $count['anh_bia'];
+                            $ma_tac_gia = $count['ma_tac_gia'];
+                            $sql1 = "SELECT ten from tacgia";
+                            $result1 = $conn->query($sql1);
+                            $tentg = $result1->num_rows;
+                            if($tentg > 0){
+                                $ten_tac_gia = $result1->fetch_array()['ten'];
+                            } 
+                            $ma_nxb = $count['ma_nxb'];
+                            $sql2 = "SELECT ten from nxb";
+                            $result2 = $conn->query($sql2);
+                            $tennxb = $result2->num_rows;
+                            if($tennxb > 0){
+                                $ten_nxb = $result2->fetch_array()['ten'];
+                            }
+                            $ma_the_loai = $count['ma_the_loai'];
+                            $sql3 = "SELECT the_loai from theloai";
+                            $result3 = $conn->query($sql3);
+                            $tentl = $result3->num_rows;
+                            if($tentl > 0){
+                                $the_loai = $result3->fetch_array()['the_loai'];
+                            }
                             echo "<tr>
                     <td>{$count['ma_sach']}</td>
                     <td>{$count['ten_sach']}</td>
-                    <td>{$count['ma_tac_gia']}</td>
-                    <td>{$count['ma_nxb']}</td>
-                    <td>{$count['ma_the_loai']}</td>
+                    <td >{$ten_tac_gia}</td>
+                    <td>{$ten_nxb}</td>
+                    <td>{$the_loai}</td>
                     <td>{$count['gia_mua']}</td>
                     <td>{$count['gia_ban']}</td>
                     <td>{$count['so_luong']}</td>
