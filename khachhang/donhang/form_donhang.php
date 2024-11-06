@@ -1,6 +1,6 @@
 <?php
 require_once '../../connect.php'; // Kết nối đến cơ sở dữ liệu
-session_start();
+require '../../checker/kiemtra_login.php';
 
 // Lấy mã khách hàng từ session
 $ma_khach_hang = $_SESSION['ma_khach_hang'] ?? null;

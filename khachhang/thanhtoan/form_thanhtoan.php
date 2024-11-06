@@ -63,19 +63,12 @@ if (isset($_POST['cart']) && !empty($_POST['cart'])) {
                     
                     <p>Tổng chi phí: <span id="total_cost_<?php echo $maSach; ?>" class="total-cost"><?php echo htmlspecialchars($item['gia'] * $item['so_luong']); ?> VND</span></p>
 
-                    <label for="payment_method">Hình thức thanh toán:</label>
-                    <select name="payment_method" required>
-                        <option value="" disabled selected>Chọn hình thức thanh toán</option>
-                        <option value="cod">Thanh toán khi nhận hàng</option>
-                        <option value="prepaid">Thanh toán trước</option>
-                    </select>
 
-                    <button type="submit" name="confirm_payment" class="confirm-button">Xác nhận thanh toán</button>
                 </form>
             </div>
         </div>
     <?php endforeach; ?>
-
+    <button type="submit" name="confirm_payment" class="confirm-button">Xác nhận thanh toán</button>
     <a href="../trangchu/trang_chu.php" class="back-link">Quay về trang chủ</a>
 
     <script>

@@ -1,6 +1,7 @@
 <?php
-session_start();
+
 require_once '../../connect.php';
+require '../../checker/kiemtra_login.php';
 
 if (!isset($_SESSION['ma_khach_hang'])) {
  echo "Vui lòng đăng nhập để xem giỏ hàng của bạn";
@@ -19,8 +20,8 @@ if (isset($_POST['add_to_cart'])) {
     $soLuong = $_POST['so_luong'];
 
     // Kiểm tra nếu sản phẩm đã có trong giỏ hàng
-    if (isset($_SESSION['cart'][$maSach])) {
-        $_SESSION['cart'][$maSach]['so_luong'] += $soLuong;
+        if (isset($_SESSION['cart'][$maSach])) {
+            $_SESSION['cart'][$maSach]['so_luong'] += $soLuong;
     } else {
         $_SESSION['cart'][$maSach] = [
             'ten_sach' => $tenSach,

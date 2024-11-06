@@ -1,14 +1,6 @@
 <?php
 require_once '../../connect.php'; // Kết nối CSDL
- require '../../login.php';
-
- // Kiểm tra xem người dùng đã đăng nhập chưa
- if (!isset($_SESSION['ma_khach_hang'])) {
-    header('Location: ../login.php'); // Chuyển hướng đến trang đăng nhập
-     exit();
- }
 ?>
-
 <!DOCTYPE html>
 <html lang="vi">
 
