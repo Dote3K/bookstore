@@ -1,5 +1,5 @@
 <?php
-include 'doanhthu_DAO.php';
+include __DIR__ .  '/../DAO/doanhthu_DAO.php';
 
 class doanhthufunction {
     private $model;

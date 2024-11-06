@@ -183,7 +183,7 @@ require '../../checker/kiemtra_admin.php';
 include '../../connect.php';
 
 if(isset($_GET['ngay_dat_hang']) || isset($_GET['month']) || isset($_GET['yearonly'])) {
-    include 'doanhthu_control.php';
+    include '../../controllers/doanhthuController.php';
     $controller = new doanhthufunction($conn);
 
     if (isset($_GET['ngay_dat_hang'])) {
@@ -255,11 +255,12 @@ if(isset($_GET['ngay_dat_hang']) || isset($_GET['month']) || isset($_GET['yearon
         echo "</table>";
         echo "<table border='1'>
                 <tr>
-                    <th>{$header3}</th>
+                    <th colspan='2'>{$header3}</th>
                     <th>Số sách đã bán</th>
                 </tr>";
         while ($row = $result3->fetch_assoc()) {
             echo "<tr>
+                    <td style='width: 120px'><img src='../ql_sach/sach/{$row['anh_bia']}' alt='Ảnh bìa' style='width: 100px; height: auto;'></td>
                     <td>{$row['ten_sach']}</td>
                     <td>{$row['so_luong_ban']}</td>
                   </tr>";

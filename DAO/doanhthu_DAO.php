@@ -149,6 +149,7 @@ GROUP BY
     }
     public function getBestSellerNgay($date){
         $sql = "SELECT 
+    s.anh_bia as anh_bia,
     s.ten_sach,
     SUM(ctdh.so_luong) AS so_luong_ban
 FROM 
@@ -172,6 +173,7 @@ ORDER BY
     }
     public function getBestSellerThang($month, $year){
         $sql = "SELECT 
+    s.anh_bia as anh_bia,
     s.ten_sach,
     SUM(ctdh.so_luong) AS so_luong_ban
 FROM 
@@ -195,6 +197,7 @@ ORDER BY
     }
     public function getBestSellerNam($yearonly){
         $sql = "SELECT 
+    s.anh_bia as anh_bia,
     s.ten_sach as ten_sach,
     SUM(ctdh.so_luong) AS so_luong_ban
 FROM 
