@@ -1,6 +1,7 @@
 <?php
 require "../../../connect.php";
 require '../../../checker/kiemtra_admin.php';
+include '../../sidebar.php';
     $sql ="SELECT * FROM sach ";
     $result = $conn->query($sql);
 ?>

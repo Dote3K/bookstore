@@ -1,6 +1,7 @@
 <?php
 require "../../../connect.php";
 require '../../../checker/kiemtra_admin.php';
+include '../../sidebar.php';
 
 $ma_sach = $_GET['ma_sach'];
 $sql = "SELECT * FROM sach WHERE ma_sach = $ma_sach";

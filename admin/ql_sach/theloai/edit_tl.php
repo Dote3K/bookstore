@@ -1,6 +1,7 @@
 <?php
 require "../../../connect.php";
 require '../../../checker/kiemtra_admin.php';
+include '../../sidebar.php';
 $ma_the_loai = $_GET['ma_the_loai'];
 $sql = "SELECT * FROM theloai WHERE ma_the_loai = $ma_the_loai";
 $result = $conn->query($sql);

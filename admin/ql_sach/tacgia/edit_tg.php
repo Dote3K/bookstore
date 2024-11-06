@@ -1,6 +1,7 @@
 <?php
 require "../../../connect.php";
 require '../../../checker/kiemtra_admin.php';
+include '../../sidebar.php';
 $ma_tac_gia = $_GET['ma_tac_gia'];
 $sql = "SELECT * FROM tacgia WHERE ma_tac_gia = $ma_tac_gia";
 $result = $conn->query($sql);

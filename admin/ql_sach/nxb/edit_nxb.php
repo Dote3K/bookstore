@@ -1,6 +1,7 @@
 <?php
 require "../../../connect.php";
 require '../../../checker/kiemtra_admin.php';
+include '../../sidebar.php';
 $ma_nxb = $_GET['ma_nxb'];
 $sql = "SELECT * FROM nxb WHERE ma_nxb = $ma_nxb";
 $result = $conn->query($sql);

@@ -1,5 +1,6 @@
 <?php
 require '../../checker/kiemtra_admin.php';
+include '../sidebar.php';
 ?>
 <!doctype html>
 <html lang="en">
