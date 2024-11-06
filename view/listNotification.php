@@ -26,7 +26,7 @@ session_start();
 </head>
 <style>
     body {
-        font-family: Arial, sans-serif;
+
         background: linear-gradient(to right, #fbc2eb, #a6c1ee); 
         color: #333;
         margin: 0;
@@ -86,6 +86,38 @@ session_start();
         font-weight: 600;
         font-size: 1.8rem;
     }
+    .navbar {
+        background: linear-gradient(45deg, #ff6b6b, #ffcc33);
+    }
+
+    .navbar-brand,
+    .navbar-nav .nav-link {
+        color: #ffffff ;
+    }
+
+    .navbar-brand:hover,
+    .navbar-nav .nav-link:hover {
+        color: #333333;
+    }
+
+
+    .notification-item {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+    }
+
+    .notification-item:hover {
+        background: #f7f7f7;
+    }
+
+    .badge {
+        background-color: orange;
+        color: red;
+        padding: 2px;
+        border-radius: 100%;
+        font-size: 12px;
+    }
 </style>
 
 
@@ -129,7 +161,7 @@ session_start();
                     </div>
                 </div>
             <?php else: ?>
-                <a class="nav-link" href="/loginRouter.php">
+                <a class="nav-link" href="/KhachHangRouter.php?action=login">
                     <i class="fa fa-user"></i> Tài khoản
                 </a>
             <?php endif; ?>
