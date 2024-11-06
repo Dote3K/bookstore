@@ -1,7 +1,7 @@
 <?php
-require_once 'C:/xampp/htdocs/btlPHP/DAO/JDBC.php';
-require_once 'C:/xampp/htdocs/btlPHP/DAO/notificationsDAO.php';
-require_once 'C:/xampp/htdocs/btlPHP/model/notifications.php';
+require_once 'DAO/JDBC.php';
+require_once 'DAO/notificationsDAO.php';
+require_once 'model/notifications.php';
 
 class notificationController
 {
@@ -21,7 +21,7 @@ class notificationController
         $notifications = $this->notificationsDAO->selectById($maKhachHang);
         $this->notificationsDAO->markAsRead($maKhachHang);
 
-        require 'C:/xampp/htdocs/btlPHP/view/listNotification.php';
+        require 'view/listNotification.php';
     }
 
     public function getUnreadNotifications()

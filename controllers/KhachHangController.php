@@ -1,8 +1,8 @@
 <?php
-require_once 'C:/xampp/htdocs/btlPHP/dao/KhachHangDAO.php';
-require_once 'C:/xampp/htdocs/btlPHP/model/khachhang.php';
-require_once 'C:/xampp/htdocs/btlPHP/DAO/JDBC.php';
-require_once 'C:/xampp/htdocs/btlPHP/DAO/notificationsDAO.php';
+require_once 'DAO/khachhangDAO.php';
+require_once 'model/khachhang.php';
+require_once 'DAO/JDBC.php';
+require_once 'DAO/notificationsDAO.php';
 session_start();
 
 class KhachHangController {
@@ -39,7 +39,7 @@ class KhachHangController {
                 header("Location: view/register.php");
             }
         }
-        require 'C:/xampp/htdocs/btlPHP/view/register.php';
+        require '../view/register.php';
     }
     public function login() {
         if (session_status() === PHP_SESSION_NONE) {
@@ -63,7 +63,7 @@ class KhachHangController {
                     // Đặt session cho mã khách hàng
                     $_SESSION['ma_khach_hang'] = $khachHang->getMaKhachHang();
                     $_SESSION['tenDangNhap'] = $khachHang->getTenDangNhap();
-                    $_SESSION['vaiTro'] = $khachHang->getVaiTro();
+                    $_SESSION['vai_tro'] = $khachHang->getVaiTro();
                     
                     header("Location: view/home.php");
                     exit();
@@ -80,11 +80,10 @@ class KhachHangController {
                 exit();
             }
         }
-        require 'C:/xampp/htdocs/btlPHP/view/login.php';
+        require 'view/login.php';
     }
     
     public function logout() {
-    
         session_unset();
         session_destroy();
         header("Location: view/home.php");

@@ -3,11 +3,11 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once 'C:/xampp/htdocs/btlPHP/DAO/donhangDAO.php';
-require_once 'C:/xampp/htdocs/btlPHP/DAO/notificationsDAO.php';
-require_once 'C:/xampp/htdocs/btlPHP/model/TrangThaiDonHang.php';
-require_once 'C:/xampp/htdocs/btlPHP/model/notifications.php';
-require_once 'C:/xampp/htdocs/btlPHP/model/enumNotification.php';
+require_once 'DAO/donhangDAO.php';
+require_once 'DAO/notificationsDAO.php';
+require_once 'model/TrangThaiDonHang.php';
+require_once 'model/notifications.php';
+require_once 'model/enumNotification.php';
 class DonHangController
 {
     private $donHangDAO;
@@ -22,7 +22,7 @@ class DonHangController
 
         $donHangs = $this->donHangDAO->selectAll();
 
-        require 'C:/xampp/htdocs/btlPHP/view/listOrderAll.php';
+        require 'view/listOrderAll.php';
     }
     public function listOrderUser()
     {
@@ -35,7 +35,7 @@ class DonHangController
         $maKhachHang = $_SESSION['ma_khach_hang'];
         $donHangs = $this->donHangDAO->selectByMaKhachHang($maKhachHang);
 
-        require 'C:/xampp/htdocs/btlPHP/view/listOrderUser.php';
+        require 'view/listOrderUser.php';
     }
 
 
@@ -57,7 +57,7 @@ class DonHangController
         }
         header("Location: listOrderUserRouter.php");
         exit();
-        require 'C:/xampp/htdocs/btlPHP/view/listOrderUser.php';
+        require 'view/listOrderUser.php';
     }
 
 
@@ -104,7 +104,7 @@ class DonHangController
 
         header("Location: DonHangRouter.php?action=list");
         exit();
-        require 'C:/xampp/htdocs/btlPHP/view/listOrderAll.php';
+        require 'view/listOrderAll.php';
     }
     
 }

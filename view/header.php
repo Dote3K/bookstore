@@ -40,7 +40,7 @@ session_start();
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
 
-        <a class="navbar-brand" href="/view/home.php">
+        <a class="navbar-brand" href="http://localhost/bookstore/view/home.php">
             <img src="path/to/logo.png" alt="Logo" style="height: 40px;">
         </a>
 
@@ -65,23 +65,20 @@ session_start();
                             <i class="fa fa-user"></i> <?php echo htmlspecialchars($_SESSION['tenDangNhap']); ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
-                            <?php if ($_SESSION['vaiTro'] === 'admin'): ?>
-                                <li><a class="dropdown-item" href="admin/products.php">Danh sách sản phẩm</a></li>
-                                <li><a class="dropdown-item" href="admin/addProduct.php">Thêm sản phẩm</a></li>
-                                <li><a class="dropdown-item" href="admin/manageUsers.php">Quản lý người dùng</a></li>
-                                <li><a class="dropdown-item" href="/DonHangRouter.php?action=list">Quản lý đơn hàng</a></li>
+                            <?php if ($_SESSION['vai_tro'] === 'admin'): ?>
+                                <li><a class="dropdown-item" href="http://localhost/bookstore/admin/admin_page.php">Chuyển đến trang quản lý</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="/KhachHangRouter.php?action=logout">Đăng xuất</a></li>
+                                <li><a class="dropdown-item" href="http://localhost/bookstore/KhachHangRouter.php?action=logout">Đăng xuất</a></li>
                             <?php else: ?>
-                                <li><a class="dropdown-item" href="profile.php">Trang cá nhân</a></li>
-                                <li><a class="dropdown-item" href="/DonHangRouter.php?action=listOrderUser">Đơn hàng của tôi</a></li>
-                                <li><a class="dropdown-item" href="/KhachHangRouter.php?action=logout">Đăng xuất</a></li>
+                                <li><a class="dropdown-item" href="http://localhost/bookstore/user/hienThi.php">Trang cá nhân</a></li>
+                                <li><a class="dropdown-item" href="http://localhost/bookstore/DonHangRouter.php?action=listOrderUser">Đơn hàng của tôi</a></li>
+                                <li><a class="dropdown-item" href="http://localhost/bookstore/KhachHangRouter.php?action=logout">Đăng xuất</a></li>
                             <?php endif; ?>
                         </ul>
                 <li class="nav-item notification-icon">
-                    <a class="nav-link" href="/NotificationRouter.php?action=notificationUser">
+                    <a class="nav-link" href="http://localhost/bookstore/NotificationRouter.php?action=notificationUser">
                         <i class="fa fa-bell"></i>
                         <span class="badge unread-notifications"></span>
                     </a>
@@ -95,17 +92,17 @@ session_start();
                 </li>
 
             <?php else: ?>
-                <a class="nav-link" href="/KhachHangRouter.php?action=login">
+                <a class="nav-link" href="http://localhost/bookstore/KhachHangRouter.php?action=login">
                     <i class="fa fa-user"></i> Tài khoản
                 </a>
                 <li class="nav-item">
-                    <a class="nav-link" href="/KhachHangRouter.php?action=login">
+                    <a class="nav-link" href="http://localhost/bookstore/KhachHangRouter.php?action=login">
                         <i class="fa fa-bell"></i>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/KhachHangRouter.php?action=login">
+                    <a class="nav-link" href="http://localhost/bookstore/KhachHangRouter.php?action=login">
                         <i class="fa fa-shopping-cart"></i>
                     </a>
                 </li>

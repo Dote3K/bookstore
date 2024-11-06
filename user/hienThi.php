@@ -1,9 +1,8 @@
 <?php
 
 require '../connect.php';
-
-
 include '../checker/kiemtra_login.php';
+
 $ma_khach_hang = $_SESSION['ma_khach_hang'];
 $sql = "SELECT * FROM khachhang where ma_khach_hang = ?";
 $stmt = $conn->prepare($sql);

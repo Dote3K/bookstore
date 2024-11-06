@@ -1,10 +1,5 @@
 <?php
-session_start();
-
-if (!isset($_SESSION['ma_khach_hang']) || $_SESSION['vai_tro'] !== 'admin') {
-    header("Location: home.php");
-    exit();
-}
+require '../checker/kiemtra_admin.php';
 
 echo "Admin";
 ?>

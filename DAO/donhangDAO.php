@@ -1,7 +1,7 @@
 <?php
 require_once 'JDBC.php';
 require_once 'DAOInterface.php';
-require_once 'C:/xampp/htdocs/btlPHP/model/donhang.php';
+require_once 'model/donhang.php';
 
 class DonHangDAO implements DAOInterface
 {
