@@ -66,7 +66,7 @@ session_start();
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
                             <?php if ($_SESSION['vai_tro'] === 'admin'): ?>
-                                <li><a class="dropdown-item" href="http://localhost/bookstore/admin/admin_page.php">Chuyển đến trang quản lý</a></li>
+                                <li><a class="dropdown-item" href="http://localhost/bookstore/DonHangRouter.php?action=list">Chuyển đến trang quản lý</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
