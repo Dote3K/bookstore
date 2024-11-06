@@ -161,7 +161,7 @@ session_start();
                     </div>
                 </div>
             <?php else: ?>
-                <a class="nav-link" href="/KhachHangRouter.php?action=login">
+                <a class="nav-link" href="/loginRouter.php">
                     <i class="fa fa-user"></i> Tài khoản
                 </a>
             <?php endif; ?>

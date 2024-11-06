@@ -74,7 +74,7 @@
                             <td><?php echo htmlspecialchars($donHang->getDiaChiNhanHang()); ?></td>
                             <td><?php echo htmlspecialchars($donHang->getGiamGia()); ?></td>
                             <td>
-                                <form method="POST" action="/DonHangRouter.php?action=updateStatus" class="d-flex align-items-center gap-2">
+                                <form method="POST" action="/bookstore/DonHangRouter.php?action=updateStatus" class="d-flex align-items-center gap-2">
                                     <input type="hidden" name="maDonHang" value="<?php echo htmlspecialchars($donHang->getMaDonHang()); ?>">
 
                                     <select name="trangThai" class="form-select form-select-sm" style="width: auto;">
