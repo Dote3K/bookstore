@@ -31,7 +31,6 @@ if (isset($_POST['cart']) && !empty($_POST['cart'])) {
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -40,36 +39,37 @@ if (isset($_POST['cart']) && !empty($_POST['cart'])) {
     <link rel="stylesheet" href="../../css/formthanhtoan.css">
 </head>
 <body>
-    <h1>Thanh Toán</h1>
+    <div class="container">
+        <h1>Thanh Toán</h1>
 
-    <?php foreach ($cartItems as $maSach => $item):
-        $book = getBookById($conn, $maSach);
-        $authorName = getAuthorName($conn, $book['ma_tac_gia']);
-    ?>
-        <div class="book-info">
-            <img src="images/<?php echo htmlspecialchars($book['anh_bia']); ?>" alt="<?php echo htmlspecialchars($book['ten_sach']); ?>" />
-            <div>
-                <h2><?php echo htmlspecialchars($item['ten_sach']); ?></h2>
-                <p>Tác giả: <?php echo htmlspecialchars($authorName); ?></p>
-                <p>Giá: <span id="price_<?php echo $maSach; ?>"><?php echo htmlspecialchars($item['gia']); ?> VND</span></p>
-                
-                <form action="../donhang/form_donhang.php" method="post" class="paymentForm">
-                    <input type="hidden" name="ma_sach" value="<?php echo htmlspecialchars($maSach); ?>">
-                    <input type="hidden" name="gia" value="<?php echo htmlspecialchars($item['gia']); ?>">
-                    <input type="hidden" name="cart" value="<?php echo htmlspecialchars(json_encode($cartItems)); ?>">
+        <?php foreach ($cartItems as $maSach => $item):
+            $book = getBookById($conn, $maSach);
+            $authorName = getAuthorName($conn, $book['ma_tac_gia']);
+        ?>
+            <div class="book-info">
+                <img src="images/<?php echo htmlspecialchars($book['anh_bia']); ?>" alt="<?php echo htmlspecialchars($book['ten_sach']); ?>" />
+                <div>
+                    <h2><?php echo htmlspecialchars($item['ten_sach']); ?></h2>
+                    <p>Tác giả: <?php echo htmlspecialchars($authorName); ?></p>
+                    <p>Giá: <span id="price_<?php echo $maSach; ?>"><?php echo htmlspecialchars($item['gia']); ?> VND</span></p>
                     
-                    <label for="so_luong_<?php echo $maSach; ?>">Số lượng:</label>
-                    <input type="number" id="so_luong_<?php echo $maSach; ?>" name="so_luong" min="1" value="<?php echo $item['so_luong']; ?>" max="<?php echo htmlspecialchars($book['so_luong']); ?>" required>
-                    
-                    <p>Tổng chi phí: <span id="total_cost_<?php echo $maSach; ?>" class="total-cost"><?php echo htmlspecialchars($item['gia'] * $item['so_luong']); ?> VND</span></p>
-
-
-                </form>
+                    <form action="../donhang/form_donhang.php" method="post" class="paymentForm">
+                        <input type="hidden" name="ma_sach" value="<?php echo htmlspecialchars($maSach); ?>">
+                        <input type="hidden" name="gia" value="<?php echo htmlspecialchars($item['gia']); ?>">
+                        <input type="hidden" name="cart" value="<?php echo htmlspecialchars(json_encode($cartItems)); ?>">
+                        
+                        <label for="so_luong_<?php echo $maSach; ?>">Số lượng:</label>
+                        <input type="number" id="so_luong_<?php echo $maSach; ?>" name="so_luong" min="1" value="<?php echo $item['so_luong']; ?>" max="<?php echo htmlspecialchars($book['so_luong']); ?>" required>
+                        
+                        <p>Tổng chi phí: <span id="total_cost_<?php echo $maSach; ?>" class="total-cost"><?php echo htmlspecialchars($item['gia'] * $item['so_luong']); ?> VND</span></p>
+                    </form>
+                </div>
             </div>
-        </div>
-    <?php endforeach; ?>
-    <button type="submit" name="confirm_payment" class="confirm-button">Xác nhận thanh toán</button>
-    <a href="../trangchu/trang_chu.php" class="back-link">Quay về trang chủ</a>
+        <?php endforeach; ?>
+        
+        <button type="submit" name="confirm_payment" class="confirm-button">Xác nhận thanh toán</button>
+        <a href="../trangchu/trang_chu.php" class="back-link">Quay về trang chủ</a>
+    </div>
 
     <script>
         const quantityInputs = document.querySelectorAll('input[id^="so_luong_"]');
@@ -85,3 +85,4 @@ if (isset($_POST['cart']) && !empty($_POST['cart'])) {
     </script>
 </body>
 </html>
+s

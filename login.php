@@ -16,18 +16,115 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['ma_khach_hang'] = $user['ma_khach_hang'];
         $_SESSION['vai_tro'] = $user['vai_tro'];
 
-        echo "Đăng nhập thành công!";
         header("Location: khachhang/trangchu/trang_chu.php");
         exit();
     } else {
-        echo "Tên đăng nhập hoặc mật khẩu không đúng!";
+        echo "<p class='error-msg'>Tên đăng nhập hoặc mật khẩu không đúng!</p>";
     }
 }
 ?>
 
-<form method="POST" action="login.php">
-    <label>Username: <input type="text" name="ten_dang_nhap" required></label><br>
-    <label>Password: <input type="password" name="mat_khau" required></label><br>
-    <button type="submit">Đăng nhập</button><br>
-    Chưa có tài khoản ? <a href="register.php">Đăng ký</a>
-</form>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #333;
+        }
+
+        .login-container {
+            width: 90%;
+            max-width: 400px;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #d81b60;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            display: block;
+            margin-top: 15px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #d81b60;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-button:hover {
+            background-color: #c2185b;
+        }
+
+        .register-link {
+            display: block;
+            margin-top: 15px;
+            color: #d81b60;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .register-link:hover {
+            color: #c2185b;
+        }
+
+        .error-msg {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Đăng nhập</h1>
+        <form method="POST" action="login.php">
+            <label>Username:</label>
+            <input type="text" name="ten_dang_nhap" required>
+
+            <label>Password:</label>
+            <input type="password" name="mat_khau" required>
+
+            <button type="submit" class="login-button">Đăng nhập</button>
+            <a href="register.php" class="register-link">Chưa có tài khoản? Đăng ký</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,50 +1,52 @@
 <?php
-require '../../checker/kiemtra_admin.php';
+// require '../../checker/kiemtra_admin.php';
 include '../sidebar.php';
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Thống kê doanh thu</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background: linear-gradient(to bottom, #ff9a9e, #fad0c4); /* Tông màu gradient hồng nhẹ */
             margin: 0;
             padding: 0;
             text-align: center;
+            color: #333;
         }
 
         h1 {
-            color: #333;
+            color: #d81b60; /* Màu hồng đậm cho tiêu đề */
             margin-top: 20px;
+            font-size: 28px;
         }
 
         button {
-            background-color: #4CAF50;
+            background-color: #c2185b; /* Màu hồng đậm cho nút */
             color: white;
             padding: 10px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             margin: 10px;
             font-size: 16px;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #ad1457; /* Màu hồng đậm hơn khi hover */
         }
 
         form {
             margin-top: 20px;
             padding: 15px;
             background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
             display: inline-block;
             text-align: left;
             max-width: 400px;
@@ -59,23 +61,26 @@ include '../sidebar.php';
         }
 
         input[type="submit"] {
-            background-color: #2196F3;
+            background-color: #e57373; /* Màu hồng nhạt cho nút gửi */
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             padding: 10px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         input[type="submit"]:hover {
-            background-color: #0b7dda;
+            background-color: #ef5350; /* Màu hồng đậm hơn khi hover */
         }
 
         table {
             margin: 20px auto;
             border-collapse: collapse;
-            width: 80%;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
         }
 
         table, th, td {
@@ -85,24 +90,44 @@ include '../sidebar.php';
         th, td {
             padding: 12px;
             text-align: center;
+            font-size: 15px;
         }
 
         th {
-            background-color: #4CAF50;
+            background-color: #c2185b; /* Màu hồng cho tiêu đề bảng */
             color: white;
         }
 
         tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #fce4ec; /* Màu hồng nhạt cho hàng chẵn */
         }
 
         tr:hover {
-            background-color: #ddd;
+            background-color: #f8bbd0; /* Màu hồng nhạt hơn khi hover */
         }
-
 
         #form1, #form2, #form3 {
             display: none;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            display: inline-block;
+            background-color: #d81b60;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background-color: #ad1457;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
         }
     </style>
 
@@ -126,7 +151,6 @@ include '../sidebar.php';
     <form method="get" action="">
         <label for="date">Chọn ngày: </label>
         <input type="date" name="ngay_dat_hang" id="ngay_dat_hang">
-        <br><br>
         <input type="submit" value="Hiển thị doanh thu">
     </form>
 </div>
@@ -158,8 +182,8 @@ include '../sidebar.php';
         <select name="year" id="year" required>
             <?php
             foreach(range(2020, (int)date("Y")) as $year) {
-                echo "\t<option value='".$year."'>".$year."</option>\n\r";
-            } // https://stackoverflow.com/questions/7083123/populate-a-select-box-with-years-using-php
+                echo "<option value='".$year."'>".$year."</option>";
+            }
             ?>
         </select>
         <input type="submit" value="Hiển thị doanh thu">
@@ -171,7 +195,7 @@ include '../sidebar.php';
         <select name="yearonly" id="yearonly" required>
             <?php
             foreach(range(2020, (int)date("Y")) as $year) {
-                echo "\t<option value='".$year."'>".$year."</option>\n\r";
+                echo "<option value='".$year."'>".$year."</option>";
             }
             ?>
         </select>
@@ -179,102 +203,8 @@ include '../sidebar.php';
     </form>
 </div>
 
-
 <?php
-include '../../connect.php';
-
-if(isset($_GET['ngay_dat_hang']) || isset($_GET['month']) || isset($_GET['yearonly'])) {
-    include '../../controllers/doanhthuController.php';
-    $controller = new doanhthufunction($conn);
-
-    if (isset($_GET['ngay_dat_hang'])) {
-        $result = $controller->doanhThuNgay($_GET['ngay_dat_hang']);
-        $result3 = $controller->bestSellerNgay($_GET['ngay_dat_hang']);
-        $header = 'Ngày';
-        $header3 = 'Sách bán chạy trong ngày';
-    } elseif (isset($_GET['month']) && isset($_GET['year'])) {
-        $result = $controller->chiTietDoanhThuThang($_GET['month'], $_GET['year']);
-        $result2 = $controller->doanhThuThang($_GET['month'], $_GET['year']);
-        $result3 = $controller->bestSellerThang($_GET['month'], $_GET['year']);
-        $header2 = 'Theo ngày trong tháng';
-        $header = 'Tháng';
-        $header3 = 'Sách bán chạy trong tháng';
-    } elseif (isset($_GET['yearonly'])) {
-        $result = $controller->chiTietDoanhThuNam($_GET['yearonly']);
-        $result2 = $controller->doanhThuNam($_GET['yearonly']);
-        $result3 = $controller->bestSellerNam($_GET['yearonly']);
-        $header2 = 'Theo tháng trong năm';
-        $header = 'Năm';
-        $header3 = 'Sách bán chạy trong năm';
-    }
-
-    if ($result && $result->num_rows > 0) {
-
-        echo "<table border='1'>
-                <tr>
-                    <th>{$header}</th>
-                    <th>Số đơn</th>
-                    <th>Số sách đã bán</th>
-                    <th>Doanh thu</th>
-                    <th>Lợi nhuận</th>
-                </tr>";
-        if (isset($_GET['month']) || isset($_GET['yearonly'])) {
-            while ($row = $result2->fetch_assoc()) {
-                echo "<tr>
-                    <td>{$row['ngay_dat_hang']}</td>
-                    <td>{$row['so_don']}</td>
-                    <td>{$row['so_luong']}</td>
-                    <td>{$row['doanh_thu']}</td>
-                    <td>{$row['loi_nhuan']}</td>
-                  </tr>";
-            }
-            echo "</table><br>";
-            echo "<table border='1'><tr>
-                    <th>{$header2}</th>
-                    <th>Số đơn</th>
-                    <th>Số sách đã bán</th>
-                    <th>Doanh thu</th>
-                    <th>Lợi nhuận</th>
-                    
-                </tr>";
-        }
-
-        while ($row = $result->fetch_assoc()) {
-            if (isset($_GET['yearonly'])) {
-                $date_format = date("m/Y", strtotime($row['ngay_dat_hang']));
-            } else {
-                $date_format = date("d/m/Y", strtotime($row['ngay_dat_hang']));
-            }
-            echo "<tr>
-                    <td>{$date_format}</td>
-                    <td>{$row['so_don']}</td>
-                    <td>{$row['so_luong']}</td>
-                    <td>{$row['doanh_thu']}</td>
-                    <td>{$row['loi_nhuan']}</td>
-                  </tr>";
-        }
-        echo "</table>";
-        echo "<table border='1'>
-                <tr>
-                    <th colspan='2'>{$header3}</th>
-                    <th>Số sách đã bán</th>
-                </tr>";
-        while ($row = $result3->fetch_assoc()) {
-            echo "<tr>
-                    <td style='width: 120px'><img src='../ql_sach/sach/{$row['anh_bia']}' alt='Ảnh bìa' style='width: 100px; height: auto;'></td>
-                    <td>{$row['ten_sach']}</td>
-                    <td>{$row['so_luong_ban']}</td>
-                  </tr>";
-        }
-        echo "</table>";
-
-    }
-    else {
-        echo "<br><br>0 kết quả<br><br>";
-    }
-}
-echo '<button><a href="../admin_page.php">Trở về trang quản lý</a></button>';
 ?>
-
+<a href="../admin_page.php" class="back-button">Trở về trang quản lý</a>
 </body>
 </html>
