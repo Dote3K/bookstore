@@ -40,7 +40,7 @@ session_start();
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
 
-        <a class="navbar-brand" href="/view/home.php">
+        <a class="navbar-brand" href="/bookstore/view/home.php">
             <img src="path/to/logo.png" alt="Logo" style="height: 40px;">
         </a>
 
@@ -66,19 +66,19 @@ session_start();
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
                             <?php if ($_SESSION['vai_tro'] === 'admin'): ?>
-                                <li><a class="dropdown-item" href="/DonHangRouter.php?action=list">Chuyển đến trang quản lý</a></li>
+                                <li><a class="dropdown-item" href="/bookstore/DonHangRouter.php?action=list">Chuyển đến trang quản lý</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="/KhachHangRouter.php?action=logout">Đăng xuất</a></li>
+                                <li><a class="dropdown-item" href="/bookstore/KhachHangRouter.php?action=logout">Đăng xuất</a></li>
                             <?php else: ?>
                                 <li><a class="dropdown-item" href="/bookstore/user/hienThi.php">Trang cá nhân</a></li>
-                                <li><a class="dropdown-item" href="/DonHangRouter.php?action=listOrderUser">Đơn hàng của tôi</a></li>
-                                <li><a class="dropdown-item" href="/KhachHangRouter.php?action=logout">Đăng xuất</a></li>
+                                <li><a class="dropdown-item" href="/bookstore/DonHangRouter.php?action=listOrderUser">Đơn hàng của tôi</a></li>
+                                <li><a class="dropdown-item" href="/bookstore/KhachHangRouter.php?action=logout">Đăng xuất</a></li>
                             <?php endif; ?>
                         </ul>
                 <li class="nav-item nav_list notification-icon">
-                    <a class="nav-link" href="/NotificationRouter.php?action=notificationUser">
+                    <a class="nav-link" href="/bookstore/NotificationRouter.php?action=notificationUser">
                         <i class="fa fa-bell"></i>
                         <span class="badge unread-notifications"></span>
                     </a>
@@ -92,17 +92,17 @@ session_start();
                 </li>
 
             <?php else: ?>
-                <a class="nav-link" href="/KhachHangRouter.php?action=login">
+                <a class="nav-link" href="/bookstore/KhachHangRouter.php?action=login">
                     <i class="fa fa-user"></i> Tài khoản
                 </a>
                 <li class="nav-item">
-                    <a class="nav-link" href="/KhachHangRouter.php?action=login">
+                    <a class="nav-link" href="/bookstore/KhachHangRouter.php?action=login">
                         <i class="fa fa-bell"></i>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/KhachHangRouter.php?action=login">
+                    <a class="nav-link" href="/bookstore/KhachHangRouter.php?action=login">
                         <i class="fa fa-shopping-cart"></i>
                     </a>
                 </li>
@@ -115,7 +115,7 @@ session_start();
 </nav>
 <script>
     function fetchUnreadNotifications() {
-        fetch('/NotificationRouter.php?action=getUnreadNotifications')
+        fetch('/bookstore/NotificationRouter.php?action=getUnreadNotifications')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok: ' + response.statusText);

@@ -120,7 +120,7 @@ $result = $conn->query($sql);
 
         <div class="button-container">
             <a href="add_tl.php" class="back-link">Thêm thể loại</a>
-            <a href="../../admin_page.php" class="back-link">Trang chủ</a>
+
         </div>
     </div>
 </body>

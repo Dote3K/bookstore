@@ -231,7 +231,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <button type="submit">Cập nhật</button>
     </form>
     <a href="show_sach.php" class="back-link">Trở về trang quản lý sách</a><br>
-    <a href="../../admin_page.php" class="back-link">Trang chủ</a>
 </div>
 </body>
 </html>

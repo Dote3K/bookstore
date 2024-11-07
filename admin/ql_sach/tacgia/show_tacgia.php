@@ -118,7 +118,7 @@ $result = $conn->query($sql);
         </table>
         <div class="button-container">
             <a href="add_tg.php" class="back-link">Thêm Tác Giả</a>
-            <a href="../../admin_page.php" class="back-link">Trang Chủ</a>
+
         </div>
     </div>
 </body>

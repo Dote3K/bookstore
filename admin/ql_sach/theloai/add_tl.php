@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
         <div class="button-container">
             <a href="show_the_loai.php" class="back-link">Trở về trang quản lý thể loại</a>
-            <a href="../../admin_page.php" class="back-link">Trang chủ</a>
+
         </div>
     </div>
 </body>

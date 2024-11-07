@@ -39,7 +39,7 @@ class KhachHangController {
                 header("Location: view/register.php");
             }
         }
-        require '../view/register.php';
+        require 'view/register.php';
     }
     public function login() {
         if (session_status() === PHP_SESSION_NONE) {
