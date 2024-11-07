@@ -2,37 +2,37 @@
 include __DIR__ .  '/../DAO/doanhthu_DAO.php';
 
 class doanhthufunction {
-    private $model;
+    private $DAO;
 
     public function __construct($db) {
-        $this->model = new doanhthuDAO($db);
+        $this->doanhthuDAO = new doanhthuDAO($db);
     }
 
     public function doanhThuNgay($date) {
-        return $this->model->getDoanhThuNgay($date);
+        return $this->doanhthuDAO->getDoanhThuNgay($date);
     }
 
     public function chiTietDoanhThuThang($month, $year) {
-        return $this->model->getChiTietDoanhThuThang($month, $year);
+        return $this->doanhthuDAO->getChiTietDoanhThuThang($month, $year);
     }
     public function doanhThuThang($month, $year) {
-        return $this->model->getDoanhThuThang($month, $year);
+        return $this->doanhthuDAO->getDoanhThuThang($month, $year);
     }
 
     public function chiTietDoanhThuNam($yearonly) {
-        return $this->model->getChiTietDoanhThuNam($yearonly);
+        return $this->doanhthuDAO->getChiTietDoanhThuNam($yearonly);
     }
     public function doanhThuNam($yearonly) {
-        return $this->model->getDoanhThuNam($yearonly);
+        return $this->doanhthuDAO->getDoanhThuNam($yearonly);
     }
     public function bestSellerNgay($date){
-        return $this->model->getBestSellerNgay($date);
+        return $this->doanhthuDAO->getBestSellerNgay($date);
     }
     public function bestSellerThang($month, $year) {
-        return $this->model->getBestSellerThang($month, $year);
+        return $this->doanhthuDAO->getBestSellerThang($month, $year);
     }
     public function bestSellerNam($yearonly) {
-        return $this->model->getBestSellerNam($yearonly);
+        return $this->doanhthuDAO->getBestSellerNam($yearonly);
     }
 }
 ?>
