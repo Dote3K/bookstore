@@ -72,7 +72,7 @@ session_start();
                                 </li>
                                 <li><a class="dropdown-item" href="/bookstore/KhachHangRouter.php?action=logout">Đăng xuất</a></li>
                             <?php else: ?>
-                                <li><a class="dropdown-item" href="/bookstore/bookstore/user/hienThi.php">Trang cá nhân</a></li>
+                                <li><a class="dropdown-item" href="/bookstore/user/hienThi.php">Trang cá nhân</a></li>
                                 <li><a class="dropdown-item" href="/bookstore/DonHangRouter.php?action=listOrderUser">Đơn hàng của tôi</a></li>
                                 <li><a class="dropdown-item" href="/bookstore/KhachHangRouter.php?action=logout">Đăng xuất</a></li>
                             <?php endif; ?>
