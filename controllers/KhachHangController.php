@@ -65,7 +65,7 @@ class KhachHangController {
                     $_SESSION['tenDangNhap'] = $khachHang->getTenDangNhap();
                     $_SESSION['vai_tro'] = $khachHang->getVaiTro();
                     
-                    header("Location: view/home.php");
+                    header("Location: index.php");
                     exit();
                 }
     
@@ -86,7 +86,7 @@ class KhachHangController {
     public function logout() {
         session_unset();
         session_destroy();
-        header("Location: view/home.php");
+        header("Location: index.php");
         exit();
     }
     
