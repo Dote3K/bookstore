@@ -95,7 +95,7 @@
             <?php foreach ($sachs as $sach): ?>
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <img src="<?php echo htmlspecialchars($sach->getThemAnh()); ?>" class="card-img-top" alt="Book">
+                    <?php echo "<img src='admin/ql_sach/sach/{$sach->getThemAnh()}' class='card-img-top' alt='Book'>" ?>
                     <div class="card-body text-center">
                         <h5 class="card-title"><?php echo htmlspecialchars($sach->getTenSanPham()); ?></h5>
                         <p class="card-text"><?php echo htmlspecialchars($sach->getGiaBan()); ?></p>
