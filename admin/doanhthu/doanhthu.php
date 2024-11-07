@@ -1,5 +1,5 @@
 <?php
-// require '../../checker/kiemtra_admin.php';
+require '../../checker/kiemtra_admin.php';
 include '../sidebar.php';
 ?>
 <!doctype html>
@@ -12,41 +12,38 @@ include '../sidebar.php';
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #ff9a9e, #fad0c4); /* Tông màu gradient hồng nhẹ */
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
             text-align: center;
-            color: #333;
         }
 
         h1 {
-            color: #d81b60; /* Màu hồng đậm cho tiêu đề */
+            color: #333;
             margin-top: 20px;
-            font-size: 28px;
         }
 
         button {
-            background-color: #c2185b; /* Màu hồng đậm cho nút */
+            background-color: #4CAF50;
             color: white;
             padding: 10px 20px;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             cursor: pointer;
             margin: 10px;
             font-size: 16px;
-            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #ad1457; /* Màu hồng đậm hơn khi hover */
+            background-color: #45a049;
         }
 
         form {
             margin-top: 20px;
             padding: 15px;
             background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             display: inline-block;
             text-align: left;
             max-width: 400px;
@@ -61,26 +58,23 @@ include '../sidebar.php';
         }
 
         input[type="submit"] {
-            background-color: #e57373; /* Màu hồng nhạt cho nút gửi */
+            background-color: #2196F3;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             padding: 10px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
 
         input[type="submit"]:hover {
-            background-color: #ef5350; /* Màu hồng đậm hơn khi hover */
+            background-color: #0b7dda;
         }
 
         table {
             margin: 20px auto;
             border-collapse: collapse;
-            width: 90%;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            border-radius: 12px;
-            overflow: hidden;
+            width: 80%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         table, th, td {
@@ -90,44 +84,24 @@ include '../sidebar.php';
         th, td {
             padding: 12px;
             text-align: center;
-            font-size: 15px;
         }
 
         th {
-            background-color: #c2185b; /* Màu hồng cho tiêu đề bảng */
+            background-color: #4CAF50;
             color: white;
         }
 
         tr:nth-child(even) {
-            background-color: #fce4ec; /* Màu hồng nhạt cho hàng chẵn */
+            background-color: #f2f2f2;
         }
 
         tr:hover {
-            background-color: #f8bbd0; /* Màu hồng nhạt hơn khi hover */
+            background-color: #ddd;
         }
+
 
         #form1, #form2, #form3 {
             display: none;
-        }
-
-        .back-button {
-            margin-top: 20px;
-            display: inline-block;
-            background-color: #d81b60;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .back-button:hover {
-            background-color: #ad1457;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
         }
     </style>
 
@@ -202,8 +176,100 @@ include '../sidebar.php';
         <input type="submit" value="Hiển thị doanh thu">
     </form>
 </div>
-
 <?php
+include '../../connect.php';
+
+if(isset($_GET['ngay_dat_hang']) || isset($_GET['month']) || isset($_GET['yearonly'])) {
+    include '../../controllers/doanhthuController.php';
+    $controller = new doanhthufunction($conn);
+
+    if (isset($_GET['ngay_dat_hang'])) {
+        $result = $controller->doanhThuNgay($_GET['ngay_dat_hang']);
+        $result3 = $controller->bestSellerNgay($_GET['ngay_dat_hang']);
+        $header = 'Ngày';
+        $header3 = 'Sách bán chạy trong ngày';
+    } elseif (isset($_GET['month']) && isset($_GET['year'])) {
+        $result = $controller->chiTietDoanhThuThang($_GET['month'], $_GET['year']);
+        $result2 = $controller->doanhThuThang($_GET['month'], $_GET['year']);
+        $result3 = $controller->bestSellerThang($_GET['month'], $_GET['year']);
+        $header2 = 'Theo ngày trong tháng';
+        $header = 'Tháng';
+        $header3 = 'Sách bán chạy trong tháng';
+    } elseif (isset($_GET['yearonly'])) {
+        $result = $controller->chiTietDoanhThuNam($_GET['yearonly']);
+        $result2 = $controller->doanhThuNam($_GET['yearonly']);
+        $result3 = $controller->bestSellerNam($_GET['yearonly']);
+        $header2 = 'Theo tháng trong năm';
+        $header = 'Năm';
+        $header3 = 'Sách bán chạy trong năm';
+    }
+
+    if ($result && $result->num_rows > 0) {
+
+        echo "<table border='1'>
+                <tr>
+                    <th>{$header}</th>
+                    <th>Số đơn</th>
+                    <th>Số sách đã bán</th>
+                    <th>Doanh thu</th>
+                    <th>Lợi nhuận</th>
+                </tr>";
+        if (isset($_GET['month']) || isset($_GET['yearonly'])) {
+            while ($row = $result2->fetch_assoc()) {
+                echo "<tr>
+                    <td>{$row['ngay_dat_hang']}</td>
+                    <td>{$row['so_don']}</td>
+                    <td>{$row['so_luong']}</td>
+                    <td>{$row['doanh_thu']}</td>
+                    <td>{$row['loi_nhuan']}</td>
+                  </tr>";
+            }
+            echo "</table><br>";
+            echo "<table border='1'><tr>
+                    <th>{$header2}</th>
+                    <th>Số đơn</th>
+                    <th>Số sách đã bán</th>
+                    <th>Doanh thu</th>
+                    <th>Lợi nhuận</th>
+                    
+                </tr>";
+        }
+
+        while ($row = $result->fetch_assoc()) {
+            if (isset($_GET['yearonly'])) {
+                $date_format = date("m/Y", strtotime($row['ngay_dat_hang']));
+            } else {
+                $date_format = date("d/m/Y", strtotime($row['ngay_dat_hang']));
+            }
+            echo "<tr>
+                    <td>{$date_format}</td>
+                    <td>{$row['so_don']}</td>
+                    <td>{$row['so_luong']}</td>
+                    <td>{$row['doanh_thu']}</td>
+                    <td>{$row['loi_nhuan']}</td>
+                  </tr>";
+        }
+        echo "</table>";
+        echo "<table border='1'>
+                <tr>
+                    <th colspan='2'>{$header3}</th>
+                    <th>Số sách đã bán</th>
+                </tr>";
+        while ($row = $result3->fetch_assoc()) {
+            echo "<tr>
+                    <td style='width: 120px'><img src='../ql_sach/sach/{$row['anh_bia']}' alt='Ảnh bìa' style='width: 100px; height: auto;'></td>
+                    <td>{$row['ten_sach']}</td>
+                    <td>{$row['so_luong_ban']}</td>
+                  </tr>";
+        }
+        echo "</table>";
+
+    }
+    else {
+        echo "<br><br>0 kết quả<br><br>";
+    }
+}
+echo '<button><a href="../admin_page.php">Trở về trang quản lý</a></button>';
 ?>
 </body>
 </html>
