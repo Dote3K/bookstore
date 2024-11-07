@@ -40,7 +40,7 @@ session_start();
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
 
-        <a class="navbar-brand" href="/bookstore/view/home.php">
+        <a class="navbar-brand" href="/bookstore/index.php">
             <img src="path/to/logo.png" alt="Logo" style="height: 40px;">
         </a>
 
