@@ -4,15 +4,15 @@ require '../checker/kiemtra_admin.php';
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Quản Trị</title>
-    <style>
-        /* Định dạng tổng quan */
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #ff9a9e, #fad0c4); /* Nền gradient hồng nhẹ */
-            margin: 0;
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Trang Quản Trị</title>
+        <style>
+            /* Định dạng tổng quan */
+            body {
+                font-family: Arial, sans-serif;
+                background: linear-gradient(to bottom, #ff9a9e, #fad0c4); /* Nền gradient hồng nhẹ */
+                margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;

@@ -205,6 +205,5 @@ include '../sidebar.php';
 
 <?php
 ?>
-<a href="../admin_page.php" class="back-button">Trở về trang quản lý</a>
 </body>
 </html>

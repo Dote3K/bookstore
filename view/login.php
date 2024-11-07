@@ -70,7 +70,7 @@
             <button type="submit" class="btn btn-primary btn-block">Đăng Nhập</button>
         </form>
         <div class="register-link">
-            <p>Chưa có tài khoản? <a href="/KhachHangRouter.php?action=register">Đăng ký ngay</a></p>
+            <p>Chưa có tài khoản? <a href="/bookstore/KhachHangRouter.php?action=register">Đăng ký ngay</a></p>
         </div>
     </div>
 </body>

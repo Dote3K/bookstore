@@ -22,7 +22,7 @@ class DonHangController
 
         $donHangs = $this->donHangDAO->selectAll();
 
-        require 'view/listOrderAll.php';
+        require  'view/listOrderAll.php';
         include 'admin/sidebar.php';
     }
     public function listOrderUser()
@@ -36,7 +36,7 @@ class DonHangController
         $maKhachHang = $_SESSION['ma_khach_hang'];
         $donHangs = $this->donHangDAO->selectByMaKhachHang($maKhachHang);
 
-        require 'view/listOrderUser.php';
+        require '/bookstore/view/listOrderUser.php';
     }
 
 
@@ -58,7 +58,7 @@ class DonHangController
         }
         header("Location: listOrderUserRouter.php");
         exit();
-        require 'view/listOrderUser.php';
+        require '/bookstore/view/listOrderUser.php';
     }
 
 
@@ -105,7 +105,7 @@ class DonHangController
 
         header("Location: /bookstore/DonHangRouter.php?action=list");
         exit();
-        require 'view/listOrderAll.php';
+        require '/bookstore/view/listOrderAll.php';
     }
     
 }
