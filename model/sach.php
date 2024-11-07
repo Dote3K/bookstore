@@ -5,7 +5,7 @@ class sach {
     private $tacGia;
     private $nhaXuatBan;
     private $namXuatBan;
-    private $giaGoc;
+    private $giamua;
     private $giaBan;
     private $soLuong;
     private $theLoai;
@@ -18,11 +18,11 @@ class sach {
         $tenSanPham,
         $tacGia,
         $nhaXuatBan,
-        $namXuatBan,
-        $giaGoc,
+        $theLoai,
+        $giamua,
         $giaBan,
         $soLuong,
-        $theLoai,
+        $namXuatBan,
         $moTa,
         $themAnh
     ) {
@@ -30,11 +30,11 @@ class sach {
         $this->tenSanPham = $tenSanPham;
         $this->tacGia = $tacGia;
         $this->nhaXuatBan = $nhaXuatBan;
-        $this->namXuatBan = $namXuatBan;
-        $this->giaGoc = $giaGoc;
+        $this->theLoai = $theLoai;
+        $this->giamua = $giamua;
         $this->giaBan = $giaBan;
         $this->soLuong = $soLuong;
-        $this->theLoai = $theLoai;
+        $this->namXuatBan = $namXuatBan;
         $this->moTa = $moTa;
         $this->themAnh = $themAnh;
     }
@@ -80,12 +80,12 @@ class sach {
         $this->namXuatBan = $namXuatBan;
     }
 
-    public function getGiaGoc() {
-        return $this->giaGoc;
+    public function getMua() {
+        return $this->giamua;
     }
 
-    public function setGiaGoc($giaGoc) {
-        $this->giaGoc = $giaGoc;
+    public function setGiaGoc($giamua) {
+        $this->giamua = $giamua;
     }
 
     public function getGiaBan() {

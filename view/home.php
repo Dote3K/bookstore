@@ -1,32 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Store</title>
-    <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
-            crossorigin="anonymous">
-    <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-            integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-            crossorigin="anonymous"></script>
-    <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-            integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
-            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
         body {
             background: linear-gradient(45deg, #ff9a9e, #fad0c4);
-
             color: #333;
         }
-        
         .navbar {
             background: linear-gradient(45deg, #ff6b6b, #ffcc33);
         }
@@ -34,10 +21,6 @@
             color: #ffffff !important;
             font-weight: bold;
         }
-        .navbar-brand:hover, .navbar-nav .nav-link:hover {
-            color: #333333 !important;
-        }
-        
         .carousel-item img {
             height: 450px;
             object-fit: cover;
@@ -48,8 +31,6 @@
             padding: 1rem;
             border-radius: 8px;
         }
-        
-
         .card {
             background-color: #ffffff;
             border: none;
@@ -69,19 +50,11 @@
             color: #ff6b6b;
             font-weight: bold;
         }
-        .card-text {
-            color: #555555;
-        }
         .btn-primary {
             background-color: #ff6b6b;
             border: none;
             transition: background-color 0.3s;
         }
-        .btn-primary:hover {
-            background-color: #ffcc33;
-            color: #333333;
-        }
-
         .footer {
             background-color: #333333;
             color: #ffffff;
@@ -90,9 +63,6 @@
         .footer a {
             color: #ffcc33;
             text-decoration: none;
-        }
-        .footer a:hover {
-            color: #ff6b6b;
         }
     </style>
 </head>
@@ -114,7 +84,7 @@
                     <h5>Best Sellers</h5>
                     <p>Discover the top-rated books of the season.</p>
                 </div>
-            </div>x
+            </div>
         </div>
     </div>
 
@@ -122,36 +92,18 @@
     <div class="container my-5">
         <h2 class="text-center text-primary mb-4">Featured Books</h2>
         <div class="row">
+            <?php foreach ($sachs as $sach): ?>
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <img src="https://source.unsplash.com/600x400/?book,novel" class="card-img-top" alt="Book">
+                    <img src="<?php echo htmlspecialchars($sach->getThemAnh()); ?>" class="card-img-top" alt="Book">
                     <div class="card-body text-center">
-                        <h5 class="card-title">Book Title 1</h5>
-                        <p class="card-text">$19.99</p>
+                        <h5 class="card-title"><?php echo htmlspecialchars($sach->getTenSanPham()); ?></h5>
+                        <p class="card-text"><?php echo htmlspecialchars($sach->getGiaBan()); ?></p>
                         <a href="#" class="btn btn-primary">Buy Now</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://source.unsplash.com/600x400/?book,education" class="card-img-top" alt="Book">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Book Title 2</h5>
-                        <p class="card-text">$24.99</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://source.unsplash.com/600x400/?book,study" class="card-img-top" alt="Book">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Book Title 3</h5>
-                        <p class="card-text">$29.99</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 

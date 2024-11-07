@@ -1,26 +1,34 @@
 <?php
 require_once  "JDBC.php";
 require_once 'DAOInterface.php';
-require_once 'model/tacgia.php';
-class TacGiaDAO implements DAOinterface {
+require_once 'model/sach.php';
+class sachDAO implements DAOinterface {
 
     public function selectAll(): array {
         $ketQua = [];
         try {
             $con = JDBC::getConnection();
 
-            $sql = "SELECT * FROM tacgia";
+            $sql = "SELECT * FROM sach";
             $stmt = $con->prepare($sql);
             $stmt->execute();
             $result = $stmt->get_result();
 
             while ($row = $result->fetch_assoc()) {
-                $maTacGia = $row['ma_tac_gia'];
-                $tenTacGia = $row['ten_tac_gia'];
-                $ngaySinh = $row['ngay_sinh'];
-                $tieuSu = $row['tieu_su'];
+                $masach = $row['ma_sach'];
+                $tensach = $row['ten_sach'];
+                $tacgia = $row['ma_tac_gia'];
+                $ma_nxb = $row['ma_nxb'];
+                $matheloai = $row['ma_the_loai'];
+                $gia_mua = $row['gia_mua'];
+                $gia_ban = $row['gia_ban'];
+                $so_luong = $row['so_luong'];
+                $namxuatban= $row['nam_xuat_ban'];
+                $mo_ta = $row['mo_ta'];
+                $anh_bia = $row['anh_bia'];
 
-                $ketQua[] = new TacGia($maTacGia, $tenTacGia, $ngaySinh, $tieuSu);
+
+                $ketQua[] = new sach($masach ,$tensach, $tacgia ,$ma_nxb, $matheloai, $gia_mua, $gia_ban,$so_luong ,$namxuatban, $mo_ta,$anh_bia );
             }
 
             JDBC::closeConnection($con);
