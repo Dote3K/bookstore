@@ -165,7 +165,6 @@ $result = $conn->query($sql);
         ?>
     </table>
     <a href="add_book.php" class="back-link">Thêm sách</a>
-    <a href="../../admin_page.php" class="back-link">Trang chủ</a>
 </div>
 </body>
 </html>

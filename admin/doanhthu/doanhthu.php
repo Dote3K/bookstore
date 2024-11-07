@@ -269,7 +269,6 @@ if(isset($_GET['ngay_dat_hang']) || isset($_GET['month']) || isset($_GET['yearon
         echo "<br><br>0 kết quả<br><br>";
     }
 }
-echo '<button><a href="../admin_page.php">Trở về trang quản lý</a></button>';
 ?>
 </body>
 </html>

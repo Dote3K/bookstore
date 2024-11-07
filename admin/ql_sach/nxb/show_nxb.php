@@ -143,7 +143,7 @@ $result = $conn->query($sql);
         ?>
     </table>
     <a href="add_nxb.php" class="back-link">Thêm Nhà Xuất Bản</a><br>
-    <a href="../../admin_page.php" class="back-link">Trang chủ</a>
+
 </div>
 </body>
 </html>

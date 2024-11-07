@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <button type="submit">Thêm Nhà Xuất Bản</button>
     </form>
     <a href="show_nxb.php" class="back-link">Trở về trang quản lý NXB</a><br>
-    <a href="../../admin_page.php" class="back-link">Trang chủ</a>
+
 </div>
 
 </body>

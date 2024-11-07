@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <button type="submit">Cập Nhật</button>
         </form>
         <a href="show_tacgia.php" class="back-link">Trở về trang quản lý tác giả</a>
-        <a href="../../admin_page.php" class="back-link">Trang chủ</a>
+
     </div>
 </body>
 </html>
