@@ -1,3 +1,38 @@
+<?php
+require_once '../checker/kiemtra_login.php';
+require_once '../DAO/sachDAO.php';
+
+if(!isset($_SESSION['ma_khach_hang'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$selected_books = $_POST['selected_books'] ?? [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ma_sach'])) {
+    // Thêm mã sách vào danh sách sách đã chọn
+    $selected_books[] = $_POST['ma_sach'];
+    $_SESSION['selected_books'] = $selected_books;
+}
+
+if (!empty($selected_books)) {
+    $sachDAO = new sachDAO();
+    // Hiển thị thông tin sách đã chọn
+    foreach ($selected_books as $ma_sach) {    
+        $thongTinChiTiet = $sachDAO->getBookById($ma_sach);  // Lấy thông tin sách từ database
+        if ($thongTinChiTiet) {
+            echo "<pre>";
+            print_r($thongTinChiTiet); // In ra thông tin chi tiết sách để kiểm tra
+            echo "</pre>";
+        } else {
+            echo "Không tìm thấy thông tin sách!";
+        }
+    }
+} else {
+    echo "Không có mã sách được gửi!";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -86,8 +121,7 @@
 </head>
 
 <body>
-    <?php
-     include 'header.php';
+    <?php include 'header.php'; 
     require_once(__DIR__ . '/../model/sach.php'); ?>
 
     <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -111,50 +145,40 @@
         </div>
     </div>
 
-    <!-- Book Section -->
     <div class="container my-5">
-        <h2 class="text-center text-primary mb-4">Featured Books</h2>
-        <div class="row">
-            <?php if (isset($sachs) && is_array($sachs) && !empty($sachs)): ?>
-            <?php foreach ($sachs as $sach): ?>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <?php echo "<img src='admin/ql_sach/sach/{$sach->getThemAnh()}' class='card-img-top' alt='Book'>" ?>
-                    <div class="card-body text-center">
-                        <h5 class="card-title"><?php echo htmlspecialchars($sach->getTenSanPham()); ?></h5>
-                        <p class="card-text"><?php echo htmlspecialchars($sach->getGiaBan()); ?></p>
+        <h1 class="text-center mb-4">Checkout</h1>
 
-                        <form action="/view/checkout.php" method="POST">
-                            <?php if (isset($_SESSION['ma_khach_hang'])): ?>
-                            <input type="hidden" name="ma_sach" value="<?php echo $sach->getMaSanPham(); ?>">
-                            <button type="submit" class="btn btn-primary">Buy Now</button>
-                            <?php else: ?>
-                            <a href="../KhachHangRouter.php?action=login" class="btn btn-primary">Buy Now</a>
-                            <?php endif; ?>
-                        </form>
-
-                        <br>
-
-                        <form action="/view/cart.php" method="POST">
-                            <?php 
-                                if(isset($_SESSION['ma_khach_hang'])):                           
-                            ?>
-                            <input type="hidden" name="add_to_cart" value="<?= $sach->getMaSanPham() ?>">
-                            <button type="submit" class="btn btn-primary">Add to Cart</button>
-                            <?php else: ?>
-                            <a href="../KhachHangRouter.php?action=login" class="btn btn-primary">Add to Cart</a>
-                            <?php endif ?>
-                        </form>
+        <?php if (isset($thongTinChiTiet) && $thongTinChiTiet): ?>
+        <div class="card mb-4">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="<?= htmlspecialchars($thongTinChiTiet['anh_bia'] ?? 'default_image.jpg'); ?>"
+                        class="img-fluid rounded-start" alt="Book">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <?= htmlspecialchars($thongTinChiTiet['ten_sach'] ?? 'Tên sách không có'); ?></h5>
+                        <p class="card-text">Tác giả:
+                            <?= htmlspecialchars($thongTinChiTiet['tac_gia'] ?? 'Chưa có thông tin tác giả'); ?></p>
+                        <p class="card-text">Thể loại:
+                            <?= htmlspecialchars($thongTinChiTiet['the_loai'] ?? 'Chưa có thông tin thể loại'); ?></p>
+                        <p class="card-text">Nhà xuất bản:
+                            <?= htmlspecialchars($thongTinChiTiet['nha_xuat_ban'] ?? 'Chưa có thông tin nhà xuất bản'); ?>
+                        </p>
+                        <p class="card-text">Giá: <?= htmlspecialchars($thongTinChiTiet['gia_ban'] ?? 'Chưa có giá'); ?>
+                        </p>
+                        <p class="card-text"><?= htmlspecialchars($thongTinChiTiet['mo_ta'] ?? 'Chưa có mô tả'); ?></p>
+                        <a href="checkout.php?ma_sach=<?= $ma_sach; ?>" class="btn btn-primary">Proceed to Payment</a>
+                        <a href="javascript:history.back()" class="btn btn-secondary">Quay lại</a>
                     </div>
                 </div>
             </div>
-            <?php endforeach; ?>
-            <?php else: ?>
-            <p class="text-center">Hiện chưa có sách nào để hiển thị.</p>
-            <?php endif; ?>
         </div>
+        <?php else: ?>
+        <p class="text-danger text-center">No product information available.</p>
+        <?php endif; ?>
     </div>
-
     <!-- Footer -->
     <footer class="footer text-center">
         <div class="container">

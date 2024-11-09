@@ -1,3 +1,23 @@
+<?php
+    require_once '../DAO/sachDAO.php';
+
+    
+    // Xử lý tìm kiếm sách
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tukhoa'])) {
+    $tukhoa = $_POST['tukhoa'];
+    $sachs = (new sachDAO())->timKiemSach($tukhoa);
+
+    // Chuyển hướng về lại findBook.php với kết quả tìm kiếm
+    header("Location: findBook.php?tukhoa=" . urlencode($tukhoa));
+    exit();
+}
+
+// Kiểm tra nếu có từ khóa tìm kiếm qua GET (từ chuyển hướng)
+if (isset($_GET['tukhoa'])) {
+    $tukhoa = $_GET['tukhoa'];
+    $sachs = (new sachDAO())->timKiemSach($tukhoa);
+}
+    ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -86,8 +106,7 @@
 </head>
 
 <body>
-    <?php
-     include 'header.php';
+    <?php include 'header.php'; 
     require_once(__DIR__ . '/../model/sach.php'); ?>
 
     <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -111,22 +130,24 @@
         </div>
     </div>
 
-    <!-- Book Section -->
+
     <div class="container my-5">
-        <h2 class="text-center text-primary mb-4">Featured Books</h2>
+        <h2 class="text-center text-primary mb-4">Kết quả tìm kiếm</h2>
+
+        <!-- Kiểm tra và hiển thị kết quả tìm kiếm -->
         <div class="row">
             <?php if (isset($sachs) && is_array($sachs) && !empty($sachs)): ?>
             <?php foreach ($sachs as $sach): ?>
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <?php echo "<img src='admin/ql_sach/sach/{$sach->getThemAnh()}' class='card-img-top' alt='Book'>" ?>
+                    <?php echo "<img src='admin/ql_sach/sach/{$sach['anh_bia']}' class='card-img-top' alt='Book'>" ?>
                     <div class="card-body text-center">
-                        <h5 class="card-title"><?php echo htmlspecialchars($sach->getTenSanPham()); ?></h5>
-                        <p class="card-text"><?php echo htmlspecialchars($sach->getGiaBan()); ?></p>
+                        <h5 class="card-title"><?php echo htmlspecialchars($sach['ten_sach']); ?></h5>
+                        <p class="card-text"><?php echo htmlspecialchars($sach['gia_ban']); ?></p>
 
                         <form action="/view/checkout.php" method="POST">
                             <?php if (isset($_SESSION['ma_khach_hang'])): ?>
-                            <input type="hidden" name="ma_sach" value="<?php echo $sach->getMaSanPham(); ?>">
+                            <input type="hidden" name="ma_sach" value="<?php echo $sach['ma_sach']?>">
                             <button type="submit" class="btn btn-primary">Buy Now</button>
                             <?php else: ?>
                             <a href="../KhachHangRouter.php?action=login" class="btn btn-primary">Buy Now</a>
@@ -136,10 +157,8 @@
                         <br>
 
                         <form action="/view/cart.php" method="POST">
-                            <?php 
-                                if(isset($_SESSION['ma_khach_hang'])):                           
-                            ?>
-                            <input type="hidden" name="add_to_cart" value="<?= $sach->getMaSanPham() ?>">
+                            <?php if(isset($_SESSION['ma_khach_hang'])): ?>
+                            <input type="hidden" name="add_to_cart" value="<?= $sach['ma_sach'] ?>">
                             <button type="submit" class="btn btn-primary">Add to Cart</button>
                             <?php else: ?>
                             <a href="../KhachHangRouter.php?action=login" class="btn btn-primary">Add to Cart</a>
@@ -154,6 +173,7 @@
             <?php endif; ?>
         </div>
     </div>
+
 
     <!-- Footer -->
     <footer class="footer text-center">

@@ -80,10 +80,17 @@ class KhachHangController {
                 exit();
             }
         }
+        if(isset($_COOKIE['cart'])) {
+            $_SESSION['cart'] = json_decode($_COOKIE['cart'], true);
+            setcookie('cart', '', time() - 3600, "/"); // Xóa cookie sau khi khôi phục vào session
+        }
         require 'view/login.php';
     }
     
     public function logout() {
+        if(isset($_SESSION['cart'])) {
+            setcookie('cart', json_encode($_SESSION['cart']), time() + (60 * 60 * 24 * 30), "/"); // Lưu trong 30 ngày
+        }
         session_unset();
         session_destroy();
         header("Location: index.php");

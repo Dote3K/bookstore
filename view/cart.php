@@ -1,10 +1,55 @@
+<?php
+require '../checker/kiemtra_login.php';
+
+if (!isset($_SESSION['ma_khach_hang'])) {
+    header("Location: login.php");
+    exit();
+}
+if(!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+function addToCart($ma_sach) {
+    if(!isset($_SESSION['cart'][$ma_sach])) {
+        $_SESSION['cart'][$ma_sach] = $ma_sach;
+    }
+}
+if(isset($_POST['add_to_cart'])) {
+    $ma_sach = $_POST['add_to_cart'];
+    addToCart($ma_sach);
+}
+function removeFromCart($selected_books) {
+    foreach ($selected_books as $ma_sach) {
+        if (isset($_SESSION['cart'][$ma_sach])) {
+            unset($_SESSION['cart'][$ma_sach]);
+        }
+    }
+}
+
+if (isset($_POST['removeFromCart'])) {
+    $selected_books = $_POST['selected_books'] ?? [];
+    removeFromCart($selected_books);
+}
+
+function buyNow($selected_books) {
+    $_SESSION['selected_books'] = $selected_books;
+}
+
+if (isset($_POST['buyNow'])) {
+    $selected_books = $_POST['selected_books'] ?? [];
+    buyNow($selected_books);
+    header("Location: checkout.php");
+    exit();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Store</title>
+    <title>My Cart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
@@ -86,9 +131,8 @@
 </head>
 
 <body>
-    <?php
-     include 'header.php';
-    require_once(__DIR__ . '/../model/sach.php'); ?>
+    <?php include 'header.php';
+    require_once '../DAO/sachDAO.php'; ?>
 
     <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
@@ -111,49 +155,42 @@
         </div>
     </div>
 
-    <!-- Book Section -->
+
     <div class="container my-5">
-        <h2 class="text-center text-primary mb-4">Featured Books</h2>
-        <div class="row">
-            <?php if (isset($sachs) && is_array($sachs) && !empty($sachs)): ?>
-            <?php foreach ($sachs as $sach): ?>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <?php echo "<img src='admin/ql_sach/sach/{$sach->getThemAnh()}' class='card-img-top' alt='Book'>" ?>
-                    <div class="card-body text-center">
-                        <h5 class="card-title"><?php echo htmlspecialchars($sach->getTenSanPham()); ?></h5>
-                        <p class="card-text"><?php echo htmlspecialchars($sach->getGiaBan()); ?></p>
+        <h2 class="text-center text-primary mb-4">My Cart</h2>
 
-                        <form action="/view/checkout.php" method="POST">
-                            <?php if (isset($_SESSION['ma_khach_hang'])): ?>
-                            <input type="hidden" name="ma_sach" value="<?php echo $sach->getMaSanPham(); ?>">
-                            <button type="submit" class="btn btn-primary">Buy Now</button>
-                            <?php else: ?>
-                            <a href="../KhachHangRouter.php?action=login" class="btn btn-primary">Buy Now</a>
-                            <?php endif; ?>
-                        </form>
-
-                        <br>
-
-                        <form action="/view/cart.php" method="POST">
-                            <?php 
-                                if(isset($_SESSION['ma_khach_hang'])):                           
-                            ?>
-                            <input type="hidden" name="add_to_cart" value="<?= $sach->getMaSanPham() ?>">
-                            <button type="submit" class="btn btn-primary">Add to Cart</button>
-                            <?php else: ?>
-                            <a href="../KhachHangRouter.php?action=login" class="btn btn-primary">Add to Cart</a>
-                            <?php endif ?>
-                        </form>
+        <form action="cart.php" method="POST">
+            <div class="row">
+                <?php if (!empty($_SESSION['cart'])): ?>
+                <?php foreach ($_SESSION['cart'] as $ma_sach):
+                    $sach = (new sachDAO())->getBookById($ma_sach); 
+                ?>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="admin/ql_sach/sach/<?= htmlspecialchars($sach['anh_bia']) ?>" class="card-img-top"
+                            alt="Book">
+                        <div class="card-body text-center">
+                            <h5 class="card-title"><?= htmlspecialchars($sach['ten_sach']); ?></h5>
+                            <p class="card-text"><?= htmlspecialchars($sach['gia_ban']); ?></p>
+                            <label><input type="checkbox" name="selected_books[]" value="<?= $ma_sach ?>">
+                            </label>
+                        </div>
                     </div>
                 </div>
+                <?php endforeach; ?>
+                <?php else: ?>
+                <p class="text-center">Giỏ hàng của bạn hiện trống.</p>
+                <?php endif; ?>
             </div>
-            <?php endforeach; ?>
-            <?php else: ?>
-            <p class="text-center">Hiện chưa có sách nào để hiển thị.</p>
+
+            <!-- Kiểm tra nếu giỏ hàng không trống thì hiển thị các nút -->
+            <?php if (!empty($_SESSION['cart'])): ?>
+            <button type="submit" name="buyNow" class="btn btn-primary">Buy Now</button>
+            <button type="submit" name="removeFromCart" class="btn btn-danger">Remove from Cart</button>
             <?php endif; ?>
-        </div>
+        </form>
     </div>
+
 
     <!-- Footer -->
     <footer class="footer text-center">
