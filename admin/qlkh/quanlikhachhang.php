@@ -1,9 +1,7 @@
 <?php
-    require '../../connect.php';
-    require '../../checker/kiemtra_admin.php';
-    include '../sidebar.php';
-
-// Xử lý tìm kiếm và lọc theo vai trò
+require '../../connect.php';
+require '../../checker/kiemtra_admin.php';
+include '../sidebar.php';
 $search_query = '';
 $role_filter = '';
 if (isset($_GET['search']) || isset($_GET['role'])) {
@@ -47,66 +45,70 @@ if (isset($_GET['search']) || isset($_GET['role'])) {
         </div>
         
         <div class="nav-links">
-            <a href="../../home.php">👤 Tài khoản</a>
+            <a href="../../user/home.php">👤 Tài khoản</a>
         </div>
     </header>
 
-    <h1>Quản lý khách hàng</h1>
+    <!-- Bắt đầu nội dung chính, bao bọc bởi div.content -->
+    <div class="content">
+        <h1>Quản lý khách hàng</h1>
 
-    <!-- Form tìm kiếm và lọc theo vai trò -->
-    <form class="search-filter" method="GET" action="quanlikhachhang.php">
-        <input type="text" name="search" placeholder="Tìm kiếm khách hàng..." value="<?php echo htmlspecialchars($search_query); ?>">
-        <button type="submit">Tìm kiếm</button>
-        <select name="role">
-            <option value="">Tất cả vai trò</option>
-            <option value="admin" <?php if ($role_filter == 'admin') echo 'selected'; ?>>Admin</option>
-            <option value="khachhang" <?php if ($role_filter == 'khachhang') echo 'selected'; ?>>Khách hàng</option>
-        </select>
-        <button type="submit">Lọc</button>
-        <a href="quanlikhachhang.php">Hiển thị tất cả</a>
-    </form>
+        <!-- Form tìm kiếm và lọc theo vai trò -->
+        <form class="search-filter" method="GET" action="quanlikhachhang.php">
+            <input type="text" name="search" placeholder="Tìm kiếm khách hàng..." value="<?php echo htmlspecialchars($search_query); ?>">
+            <button type="submit">Tìm kiếm</button>
+            <select name="role">
+                <option value="">Tất cả vai trò</option>
+                <option value="admin" <?php if ($role_filter == 'admin') echo 'selected'; ?>>Admin</option>
+                <option value="khachhang" <?php if ($role_filter == 'khachhang') echo 'selected'; ?>>Khách hàng</option>
+            </select>
+            <button type="submit">Lọc</button>
+            <a href="quanlikhachhang.php">Hiển thị tất cả</a>
+        </form>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tên đăng nhập</th>
-                <th>Họ và tên</th>
-                <th>Email</th>
-                <th>Số điện thoại</th>
-                <th>Địa chỉ</th>
-                <th>Địa chỉ nhận hàng</th>
-                <th>Đăng ký nhận bản tin</th>
-                <th>Vai trò</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                            <td>{$row['ma_khach_hang']}</td>
-                            <td>{$row['ten_dang_nhap']}</td>
-                            <td>{$row['ho_va_ten']}</td>
-                            <td>{$row['email']}</td>
-                            <td>{$row['so_dien_thoai']}</td>
-                            <td>{$row['dia_chi']}</td>
-                            <td>{$row['dia_chi_nhan_hang']}</td>
-                            <td>{$row['dang_ky_nhan_ban_tin']}</td>
-                            <td>{$row['vai_tro']}</td>
-                            <td>
-                                <a href='chinhsua_khachhang.php?id={$row['ma_khach_hang']}' class='action-link'>Chỉnh sửa</a> | 
-                                <a href='xoakhachhang.php?id={$row['ma_khach_hang']}' class='action-link delete' onclick='return confirmDelete()'>Xóa</a>
-                            </td>
-                          </tr>";
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên đăng nhập</th>
+                    <th>Họ và tên</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ</th>
+                    <th>Địa chỉ nhận hàng</th>
+                    <th>Đăng ký nhận bản tin</th>
+                    <th>Vai trò</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                                <td>{$row['ma_khach_hang']}</td>
+                                <td>{$row['ten_dang_nhap']}</td>
+                                <td>{$row['ho_va_ten']}</td>
+                                <td>{$row['email']}</td>
+                                <td>{$row['so_dien_thoai']}</td>
+                                <td>{$row['dia_chi']}</td>
+                                <td>{$row['dia_chi_nhan_hang']}</td>
+                                <td>{$row['dang_ky_nhan_ban_tin']}</td>
+                                <td>{$row['vai_tro']}</td>
+                                <td>
+                                    <a href='chinhsua_khachhang.php?id={$row['ma_khach_hang']}' class='action-link'>Chỉnh sửa</a> | 
+                                    <a href='xoakhachhang.php?id={$row['ma_khach_hang']}' class='action-link delete' onclick='return confirmDelete()'>Xóa</a>
+                                </td>
+                              </tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='10'>Không có khách hàng nào được tìm thấy</td></tr>";
                 }
-            } else {
-                echo "<tr><td colspan='10'>Không có khách hàng nào được tìm thấy</td></tr>";
-            }
-            ?>
-        </tbody>
-    </table>
+                ?>
+            </tbody>
+        </table>
+    </div>
+    <!-- Kết thúc nội dung chính -->
 
     <script>
     function confirmDelete() {
@@ -118,4 +120,4 @@ if (isset($_GET['search']) || isset($_GET['role'])) {
 
 <?php
 $conn->close();
-?> 
+?>

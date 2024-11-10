@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
+            background-color: #f9f9f9;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         h1 {
             font-size: 28px;
-            color: #d81b60;
+            color: #3E7C6F;
             margin-bottom: 20px;
         }
 
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         button {
             width: 100%;
-            background-color: #d81b60;
+            background-color: #4A90E2;
             color: white;
             padding: 12px;
             border: none;
@@ -79,13 +79,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         button:hover {
-            background-color: #c2185b;
+            background-color: #357ABD;
         }
 
         .back-link {
             display: inline-block;
             margin-top: 20px;
-            background-color: #d81b60;
+            background-color: #5D4037;
             color: white;
             padding: 10px 15px;
             border-radius: 6px;
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .back-link:hover {
-            background-color: #c2185b;
+            background-color: #3E7C6F;
         }
     </style>
 </head>
@@ -113,7 +113,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <button type="submit">Thêm Tác Giả</button>
         </form>
         <a href="show_tacgia.php" class="back-link">Trở về trang quản lý tác giả</a>
-
     </div>
 </body>
 </html>

@@ -14,7 +14,7 @@ $result = $conn->query($sql);
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
+            background-color: #f9f9f9;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -36,7 +36,7 @@ $result = $conn->query($sql);
 
         h1 {
             font-size: 28px;
-            color: #d81b60;
+            color: #3E7C6F;
             margin-bottom: 20px;
         }
 
@@ -55,20 +55,20 @@ $result = $conn->query($sql);
         }
 
         th {
-            background-color: #d81b60;
+            background-color: #5D4037;
             color: white;
         }
 
         tr:nth-child(even) {
-            background-color: #fce4ec;
+            background-color: #f5f5f5;
         }
 
         tr:hover {
-            background-color: #f8bbd0;
+            background-color: #e0f7fa;
         }
 
         button {
-            background-color: #d81b60;
+            background-color: #FFA726;
             color: white;
             padding: 8px 15px;
             border: none;
@@ -79,13 +79,13 @@ $result = $conn->query($sql);
         }
 
         button:hover {
-            background-color: #c2185b;
+            background-color: #FB8C00;
         }
 
         .back-link {
             display: inline-block;
             margin-top: 20px;
-            background-color: #d81b60;
+            background-color: #4A90E2;
             color: white;
             padding: 10px 15px;
             border-radius: 6px;
@@ -95,7 +95,7 @@ $result = $conn->query($sql);
         }
 
         .back-link:hover {
-            background-color: #c2185b;
+            background-color: #357ABD;
         }
 
         .action-buttons a {

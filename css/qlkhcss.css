@@ -1,8 +1,9 @@
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f7e8f6;
+    background-color: #f9f9f9; 
 }
 
 .header {
@@ -10,7 +11,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background: linear-gradient(to right, #FF8966, #FF62A5);
+    background: #3E7C6F; 
     color: white;
 }
 
@@ -31,7 +32,7 @@ body {
 
 h1 {
     text-align: center;
-    color: #333;
+    color: #5D4037; 
     margin: 20px 0;
 }
 
@@ -52,7 +53,7 @@ h1 {
 }
 
 .search-filter button {
-    background-color: #FF62A5;
+    background-color: #4A90E2; 
     color: white;
     border: none;
     cursor: pointer;
@@ -60,11 +61,11 @@ h1 {
 
 .search-filter button:hover,
 .search-filter a:hover {
-    background-color: #e0558c;
+    background-color: #357ABD; 
 }
 
 .search-filter a {
-    color: #FF62A5;
+    color: #4A90E2; 
     text-decoration: none;
     font-weight: bold;
     border: none;
@@ -85,7 +86,7 @@ td {
 }
 
 th {
-    background-color: #FF62A5;
+    background-color: #3E7C6F;
     color: white;
     padding: 12px;
     font-weight: bold;
@@ -94,14 +95,15 @@ th {
 td {
     padding: 12px;
     text-align: center;
+    color: #333;
 }
 
 tr:nth-child(even) {
-    background-color: #ffe6f2;
+    background-color: #f2f2f2; 
 }
 
 .action-link {
-    color: #FF62A5;
+    color: #4A90E2;
     font-weight: bold;
     text-decoration: none;
 }
@@ -112,4 +114,52 @@ tr:nth-child(even) {
 
 .action-link:hover {
     text-decoration: underline;
+}
+
+/* CSS cho sidebar */
+.sidebar {
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    padding: 10px;
+    background-color: #5D4037;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1;
+}
+
+.sidebar h1 {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.sidebar button {
+    width: 100%;
+    background-color: #FFA726;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.sidebar button:hover {
+    background-color: #FB8C00; 
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: white;
+}
+
+
+.content {
+    margin-left: 220px; 
+    padding: 20px;
 }

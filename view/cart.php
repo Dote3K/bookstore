@@ -68,12 +68,12 @@ if (isset($_POST['buyNow'])) {
 
     <style>
     body {
-        background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+        background: linear-gradient(45deg, #a8d0e6, #f8b195);
         color: #333;
     }
 
     .navbar {
-        background: linear-gradient(45deg, #ff6b6b, #ffcc33);
+        background: linear-gradient(45deg, #374785, #f76c6c);
     }
 
     .navbar-brand,
@@ -113,25 +113,42 @@ if (isset($_POST['buyNow'])) {
     }
 
     .card-title {
-        color: #ff6b6b;
+        color: #374785;
         font-weight: bold;
     }
 
     .btn-primary {
-        background-color: #ff6b6b;
+        background-color: #f76c6c;
         border: none;
         transition: background-color 0.3s;
     }
 
+    .btn-primary:hover {
+        background-color: #e63946;
+    }
+
+    .btn-danger {
+        background-color: #ff5a5f;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #d9534f;
+    }
+
     .footer {
-        background-color: #333333;
+        background-color: #374785;
         color: #ffffff;
         padding: 1.5rem 0;
     }
 
     .footer a {
-        color: #ffcc33;
+        color: #f8b195;
         text-decoration: none;
+    }
+
+    .footer a:hover {
+        color: #ff5a5f;
     }
     </style>
 </head>
@@ -161,7 +178,6 @@ if (isset($_POST['buyNow'])) {
         </div>
     </div>
 
-
     <div class="container my-5">
         <h2 class="text-center text-primary mb-4">My Cart</h2>
 
@@ -189,7 +205,6 @@ if (isset($_POST['buyNow'])) {
                 <?php endif; ?>
             </div>
 
-            <!-- Kiểm tra nếu giỏ hàng không trống thì hiển thị các nút -->
             <?php if (!empty($_SESSION['cart'])): ?>
             <button type="submit" name="buyNow" class="btn btn-primary">Buy Now</button>
             <button type="submit" name="removeFromCart" class="btn btn-danger">Remove from Cart</button>
@@ -197,8 +212,6 @@ if (isset($_POST['buyNow'])) {
         </form>
     </div>
 
-
-    <!-- Footer -->
     <footer class="footer text-center">
         <div class="container">
             <p>&copy; 2023 BookStore. All Rights Reserved.</p>
