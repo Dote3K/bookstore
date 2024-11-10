@@ -140,7 +140,7 @@ if (isset($_GET['tukhoa'])) {
             <?php foreach ($sachs as $sach): ?>
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <?php echo "<img src='admin/ql_sach/sach/{$sach['anh_bia']}' class='card-img-top' alt='Book'>" ?>
+                    <?php echo "<img src='/admin/ql_sach/sach/{$sach['anh_bia']}' class='card-img-top' alt='Book'>" ?>
                     <div class="card-body text-center">
                         <h5 class="card-title"><?php echo htmlspecialchars($sach['ten_sach']); ?></h5>
                         <p class="card-text"><?php echo htmlspecialchars($sach['gia_ban']); ?></p>
