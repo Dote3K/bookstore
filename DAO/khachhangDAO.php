@@ -179,6 +179,28 @@ class KhachHangDAO implements DAOinterface {
 
         return $ketQua;
     }
+    public function getCustomerNameById($maKhachHang) {
+        $ketQua = null;
+        try {
+            $con = JDBC::getConnection();
+
+            $sql = "SELECT ho_va_ten FROM khachhang WHERE ma_khach_hang = ?";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("i", $maKhachHang);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            if ($row = $result->fetch_assoc()) {
+                $ketQua = $row['ho_va_ten'];
+            }
+
+            JDBC::closeConnection($con);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+
+        return $ketQua;
+    }
 
 }
 ?>

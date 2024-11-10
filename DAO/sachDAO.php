@@ -232,7 +232,12 @@ class sachDAO implements DAOinterface
     public function getBookById($maSach) {
         // Kết nối với cơ sở dữ liệu (đảm bảo đã có kết nối từ DBUtil.php hoặc nơi nào đó)
         $conn = JDBC::getConnection();
-        $sql = "SELECT * FROM sach WHERE ma_sach = ?";
+        $sql = "SELECT sach.*, tacgia.ten AS ten_tacgia, theloai.the_loai, nxb.ten AS ten_nxb
+        FROM sach
+        JOIN tacgia ON sach.ma_tac_gia = tacgia.ma_tac_gia
+        JOIN theloai ON sach.ma_the_loai = theloai.ma_the_loai
+        JOIN nxb ON sach.ma_nxb = nxb.ma_nxb
+        WHERE sach.ma_sach = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $maSach); // Binds the ma_sach as an integer parameter
         $stmt->execute();

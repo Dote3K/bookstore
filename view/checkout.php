@@ -1,38 +1,95 @@
 <?php
 require_once '../checker/kiemtra_login.php';
 require_once '../DAO/sachDAO.php';
+require_once '../DAO/donhangDAO.php';
+
 
 if(!isset($_SESSION['ma_khach_hang'])) {
     header("Location: login.php");
     exit();
 }
 
-$selected_books = $_POST['selected_books'] ?? [];
+$sachDAO = new sachDAO();
+$selected_books = $_SESSION['selected_books'] ?? [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ma_sach'])) {
-    // Thêm mã sách vào danh sách sách đã chọn
-    $selected_books[] = $_POST['ma_sach'];
+
+// Xử lý thanh toán khi sách được lấy từ home.php và findBook.php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ma_sach_home'])) {
+    $ma_sach_home = $_POST['ma_sach_home'];
+    if (!in_array($ma_sach_home, $selected_books)) {
+        $selected_books[] = $ma_sach_home;
+        $_SESSION['selected_books'] = $selected_books;
+    }
+}
+// Xử lý thanh toán khi sách được lấy từ cart.php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selected_books_cart'])) {
+    $selected_books_cart = $_POST['selected_books_cart'];
+    foreach ($selected_books_cart as $ma_sach) {
+        if (!in_array($ma_sach, $selected_books)) {
+            $selected_books[] = $ma_sach;
+        }
+    }
     $_SESSION['selected_books'] = $selected_books;
 }
 
-if (!empty($selected_books)) {
-    $sachDAO = new sachDAO();
-    // Hiển thị thông tin sách đã chọn
-    foreach ($selected_books as $ma_sach) {    
-        $thongTinChiTiet = $sachDAO->getBookById($ma_sach);  // Lấy thông tin sách từ database
-        if ($thongTinChiTiet) {
-            echo "<pre>";
-            print_r($thongTinChiTiet); // In ra thông tin chi tiết sách để kiểm tra
-            echo "</pre>";
-        } else {
-            echo "Không tìm thấy thông tin sách!";
+// Xử lý cập nhật số lượng sản phẩm trong giỏ hàng
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
+    foreach ($_POST['quantity'] as $ma_sach => $so_luong) {
+        if ($so_luong > 0 && $so_luong <= $_SESSION['book_quantities'][$ma_sach]) {
+            $_SESSION['selected_books'][$ma_sach] = $so_luong;
         }
     }
-} else {
-    echo "Không có mã sách được gửi!";
+}
+// Chuyển hướng sau khi xác nhận thanh toán
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
+    $ma_khach_hang = $_SESSION['ma_khach_hang'];
+    $dia_chi_nhan_hang = $_POST['dia_chi_nhan_hang'] ?? '';
+    $giam_gia = $_POST['giam_gia'] ?? 0;
+
+
+    $total_cost = 0;
+    if (isset($_SESSION['selected_books']) && !empty($_SESSION['selected_books'])) {
+        foreach ($_SESSION['selected_books'] as $ma_sach => $so_luong) {
+            $thongTinChiTiet = $sachDAO->getBookById($ma_sach);
+            if ($thongTinChiTiet) {
+                $gia_ban = $thongTinChiTiet['gia_ban'];
+                $total_cost += $gia_ban * $so_luong;
+            }
+        }
+    } else {
+        echo "Không có sản phẩm nào trong giỏ hàng!";
+        exit;
+    }
+    $total_cost -= $giam_gia;
+    $_SESSION['total_cost'] = $total_cost;
+    $trang_thai = 'DANG_CHO';
+
+    $donHangDAO = new DonHangDAO();
+    $donHangDAO->addOrder($ma_khach_hang, $total_cost, $dia_chi_nhan_hang, $giam_gia, $trang_thai);
+
+    $order_id = $donHangDAO->getLastOrderId();
+    $_SESSION['order_id'] = $order_id;
+    $_SESSION['order_books'] = $_SESSION['selected_books'];
+
+    unset($_SESSION['selected_books']);
+    header("Location: orderStatus.php?order_id=".$order_id);
+    exit();
+}
+
+// Xóa các session `ma_sach_home` và `selected_books`
+if (isset($_GET['action']) && $_GET['action'] === 'unset_sessions') {
+    unset($_SESSION['selected_books']);
+    echo "Sessions cleared";
+    exit;
 }
 ?>
-
+<!-- Xóa session khi chuyển trang -->
+<script>
+window.addEventListener('beforeunload', function() {
+    // Gửi yêu cầu AJAX đến cùng `checkout.php` để xóa session
+    navigator.sendBeacon('checkout.php?action=unset_sessions');
+});
+</script>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -146,46 +203,88 @@ if (!empty($selected_books)) {
     </div>
 
     <div class="container my-5">
-        <h1 class="text-center mb-4">Checkout</h1>
+        <h1 class="text-center mb-4">Your orders</h1>
 
-        <?php if (isset($thongTinChiTiet) && $thongTinChiTiet): ?>
-        <div class="card mb-4">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="<?= htmlspecialchars($thongTinChiTiet['anh_bia'] ?? 'default_image.jpg'); ?>"
-                        class="img-fluid rounded-start" alt="Book">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <?= htmlspecialchars($thongTinChiTiet['ten_sach'] ?? 'Tên sách không có'); ?></h5>
-                        <p class="card-text">Tác giả:
-                            <?= htmlspecialchars($thongTinChiTiet['tac_gia'] ?? 'Chưa có thông tin tác giả'); ?></p>
-                        <p class="card-text">Thể loại:
-                            <?= htmlspecialchars($thongTinChiTiet['the_loai'] ?? 'Chưa có thông tin thể loại'); ?></p>
-                        <p class="card-text">Nhà xuất bản:
-                            <?= htmlspecialchars($thongTinChiTiet['nha_xuat_ban'] ?? 'Chưa có thông tin nhà xuất bản'); ?>
-                        </p>
-                        <p class="card-text">Giá: <?= htmlspecialchars($thongTinChiTiet['gia_ban'] ?? 'Chưa có giá'); ?>
-                        </p>
-                        <p class="card-text"><?= htmlspecialchars($thongTinChiTiet['mo_ta'] ?? 'Chưa có mô tả'); ?></p>
-                        <a href="checkout.php?ma_sach=<?= $ma_sach; ?>" class="btn btn-primary">Proceed to Payment</a>
-                        <a href="javascript:history.back()" class="btn btn-secondary">Quay lại</a>
-                    </div>
-                </div>
+        <?php
+        if (!empty($selected_books)) {
+            // Loại bỏ các mã sách bị trùng lặp trong giỏ hàng
+            $selected_books = array_unique($selected_books);
+            $total_cost = 0;
+
+            echo '<div class="container my-5">';
+            echo '<form method="POST" action="">';
+
+            foreach ($selected_books as $ma_sach) {
+                $thongTinChiTiet = $sachDAO->getBookById($ma_sach);
+
+                if ($thongTinChiTiet) {
+                    $anh_bia = htmlspecialchars($thongTinChiTiet['anh_bia'] ?? 'default_image.jpg');
+                    $ten_sach = htmlspecialchars($thongTinChiTiet['ten_sach'] ?? 'Tên sách không có');
+                    $tac_gia = htmlspecialchars($thongTinChiTiet['ten_tacgia'] ?? 'Chưa có thông tin tác giả');
+                    $the_loai = htmlspecialchars($thongTinChiTiet['the_loai'] ?? 'Chưa có thông tin thể loại');
+                    $nha_xuat_ban = htmlspecialchars($thongTinChiTiet['ten_nxb'] ?? 'Chưa có thông tin nhà xuất bản');
+                    $gia_ban = htmlspecialchars($thongTinChiTiet['gia_ban'] ?? 'Chưa có giá');
+                    $mo_ta = htmlspecialchars($thongTinChiTiet['mo_ta'] ?? 'Chưa có mô tả');
+                    $so_luong = $thongTinChiTiet['so_luong'] ?? 0;
+
+                    // Hiển thị thông tin sách đã chọn dưới phần header
+                    echo '<div class="card mb-4">';
+                    echo '<div class="row g-0">';
+                    echo '<div class="col-md-4">';
+                    echo '<img src="' . $anh_bia . '" class="img-fluid rounded-start" alt="Book">';
+                    echo '</div>';
+                    echo '<div class="col-md-8">';
+                    echo '<div class="card-body">';
+                    echo '<h5 class="card-title">' . $ten_sach . '</h5>';
+                    echo '<p class="card-text">Tác giả: ' . $tac_gia . '</p>';
+                    echo '<p class="card-text">Thể loại: ' . $the_loai . '</p>';
+                    echo '<p class="card-text">Nhà xuất bản: ' . $nha_xuat_ban . '</p>';
+                    echo '<p class="card-text">Mô tả: ' . $mo_ta . '</p>';
+                    echo '<p class="card-text">Giá: <span class="book-price" data-price="' . $gia_ban . '">' . $gia_ban . '</span></p>';
+                    echo '<p class="card-text">Số lượng hiện có: ' . $so_luong . '</p>';
+                    echo '<div class="input-group mb-3">
+                          <span class="input-group-text">Số lượng</span>
+                          <input type="number" class="form-control quantity-input" name="quantity[' . $ma_sach . ']" value="1" min="1" max="' . $so_luong . '" onchange="updateTotalCost()">
+                      </div>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
+
+                    // Tính tổng tiền cho các sách
+                    $total_cost += $gia_ban * 1; // Giả sử số lượng là 1 cho mỗi cuốn sách trong giỏ
+                }
+            }
+
+            echo '<div class="text-end mb-3">';
+            echo '<button class="btn btn-warning" type="submit" name="confirm_payment">Xác nhận thanh toán</button>';
+            echo '</div>';
+            echo '<h3 id="total_cost">Tổng tiền: ' . $total_cost . '</h3>';
+            echo '</form>';
+        } else {
+            echo '<p class="text-center">Giỏ hàng của bạn trống. Hãy thêm sản phẩm vào giỏ hàng.</p>';
+        }
+        ?>
+        <!-- Footer -->
+        <footer class="footer text-center">
+            <div class="container">
+                <p>&copy; 2023 BookStore. All Rights Reserved.</p>
+                <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
             </div>
-        </div>
-        <?php else: ?>
-        <p class="text-danger text-center">No product information available.</p>
-        <?php endif; ?>
-    </div>
-    <!-- Footer -->
-    <footer class="footer text-center">
-        <div class="container">
-            <p>&copy; 2023 BookStore. All Rights Reserved.</p>
-            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
-        </div>
-    </footer>
+        </footer>
+
+        <script>
+        function updateTotalCost() {
+            let totalCost = 0;
+            document.querySelectorAll('.quantity-input').forEach(input => {
+                let quantity = parseInt(input.value) || 1;
+                let price = parseFloat(input.closest('.card-body').querySelector('.book-price').getAttribute(
+                    'data-price')) || 0;
+                totalCost += quantity * price;
+            });
+            document.getElementById('total_cost').textContent = "Tổng tiền: " + totalCost;
+        }
+        </script>
 
 </body>
 

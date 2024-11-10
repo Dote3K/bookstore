@@ -17,29 +17,35 @@ function addToCart($ma_sach) {
 if(isset($_POST['add_to_cart'])) {
     $ma_sach = $_POST['add_to_cart'];
     addToCart($ma_sach);
+    header("Location: cart.php");
+    exit();
 }
-function removeFromCart($selected_books) {
-    foreach ($selected_books as $ma_sach) {
-        if (isset($_SESSION['cart'][$ma_sach])) {
-            unset($_SESSION['cart'][$ma_sach]);
-        }
+function removeFromCart($selected_books_cart) {
+    foreach ($selected_books_cart as $ma_sach) {
+            unset($_SESSION['cart'][$ma_sach]);     
     }
 }
 
 if (isset($_POST['removeFromCart'])) {
-    $selected_books = $_POST['selected_books'] ?? [];
-    removeFromCart($selected_books);
+    $selected_books_cart = $_POST['selected_books_cart'] ?? [];
+    removeFromCart($selected_books_cart);
+    header("Location: cart.php");
+    exit();
 }
 
-function buyNow($selected_books) {
-    $_SESSION['selected_books'] = $selected_books;
-}
 
 if (isset($_POST['buyNow'])) {
-    $selected_books = $_POST['selected_books'] ?? [];
-    buyNow($selected_books);
-    header("Location: checkout.php");
-    exit();
+    $selected_books_cart = $_POST['selected_books_cart'] ?? [];
+
+    if(!empty($selected_books_cart)) {
+        $_SESSION['selected_books'] = $selected_books_cart;
+        header("Location: checkout.php");
+        exit();
+    } else {
+        echo "<script>alert('Vui lòng chọn ít nhất một sản phẩm để tiếp tục!');</script>";
+    }
+    
+   
 }
 
 ?>
@@ -172,7 +178,7 @@ if (isset($_POST['buyNow'])) {
                         <div class="card-body text-center">
                             <h5 class="card-title"><?= htmlspecialchars($sach['ten_sach']); ?></h5>
                             <p class="card-text"><?= htmlspecialchars($sach['gia_ban']); ?></p>
-                            <label><input type="checkbox" name="selected_books[]" value="<?= $ma_sach ?>">
+                            <label><input type="checkbox" name="selected_books_cart[]" value="<?= $ma_sach ?>">
                             </label>
                         </div>
                     </div>

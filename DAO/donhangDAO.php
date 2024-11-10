@@ -1,7 +1,7 @@
 <?php
 require_once 'JDBC.php';
 require_once 'DAOInterface.php';
-require_once 'model/donhang.php';
+require_once '../model/donhang.php';
 
 class DonHangDAO implements DAOInterface
 {
@@ -110,34 +110,37 @@ class DonHangDAO implements DAOInterface
         return $result;
     }
     public function selectByMaKhachHang($maKhachHang): array
-    {
-        $conn = JDBC::getConnection();
-        $sql = "SELECT * FROM donhang WHERE ma_khach_hang = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $maKhachHang);
-        $stmt->execute();
-        $result = $stmt->get_result();
+{
+    $donHangs = [];
+    $conn = JDBC::getConnection(); 
+    $sql = "SELECT * FROM donhang WHERE ma_khach_hang = ?";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $maKhachHang); 
+    $stmt->execute();
+    
+    $result = $stmt->get_result();
 
-        $donHangs = [];
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $donHang = new DonHang(
-                    $row['ma_don_hang'],
-                    $row['ma_khach_hang'],
-                    $row['tong'],
-                    $row['ngay_dat_hang'],
-                    $row['trang_thai'],
-                    $row['dia_chi_nhan_hang'],
-                    $row['giam_gia']
-                );
-                $donHangs[] = $donHang;
-            }
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $donHang = new DonHang(
+                $row['ma_don_hang'],
+                $row['ma_khach_hang'],
+                $row['tong'],
+                $row['ngay_dat_hang'],
+                $row['trang_thai'],
+                $row['dia_chi_nhan_hang'],
+                $row['giam_gia']
+            );
+            $donHangs[] = $donHang; 
         }
-
-        $stmt->close();
-        JDBC::closeConnection($conn);
-        return $donHangs;
     }
+
+    $stmt->close();
+    JDBC::closeConnection($conn); 
+
+    return $donHangs; 
+}
     public function updateTrangThai($maDonHang, $trangThai)
     {
         $conn = JDBC::getConnection();
@@ -188,4 +191,26 @@ class DonHangDAO implements DAOInterface
         return $donHang;
     }
 
+    public function addOrder($ma_khach_hang, $tong, $dia_chi_nhan_hang, $giam_gia, $trang_thai) {
+        $conn = JDBC::getConnection();
+
+        // Thêm ngày đặt hàng sử dụng hàm NOW() trong MySQL để lấy ngày và giờ hiện tại
+        $ngay_dat_hang = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại từ PHP
+
+        $sql = "INSERT INTO donhang (ma_khach_hang, tong, dia_chi_nhan_hang, giam_gia, trang_thai, ngay_dat_hang) 
+                VALUES (?, ?, ?, ?, ?, ?)";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("idssss", $ma_khach_hang, $tong, $dia_chi_nhan_hang, $giam_gia, $trang_thai, $ngay_dat_hang);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    public function getLastOrderId() {
+        $conn = JDBC::getConnection();
+        $sql = "SELECT LAST_INSERT_ID() AS order_id";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        return $row['order_id'];
+    }
 }

@@ -126,7 +126,7 @@
 
                         <form action="/view/checkout.php" method="POST">
                             <?php if (isset($_SESSION['ma_khach_hang'])): ?>
-                            <input type="hidden" name="ma_sach" value="<?php echo $sach->getMaSanPham(); ?>">
+                            <input type="hidden" name="ma_sach_home" value="<?php echo $sach->getMaSanPham(); ?>">
                             <button type="submit" class="btn btn-primary">Buy Now</button>
                             <?php else: ?>
                             <a href="../KhachHangRouter.php?action=login" class="btn btn-primary">Buy Now</a>

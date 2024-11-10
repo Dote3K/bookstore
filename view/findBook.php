@@ -147,7 +147,7 @@ if (isset($_GET['tukhoa'])) {
 
                         <form action="/view/checkout.php" method="POST">
                             <?php if (isset($_SESSION['ma_khach_hang'])): ?>
-                            <input type="hidden" name="ma_sach" value="<?php echo $sach['ma_sach']?>">
+                            <input type="hidden" name="ma_sach_home" value="<?php echo $sach['ma_sach']?>">
                             <button type="submit" class="btn btn-primary">Buy Now</button>
                             <?php else: ?>
                             <a href="../KhachHangRouter.php?action=login" class="btn btn-primary">Buy Now</a>
