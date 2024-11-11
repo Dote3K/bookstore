@@ -93,6 +93,32 @@ $result = $conn->query($sql);
 
 <body>
     <div class="container">
+    <div>
+            <input type="text ;margin-left: auto" id="searchBox" placeholder="Tìm kiếm theo tên thể loại">
+            <button onclick="search()">Tìm</button>
+        </div>
+        <br>
+        <script>
+            function search() {
+                var searchValue = document.getElementById("searchBox").value.toLowerCase();
+                var rows = document.getElementsByTagName("tr");
+                for (var i = 0; i < rows.length; i++) {
+                    var the_loai = rows[i].getElementsByTagName("td")[1];
+                    if (the_loai) {
+                        var tenValue = the_loai.textContent.toLowerCase() || the_loai.innerText.toLowerCase();
+                        if (tenValue.indexOf(searchValue) > -1) {
+                            rows[i].style.display = "";
+                        } else {
+                            rows[i].style.display = "none";
+                        }
+
+                    }
+
+                }
+
+            }
+
+        </script>
         <h1>Thông tin thể loại</h1>
         <table>
             <tr>

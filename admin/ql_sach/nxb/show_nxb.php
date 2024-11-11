@@ -112,6 +112,32 @@ $result = $conn->query($sql);
 
 <body>
 <div class="container">
+<div>
+		<input type="text ;margin-left: auto" id="searchBox" placeholder="Tìm kiếm theo tên nhà xuất bản">
+		<button onclick="search()">Tìm</button>
+	</div>
+	<br>
+	<script>
+		function search(){
+		var searchValue = document.getElementById("searchBox").value.toLowerCase();
+		var rows = document.getElementsByTagName("tr");
+		for (var i = 0; i < rows.length;i++){
+			var ten = rows[i].getElementsByTagName("td")[1];
+			if(ten){
+				var tenValue = ten.textContent.toLowerCase()|| ten.innerText.toLowerCase();
+				if(tenValue.indexOf(searchValue)> -1){
+					rows[i].style.display = "";
+				}else{
+					rows[i].style.display = "none";
+				}
+			
+			}
+			
+		}
+		
+	}
+	
+	</script>
     <h1>Thông tin Nhà Xuất Bản</h1>
     <table>
         <tr>
