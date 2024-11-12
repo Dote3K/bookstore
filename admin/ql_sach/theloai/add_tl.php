@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
+            background-color: #f9f9f9;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         h1 {
             font-size: 28px;
-            color: #d81b60;
+            color: #3E7C6F;
             margin-bottom: 20px;
         }
 
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         button, .back-link {
-            background-color: #d81b60;
+            background-color: #4A90E2;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         button:hover, .back-link:hover {
-            background-color: #c2185b;
+            background-color: #357ABD;
         }
 
         .button-container {
@@ -96,7 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
         <div class="button-container">
             <a href="show_the_loai.php" class="back-link">Trở về trang quản lý thể loại</a>
-
         </div>
     </div>
 </body>

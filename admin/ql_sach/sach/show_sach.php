@@ -15,7 +15,7 @@ $result = $conn->query($sql);
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
+            background-color: #f9f9f9;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -36,7 +36,7 @@ $result = $conn->query($sql);
 
         h1 {
             font-size: 28px;
-            color: #d81b60;
+            color: #3E7C6F;
             margin-bottom: 20px;
             text-align: center;
         }
@@ -46,6 +46,7 @@ $result = $conn->query($sql);
             border-collapse: collapse;
             margin-bottom: 20px;
             text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         th, td {
@@ -54,20 +55,20 @@ $result = $conn->query($sql);
         }
 
         th {
-            background-color: #d81b60;
+            background-color: #5D4037;
             color: white;
         }
 
         tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #f5f5f5;
         }
 
         tr:hover {
-            background-color: #f1f1f1;
+            background-color: #e0f7fa;
         }
 
         button {
-            background-color: #d81b60;
+            background-color: #4A90E2;
             color: white;
             padding: 10px 15px;
             border: none;
@@ -79,13 +80,13 @@ $result = $conn->query($sql);
         }
 
         button:hover {
-            background-color: #c2185b;
+            background-color: #357ABD;
         }
 
         .back-link {
             display: inline-block;
             margin-top: 20px;
-            background-color: #d81b60;
+            background-color: #5D4037;
             color: white;
             padding: 10px 15px;
             border-radius: 6px;
@@ -95,7 +96,7 @@ $result = $conn->query($sql);
         }
 
         .back-link:hover {
-            background-color: #c2185b;
+            background-color: #3E7C6F;
         }
 
         img {
@@ -109,6 +110,32 @@ $result = $conn->query($sql);
 
 <body>
 <div class="container">
+<div>
+            <input type="text ;margin-left: auto" id="searchBox" placeholder="Tìm kiếm theo tên sách">
+            <button onclick="search()">Tìm</button>
+        </div>
+        <br>
+        <script>
+            function search() {
+                var searchValue = document.getElementById("searchBox").value.toLowerCase();
+                var rows = document.getElementsByTagName("tr");
+                for (var i = 0; i < rows.length; i++) {
+                    var ten = rows[i].getElementsByTagName("td")[1];
+                    if (ten) {
+                        var tenValue = ten.textContent.toLowerCase() || ten.innerText.toLowerCase();
+                        if (tenValue.indexOf(searchValue) > -1) {
+                            rows[i].style.display = "";
+                        } else {
+                            rows[i].style.display = "none";
+                        }
+
+                    }
+
+                }
+
+            }
+
+        </script>
     <h1>Thông tin Sách</h1>
     <table>
         <tr>

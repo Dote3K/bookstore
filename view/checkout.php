@@ -107,12 +107,12 @@ window.addEventListener('beforeunload', function() {
 
     <style>
     body {
-        background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+        background: linear-gradient(45deg, #a8d0e6, #f8b195);
         color: #333;
     }
 
     .navbar {
-        background: linear-gradient(45deg, #ff6b6b, #ffcc33);
+        background: linear-gradient(45deg, #374785, #f76c6c);
     }
 
     .navbar-brand,
@@ -152,25 +152,42 @@ window.addEventListener('beforeunload', function() {
     }
 
     .card-title {
-        color: #ff6b6b;
+        color: #374785;
         font-weight: bold;
     }
 
     .btn-primary {
-        background-color: #ff6b6b;
+        background-color: #f76c6c;
         border: none;
         transition: background-color 0.3s;
     }
 
+    .btn-primary:hover {
+        background-color: #e63946;
+    }
+
+    .btn-warning {
+        background-color: #f76c6c;
+        border: none;
+    }
+
+    .btn-warning:hover {
+        background-color: #e63946;
+    }
+
     .footer {
-        background-color: #333333;
+        background-color: #374785;
         color: #ffffff;
         padding: 1.5rem 0;
     }
 
     .footer a {
-        color: #ffcc33;
+        color: #f8b195;
         text-decoration: none;
+    }
+
+    .footer a:hover {
+        color: #ff5a5f;
     }
     </style>
 </head>
@@ -205,7 +222,6 @@ window.addEventListener('beforeunload', function() {
 
         <?php
         if (!empty($selected_books)) {
-            // Loại bỏ các mã sách bị trùng lặp trong giỏ hàng
             $selected_books = array_unique($selected_books);
             $total_cost = 0;
 
@@ -224,7 +240,6 @@ window.addEventListener('beforeunload', function() {
                     $mo_ta = htmlspecialchars($thongTinChiTiet['mo_ta'] ?? 'Chưa có mô tả');
                     $so_luong = $thongTinChiTiet['so_luong'] ?? 1;
 
-                    // Hiển thị thông tin sách đã chọn dưới phần header
                     echo '<div class="card mb-4">';
                     echo '<div class="row g-0">';
                     echo '<div class="col-md-4">';
@@ -248,8 +263,12 @@ window.addEventListener('beforeunload', function() {
                     echo '</div>';
                     echo '</div>';
 
+<<<<<<< HEAD
                     // Tính tổng tiền cho các sách
                     $total_cost += $gia_ban * 1; 
+=======
+                    $total_cost += $gia_ban * 1;
+>>>>>>> 0b83f0e01d952cf9d2501456093824746fcc83b6
                 }
             }
 
@@ -262,7 +281,6 @@ window.addEventListener('beforeunload', function() {
             echo '<p class="text-center">Giỏ hàng của bạn trống. Hãy thêm sản phẩm vào giỏ hàng.</p>';
         }
         ?>
-        <!-- Footer -->
         <footer class="footer text-center">
             <div class="container">
                 <p>&copy; 2023 BookStore. All Rights Reserved.</p>

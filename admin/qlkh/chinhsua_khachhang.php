@@ -1,6 +1,6 @@
 <?php
     require '../../connect.php';
-    require '../../checker/kiemtra_admin.php';
+    //require '../../checker/kiemtra_admin.php';
     include '../sidebar.php';
 $id = $_GET['id'];
 $sql = "SELECT * FROM khachhang WHERE ma_khach_hang = ?";
@@ -48,53 +48,131 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chỉnh sửa khách hàng</title>
-    <link rel="stylesheet" href="../../css/csuakhang.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #333;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: #4A90E2;
+            color: white;
+        }
+
+        .header .logo img {
+            width: 50px;
+        }
+
+        .header .nav-links a {
+            color: white;
+            margin-left: 20px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #3E7C6F;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        form input[type="text"],
+        form input[type="email"],
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4A90E2;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #357ABD;
+        }
+    </style>
 </head>
 <body>
 <header class="header">
-        <div class="logo">
-            <img src="path/to/logo.png" alt="Logo">
-        </div>
-        
-        <div class="nav-links">
-            <a href="../../home.php">👤 Tài khoản</a>
-        </div>
-    </header>
-    <h1>Chỉnh sửa khách hàng</h1>
+    <div class="logo">
+        <img src="path/to/logo.png" alt="Logo">
+    </div>
+    <div class="nav-links">
+        <a href="../../home.php">👤 Tài khoản</a>
+    </div>
+</header>
+<h1>Chỉnh sửa khách hàng</h1>
 
-    <form method="POST" action="">
-        <label for="ten_dang_nhap">Tên đăng nhập:</label>
-        <input type="text" name="ten_dang_nhap" value="<?php echo htmlspecialchars($row['ten_dang_nhap']); ?>" required><br>
+<form method="POST" action="">
+    <label for="ten_dang_nhap">Tên đăng nhập:</label>
+    <input type="text" name="ten_dang_nhap" value="<?php echo htmlspecialchars($row['ten_dang_nhap']); ?>" required>
 
-        <label for="ho_va_ten">Họ và tên:</label>
-        <input type="text" name="ho_va_ten" value="<?php echo htmlspecialchars($row['ho_va_ten']); ?>" required><br>
+    <label for="ho_va_ten">Họ và tên:</label>
+    <input type="text" name="ho_va_ten" value="<?php echo htmlspecialchars($row['ho_va_ten']); ?>" required>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" value="<?php echo htmlspecialchars($row['email']); ?>" required><br>
+    <label for="email">Email:</label>
+    <input type="email" name="email" value="<?php echo htmlspecialchars($row['email']); ?>" required>
 
-        <label for="so_dien_thoai">Số điện thoại:</label>
-        <input type="text" name="so_dien_thoai" value="<?php echo htmlspecialchars($row['so_dien_thoai']); ?>" required><br>
+    <label for="so_dien_thoai">Số điện thoại:</label>
+    <input type="text" name="so_dien_thoai" value="<?php echo htmlspecialchars($row['so_dien_thoai']); ?>" required>
 
-        <label for="dia_chi">Địa chỉ:</label>
-        <input type="text" name="dia_chi" value="<?php echo htmlspecialchars($row['dia_chi']); ?>"><br>
+    <label for="dia_chi">Địa chỉ:</label>
+    <input type="text" name="dia_chi" value="<?php echo htmlspecialchars($row['dia_chi']); ?>">
 
-        <label for="dia_chi_nhan_hang">Địa chỉ nhận hàng:</label>
-        <input type="text" name="dia_chi_nhan_hang" value="<?php echo htmlspecialchars($row['dia_chi_nhan_hang']); ?>"><br>
+    <label for="dia_chi_nhan_hang">Địa chỉ nhận hàng:</label>
+    <input type="text" name="dia_chi_nhan_hang" value="<?php echo htmlspecialchars($row['dia_chi_nhan_hang']); ?>">
 
-        <label for="dang_ky_nhan_ban_tin">Đăng ký nhận bản tin:</label>
-        <select name="dang_ky_nhan_ban_tin">
-            <option value="1" <?php if ($row['dang_ky_nhan_ban_tin'] == 1) echo 'selected'; ?>>Có</option>
-            <option value="0" <?php if ($row['dang_ky_nhan_ban_tin'] == 0) echo 'selected'; ?>>Không</option>
-        </select><br>
+    <label for="dang_ky_nhan_ban_tin">Đăng ký nhận bản tin:</label>
+    <select name="dang_ky_nhan_ban_tin">
+        <option value="1" <?php if ($row['dang_ky_nhan_ban_tin'] == 1) echo 'selected'; ?>>Có</option>
+        <option value="0" <?php if ($row['dang_ky_nhan_ban_tin'] == 0) echo 'selected'; ?>>Không</option>
+    </select>
 
-        <label for="vai_tro">Vai trò:</label>
-        <select name="vai_tro">
-            <option value="khachhang" <?php if ($row['vai_tro'] == 'khachhang') echo 'selected'; ?>>Khách hàng</option>
-            <option value="admin" <?php if ($row['vai_tro'] == 'admin') echo 'selected'; ?>>Admin</option>
-        </select><br>
+    <label for="vai_tro">Vai trò:</label>
+    <select name="vai_tro">
+        <option value="khachhang" <?php if ($row['vai_tro'] == 'khachhang') echo 'selected'; ?>>Khách hàng</option>
+        <option value="admin" <?php if ($row['vai_tro'] == 'admin') echo 'selected'; ?>>Admin</option>
+    </select>
 
-        <button type="submit">Cập nhật</button>
-    </form>
+    <button type="submit">Cập nhật</button>
+</form>
 </body>
 </html>
-

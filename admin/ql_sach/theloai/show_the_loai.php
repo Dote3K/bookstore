@@ -14,7 +14,7 @@ $result = $conn->query($sql);
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
+            background-color: #f9f9f9;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -36,7 +36,7 @@ $result = $conn->query($sql);
 
         h1 {
             font-size: 28px;
-            color: #d81b60;
+            color: #3E7C6F;
             margin-bottom: 20px;
         }
 
@@ -54,16 +54,16 @@ $result = $conn->query($sql);
         }
 
         th {
-            background-color: #d81b60;
+            background-color: #5D4037;
             color: white;
         }
 
         tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #f5f5f5;
         }
 
         tr:hover {
-            background-color: #f1f1f1;
+            background-color: #e0f7fa;
         }
 
         .button-container {
@@ -74,7 +74,7 @@ $result = $conn->query($sql);
         }
 
         button, .back-link {
-            background-color: #d81b60;
+            background-color: #4A90E2;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -86,13 +86,39 @@ $result = $conn->query($sql);
         }
 
         button:hover, .back-link:hover {
-            background-color: #c2185b;
+            background-color: #357ABD;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
+    <div>
+            <input type="text ;margin-left: auto" id="searchBox" placeholder="Tìm kiếm theo tên thể loại">
+            <button onclick="search()">Tìm</button>
+        </div>
+        <br>
+        <script>
+            function search() {
+                var searchValue = document.getElementById("searchBox").value.toLowerCase();
+                var rows = document.getElementsByTagName("tr");
+                for (var i = 0; i < rows.length; i++) {
+                    var the_loai = rows[i].getElementsByTagName("td")[1];
+                    if (the_loai) {
+                        var tenValue = the_loai.textContent.toLowerCase() || the_loai.innerText.toLowerCase();
+                        if (tenValue.indexOf(searchValue) > -1) {
+                            rows[i].style.display = "";
+                        } else {
+                            rows[i].style.display = "none";
+                        }
+
+                    }
+
+                }
+
+            }
+
+        </script>
         <h1>Thông tin thể loại</h1>
         <table>
             <tr>
@@ -120,7 +146,6 @@ $result = $conn->query($sql);
 
         <div class="button-container">
             <a href="add_tl.php" class="back-link">Thêm thể loại</a>
-
         </div>
     </div>
 </body>
