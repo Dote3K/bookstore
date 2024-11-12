@@ -25,10 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (move_uploaded_file($_FILES["anh_bia"]["tmp_name"], $target_file)) {
                 $anh_bia = $target_file;
             } else {
-                echo "Lỗi.";
+                echo "<div class='alert alert-danger'>Lỗi khi tải lên tập tin.</div>";
             }
         } else {
-            echo "Chỉ cho phép các định dạng JPG, JPEG, PNG";
+            echo "<div class='alert alert-danger'>Chỉ cho phép các định dạng JPG, JPEG, PNG</div>";
         }
     }
 
@@ -36,9 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             VALUES ('$ten_sach', '$ma_tac_gia', '$ma_nxb', '$ma_the_loai', '$gia_mua', '$gia_ban', '$so_luong', '$nam_xuat_ban', '$mo_ta', '$anh_bia')";
 
     if ($conn->query($sql) === TRUE) {
-        echo "<p class='success-msg'>Thêm thành công</p>";
+        echo "<div class='alert alert-success'>Thêm sách thành công</div>";
     } else {
-        echo "<p class='error-msg'>Lỗi do: " . $conn->error . "</p>";
+        echo "<div class='alert alert-danger'>Lỗi: " . $conn->error . "</div>";
     }
 }
 ?>
@@ -47,173 +47,150 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Thêm Sách</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #333;
+        /* Các style tùy chỉnh */
+        .sidebar {
+            background-color: #f8f9fa;
         }
-
-        .container {
-            width: 90%;
-            max-width: 600px;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        h1 {
-            font-size: 28px;
-            color: #d81b60;
-            margin-bottom: 20px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        label {
-            font-size: 16px;
-            color: #333;
-            text-align: left;
-        }
-
-        input[type="text"], input[type="number"], input[type="file"], select {
-            width: 100%;
+        .header {
+            background-color: #e9ecef;
             padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            font-size: 16px;
         }
-
-        button {
-            background-color: #d81b60;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #c2185b;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            background-color: #d81b60;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 6px;
+        .header .nav-links a {
+            margin-right: 15px;
             text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+            color: #333;
         }
-
-        .back-link:hover {
-            background-color: #c2185b;
-        }
-
-        .success-msg {
-            color: #4CAF50;
-            font-weight: bold;
-        }
-
-        .error-msg {
-            color: #f44336;
-            font-weight: bold;
+        .header .nav-links a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Thêm Sách Mới</h1>
-    <form method="post" enctype="multipart/form-data">
-        <label for="ten_sach">Tên Sách</label>
-        <input type="text" name="ten_sach" id="ten_sach" required>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-2 d-none d-md-block sidebar">
+            <?php include '../../sidebar.php'; ?>
+        </nav>
+        <!-- Nội dung chính -->
+        <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4">
+            <!-- Header -->
+            <header class="header d-flex justify-content-between align-items-center">
+                <h1>Thêm Sách Mới</h1>
+                <div class="nav-links">
+                    <a href="../../../home.php" class="btn btn-secondary">👤 Tài khoản</a>
+                </div>
+            </header>
 
-        <label for="ma_tac_gia">Mã Tác Giả</label>
-        <select name="ma_tac_gia" id="ma_tac_gia">
-            <option value="">Chọn tác giả</option>
-            <?php
-            $sql = "SELECT ma_tac_gia, ten from tacgia";
-            $result = $conn->query($sql);
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_array()) {
-                    echo '<option value="' . $row["ma_tac_gia"] . '">' . $row["ten"] . '</option>';
+            <!-- Nội dung trang -->
+            <div class="container mt-4">
+                <!-- Hiển thị thông báo -->
+                <?php
+                if (isset($anh_bia) && !empty($anh_bia)) {
+                    echo "<div class='alert alert-success'>Thêm sách thành công</div>";
                 }
-            } else {
-                echo '<option value="">Không có tác giả</option>';
-            }
-            ?>
-        </select>
+                ?>
+                <form method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="ten_sach" class="form-label">Tên Sách</label>
+                        <input type="text" name="ten_sach" id="ten_sach" class="form-control" required>
+                    </div>
 
-        <label for="ma_nxb">Mã Nhà Xuất Bản</label>
-        <select name="ma_nxb" id="ma_nxb">
-            <option value="">Chọn NXB</option>
-            <?php
-            $sql = "SELECT ma_nxb, ten from nxb";
-            $result = $conn->query($sql);
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_array()) {
-                    echo '<option value="' . $row["ma_nxb"] . '">' . $row["ten"] . '</option>';
-                }
-            } else {
-                echo '<option value="">Không có NXB</option>';
-            }
-            ?>
-        </select>
+                    <div class="mb-3">
+                        <label for="ma_tac_gia" class="form-label">Tác Giả</label>
+                        <select name="ma_tac_gia" id="ma_tac_gia" class="form-select" required>
+                            <option value="">Chọn tác giả</option>
+                            <?php
+                            $sql = "SELECT ma_tac_gia, ten FROM tacgia";
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_array()) {
+                                    echo '<option value="' . $row["ma_tac_gia"] . '">' . $row["ten"] . '</option>';
+                                }
+                            } else {
+                                echo '<option value="">Không có tác giả</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
 
-        <label for="ma_the_loai">Mã Thể Loại</label>
-        <select name="ma_the_loai" id="ma_the_loai">
-            <option value="">Chọn Thể Loại</option>
-            <?php
-            $sql = "SELECT ma_the_loai, the_loai from theloai";
-            $result = $conn->query($sql);
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_array()) {
-                    echo '<option value="' . $row["ma_the_loai"] . '">' . $row["the_loai"] . '</option>';
-                }
-            } else {
-                echo '<option value="">Không có thể loại</option>';
-            }
-            ?>
-        </select>
+                    <div class="mb-3">
+                        <label for="ma_nxb" class="form-label">Nhà Xuất Bản</label>
+                        <select name="ma_nxb" id="ma_nxb" class="form-select" required>
+                            <option value="">Chọn NXB</option>
+                            <?php
+                            $sql = "SELECT ma_nxb, ten FROM nxb";
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_array()) {
+                                    echo '<option value="' . $row["ma_nxb"] . '">' . $row["ten"] . '</option>';
+                                }
+                            } else {
+                                echo '<option value="">Không có NXB</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
 
-        <label for="gia_mua">Giá Mua</label>
-        <input type="number" name="gia_mua" id="gia_mua" required>
+                    <div class="mb-3">
+                        <label for="ma_the_loai" class="form-label">Thể Loại</label>
+                        <select name="ma_the_loai" id="ma_the_loai" class="form-select" required>
+                            <option value="">Chọn Thể Loại</option>
+                            <?php
+                            $sql = "SELECT ma_the_loai, the_loai FROM theloai";
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_array()) {
+                                    echo '<option value="' . $row["ma_the_loai"] . '">' . $row["the_loai"] . '</option>';
+                                }
+                            } else {
+                                echo '<option value="">Không có thể loại</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
 
-        <label for="gia_ban">Giá Bán</label>
-        <input type="number" name="gia_ban" id="gia_ban" required>
+                    <div class="mb-3">
+                        <label for="gia_mua" class="form-label">Giá Mua</label>
+                        <input type="number" name="gia_mua" id="gia_mua" class="form-control" required>
+                    </div>
 
-        <label for="so_luong">Số Lượng</label>
-        <input type="number" name="so_luong" id="so_luong" required>
+                    <div class="mb-3">
+                        <label for="gia_ban" class="form-label">Giá Bán</label>
+                        <input type="number" name="gia_ban" id="gia_ban" class="form-control" required>
+                    </div>
 
-        <label for="nam_xuat_ban">Năm Xuất Bản</label>
-        <input type="number" name="nam_xuat_ban" id="nam_xuat_ban" required>
+                    <div class="mb-3">
+                        <label for="so_luong" class="form-label">Số Lượng</label>
+                        <input type="number" name="so_luong" id="so_luong" class="form-control" required>
+                    </div>
 
-        <label for="mo_ta">Mô Tả</label>
-        <input type="text" name="mo_ta" id="mo_ta" required>
+                    <div class="mb-3">
+                        <label for="nam_xuat_ban" class="form-label">Năm Xuất Bản</label>
+                        <input type="number" name="nam_xuat_ban" id="nam_xuat_ban" class="form-control" required>
+                    </div>
 
-        <label for="anh_bia">Ảnh Bìa</label>
-        <input type="file" name="anh_bia" id="anh_bia" required>
+                    <div class="mb-3">
+                        <label for="mo_ta" class="form-label">Mô Tả</label>
+                        <textarea name="mo_ta" id="mo_ta" class="form-control" rows="3" required></textarea>
+                    </div>
 
-        <button type="submit">Thêm Sách</button>
-    </form>
-    <a href="show_sach.php" class="back-link">Trở về trang quản lý sách</a><br>
+                    <div class="mb-3">
+                        <label for="anh_bia" class="form-label">Ảnh Bìa</label>
+                        <input type="file" name="anh_bia" id="anh_bia" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Thêm Sách</button>
+                    <a href="show_sach.php" class="btn btn-secondary">Trở về trang quản lý sách</a>
+                </form>
+            </div>
+        </main>
+    </div>
 </div>
 </body>
 </html>

@@ -1,10 +1,45 @@
-<div style="width: 200px; position: fixed; top: 20px; left: 20px; padding: 10px; border-right: 1px solid #ccc; background-color: #f06292; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
-    <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">Admin</h1>
-    <a href="/bookstore/DonHangRouter.php?action=list" style="text-decoration: none;"><button style="width: 100%; background-color: #d81b60; color: white; padding: 10px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; margin-bottom: 10px;">Quản lý đơn hàng</button></a>
-    <a href="/bookstore/admin/doanhthu/doanhthu.php" style="text-decoration: none;"><button style="width: 100%; background-color: #d81b60; color: white; padding: 10px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; margin-bottom: 10px;">Quản lý doanh thu</button></a>
-    <a href="/bookstore/admin/qlkh/quanlikhachhang.php" style="text-decoration: none;"><button style="width: 100%; background-color: #d81b60; color: white; padding: 10px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; margin-bottom: 10px;">Quản lý khách hàng</button></a>
-    <a href="/bookstore/admin/ql_sach/nxb/show_nxb.php" style="text-decoration: none;"><button style="width: 100%; background-color: #d81b60; color: white; padding: 10px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; margin-bottom: 10px;">Quản lý nhà xuất bản</button></a>
-    <a href="/bookstore/admin/ql_sach/tacgia/show_tacgia.php" style="text-decoration: none;"><button style="width: 100%; background-color: #d81b60; color: white; padding: 10px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; margin-bottom: 10px;">Quản lý tác Giả</button></a>
-    <a href="/bookstore/admin/ql_sach/theloai/show_the_loai.php" style="text-decoration: none;"><button style="width: 100%; background-color: #d81b60; color: white; padding: 10px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; margin-bottom: 10px;">Quản lý thể loại</button></a>
-    <a href="/bookstore/admin/ql_sach/sach/show_sach.php" style="text-decoration: none;"><button style="width: 100%; background-color: #d81b60; color: white; padding: 10px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; margin-bottom: 10px;">Quản lý sách</button></a>
+<!-- sidebar.php -->
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 200px; height: 100vh;">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+        <span class="fs-4">Admin</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="/DonHangRouter.php?action=list" class="nav-link link-dark">
+                Quản lý đơn hàng
+            </a>
+        </li>
+        <li>
+            <a href="/admin/doanhthu/doanhthu.php" class="nav-link link-dark">
+                Quản lý doanh thu
+            </a>
+        </li>
+        <li>
+            <a href="/admin/qlkh/quanlikhachhang.php" class="nav-link link-dark">
+                Quản lý khách hàng
+            </a>
+        </li>
+        <li>
+            <a href="/admin/ql_sach/nxb/show_nxb.php" class="nav-link link-dark">
+                Quản lý nhà xuất bản
+            </a>
+        </li>
+        <li>
+            <a href="/admin/ql_sach/tacgia/show_tacgia.php" class="nav-link link-dark">
+                Quản lý tác giả
+            </a>
+        </li>
+        <li>
+            <a href="/admin/ql_sach/theloai/show_the_loai.php" class="nav-link link-dark">
+                Quản lý thể loại
+            </a>
+        </li>
+        <li>
+            <a href="/admin/ql_sach/sach/show_sach.php" class="nav-link link-dark">
+                Quản lý sách
+            </a>
+        </li>
+    </ul>
+    <hr>
 </div>

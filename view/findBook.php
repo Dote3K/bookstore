@@ -1,7 +1,6 @@
 <?php
 require_once '../DAO/sachDAO.php';
 
-
 // Xử lý tìm kiếm sách
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tukhoa'])) {
     $tukhoa = $_POST['tukhoa'];
@@ -24,17 +23,21 @@ if (isset($_GET['tukhoa'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Store</title>
+    <title>Book Store - Kết quả tìm kiếm</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <!-- Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
             integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
     </script>
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
             integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
     </script>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+    <!-- Custom Styles -->
     <style>
         body {
             background: linear-gradient(45deg, #ff9a9e, #fad0c4);
@@ -92,6 +95,10 @@ if (isset($_GET['tukhoa'])) {
             transition: background-color 0.3s;
         }
 
+        .btn-primary:hover {
+            background-color: #ff4b4b;
+        }
+
         .footer {
             background-color: #333333;
             color: #ffffff;
@@ -102,14 +109,32 @@ if (isset($_GET['tukhoa'])) {
             color: #ffcc33;
             text-decoration: none;
         }
+
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .carousel-item img {
+                height: 250px;
+            }
+
+            .card-img-top {
+                height: 200px;
+            }
+        }
     </style>
 </head>
 
 <body>
-<?php include 'header.php';
-require_once(__DIR__ . '/../model/sach.php'); ?>
+<?php include 'header.php'; ?>
 
+<!-- Carousel -->
 <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
+    <!-- Carousel Indicators -->
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    </div>
+    <!-- Carousel Inner -->
     <div class="carousel-inner">
         <div class="carousel-item active">
             <img src="https://media.newyorker.com/photos/59ee325f1685003c9c28c4ad/4:3/w_4992,h_3744,c_limit/Heller-Kirkus-Reviews.jpg"
@@ -128,27 +153,47 @@ require_once(__DIR__ . '/../model/sach.php'); ?>
             </div>
         </div>
     </div>
+    <!-- Carousel Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Trước</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Tiếp theo</span>
+    </button>
 </div>
 
-
+<!-- Search Results Section -->
 <div class="container my-5">
-    <h2 class="text-center text-primary mb-4">Kết quả tìm kiếm</h2>
+    <h2 class="text-center text-primary mb-4">Kết quả tìm kiếm cho "<?php echo htmlspecialchars($tukhoa); ?>"</h2>
 
     <!-- Kiểm tra và hiển thị kết quả tìm kiếm -->
     <div class="row">
         <?php if (isset($sachs) && is_array($sachs) && !empty($sachs)): ?>
             <?php foreach ($sachs as $sach): ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <?php echo "<img src='/admin/ql_sach/sach/{$sach['anh_bia']}' class='card-img-top' alt='Book'>" ?>
-                        <div class="card-body text-center">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <img src="/admin/ql_sach/sach/<?php echo htmlspecialchars($sach['anh_bia']); ?>" class="card-img-top"
+                             alt="Book">
+                        <div class="card-body d-flex flex-column">
                             <h5 class="card-title"><?php echo htmlspecialchars($sach['ten_sach']); ?></h5>
-                            <p class="card-text"><?php echo htmlspecialchars($sach['gia_ban']); ?></p>
-                            <form action="/view/add_to_cart.php" method="post">
+                            <p class="card-text text-success fw-bold">
+                                <?php echo htmlspecialchars(number_format($sach['gia_ban'], 0, ',', '.')); ?> VNĐ
+                            </p>
+                            <form action="/view/add_to_cart.php" method="post" class="mt-auto">
                                 <input type="hidden" name="ma_sach" value="<?php echo htmlspecialchars($sach['ma_sach']); ?>">
-                                <label for="so_luong_<?php echo htmlspecialchars($sach['ma_sach']); ?>">Số lượng:</label>
-                                <input type="number" name="so_luong" id="so_luong_<?php echo htmlspecialchars($sach['ma_sach']); ?>" value="1" min="1" max="100" required>
-                                <button type="submit">Thêm vào giỏ</button>
+                                <div class="mb-3">
+                                    <label for="so_luong_<?php echo htmlspecialchars($sach['ma_sach']); ?>"
+                                           class="form-label">Số lượng:</label>
+                                    <input type="number" class="form-control"
+                                           name="so_luong"
+                                           id="so_luong_<?php echo htmlspecialchars($sach['ma_sach']); ?>"
+                                           value="1" min="1" max="100" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-cart-plus"></i> Thêm vào giỏ
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -160,12 +205,14 @@ require_once(__DIR__ . '/../model/sach.php'); ?>
     </div>
 </div>
 
-
 <!-- Footer -->
 <footer class="footer text-center">
     <div class="container">
         <p>&copy; 2023 BookStore. All Rights Reserved.</p>
-        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <p>
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Service</a>
+        </p>
     </div>
 </footer>
 
