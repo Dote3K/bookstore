@@ -113,12 +113,12 @@ unset($_SESSION['success'], $_SESSION['error']);
                     ?>
                     <tr>
                         <td>
-                            <img src="assets/images/<?php echo htmlspecialchars($anh_bia); ?>" alt="<?php echo htmlspecialchars($ten_sach); ?>" width="50">
+                            <img src="/admin/ql_sach/sach/<?php echo htmlspecialchars($anh_bia); ?>" alt="<?php echo htmlspecialchars($ten_sach); ?>" width="50">
                         </td>
                         <td><?php echo htmlspecialchars($ten_sach); ?></td>
                         <td><?php echo number_format($gia_ban, 0, ',', '.'); ?> VND</td>
                         <td>
-                            <!-- Input số lượng với dữ liệu được gửi qua form -->
+
                             <input type="number" name="so_luong[<?php echo $ma_sach; ?>]" value="<?php echo $so_luong; ?>" min="1" max="100" required class="so-luong-input">
                         </td>
                         <td class="tong-tien-san-pham"><?php echo number_format($tong_tien_san_pham, 0, ',', '.'); ?> VND</td>

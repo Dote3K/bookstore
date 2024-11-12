@@ -51,8 +51,8 @@ session_start();
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <form class="d-flex" action="search.php" method="get">
-                        <input class="form-control me-2" type="search" name="query" placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
+                    <form class="d-flex" action="/view/findBook.php" method="get">
+                        <input class="form-control me-2" type="search" name="tukhoa" placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
                         <button class="btn btn-outline-primary" type="submit">
                             <i class="fa fa-search"></i>
                         </button>

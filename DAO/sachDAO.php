@@ -1,10 +1,12 @@
 <?php
 require_once  "JDBC.php";
 require_once 'DAOInterface.php';
-require_once 'model/sach.php';
-class sachDAO implements DAOinterface {
+require_once __DIR__ . '/../model/sach.php';
+class sachDAO implements DAOinterface
+{
 
-    public function selectAll(): array {
+    public function selectAll(): array
+    {
         $ketQua = [];
         try {
             $con = JDBC::getConnection();
@@ -23,12 +25,12 @@ class sachDAO implements DAOinterface {
                 $gia_mua = $row['gia_mua'];
                 $gia_ban = $row['gia_ban'];
                 $so_luong = $row['so_luong'];
-                $namxuatban= $row['nam_xuat_ban'];
+                $namxuatban = $row['nam_xuat_ban'];
                 $mo_ta = $row['mo_ta'];
                 $anh_bia = $row['anh_bia'];
 
 
-                $ketQua[] = new sach($masach ,$tensach, $tacgia ,$ma_nxb, $matheloai, $gia_mua, $gia_ban,$so_luong ,$namxuatban, $mo_ta,$anh_bia );
+                $ketQua[] = new sach($masach, $tensach, $tacgia, $ma_nxb, $matheloai, $gia_mua, $gia_ban, $so_luong, $namxuatban, $mo_ta, $anh_bia);
             }
 
             JDBC::closeConnection($con);
@@ -39,23 +41,32 @@ class sachDAO implements DAOinterface {
         return $ketQua;
     }
 
-    public function selectById($t) {
+    public function selectById($maSach)
+    {
         $ketQua = null;
         try {
             $con = JDBC::getConnection();
 
-            $sql = "SELECT * FROM tacgia WHERE ma_tac_gia = ?";
+            $sql = "SELECT * FROM sach WHERE ma_sach = ?";
             $stmt = $con->prepare($sql);
-            $stmt->bind_param("s", $t->getMaTacGia());
+            $stmt->bind_param("i", $maSach);
             $stmt->execute();
 
             $result = $stmt->get_result();
             if ($row = $result->fetch_assoc()) {
-                $maTacGia = $row['ma_tac_gia'];
-                $tenTacGia = $row['ten_tac_gia'];
-                $ngaySinh = $row['ngay_sinh'];
-                $tieuSu = $row['tieu_su'];
-                $ketQua = new TacGia($maTacGia, $tenTacGia, $ngaySinh, $tieuSu);
+                $ketQua = new sach(
+                    $row['ma_sach'],
+                    $row['ten_sach'],
+                    $row['ma_tac_gia'],
+                    $row['ma_nxb'],
+                    $row['ma_the_loai'],
+                    $row['gia_mua'],
+                    $row['gia_ban'],
+                    $row['so_luong'],
+                    $row['nam_xuat_ban'],
+                    $row['mo_ta'],
+                    $row['anh_bia']
+                );
             }
 
             JDBC::closeConnection($con);
@@ -66,21 +77,31 @@ class sachDAO implements DAOinterface {
         return $ketQua;
     }
 
-    public function insert($t): int {
+    public function insert($sach): int
+    {
         $ketQua = 0;
         try {
             $con = JDBC::getConnection();
-
-            $sql = "INSERT INTO tacgia (ma_tac_gia, ten_tac_gia, ngay_sinh, tieu_su) VALUES (?, ?, ?, ?)";
+            $sql = "INSERT INTO sach (ma_sach, ten_sach, ma_tac_gia, ma_nxb, ma_the_loai, gia_mua, gia_ban, so_luong, nam_xuat_ban, mo_ta, anh_bia)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $con->prepare($sql);
-            $stmt->bind_param("ssss", $t->getMaTacGia(), $t->getTenTacGia(), $t->getNgaySinh(), $t->getTieuSu());
+            $stmt->bind_param(
+                "issiiiiiiss",
+                $sach->getMaSach(),
+                $sach->getTenSach(),
+                $sach->getMaTacGia(),
+                $sach->getMaNXB(),
+                $sach->getMaTheLoai(),
+                $sach->getGiaMua(),
+                $sach->getGiaBan(),
+                $sach->getSoLuong(),
+                $sach->getNamXuatBan(),
+                $sach->getMoTa(),
+                $sach->getAnhBia()
+            );
 
             $stmt->execute();
             $ketQua = $stmt->affected_rows;
-
-            echo "Executed: $sql\n";
-            echo "Rows affected: " . $ketQua . "\n";
-
             JDBC::closeConnection($con);
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -89,29 +110,25 @@ class sachDAO implements DAOinterface {
         return $ketQua;
     }
 
-    public function insertAll(array $arr): int {
+    public function insertAll(array $arr): int
+    {
         $count = 0;
-        foreach ($arr as $tacGia) {
-            $count += $this->insert($tacGia);
+        foreach ($arr as $sach) {
+            $count += $this->insert($sach);
         }
         return $count;
     }
 
-    public function delete($t): int {
+    public function delete($maSach): int
+    {
         $ketQua = 0;
         try {
             $con = JDBC::getConnection();
-
-            $sql = "DELETE FROM tacgia WHERE ma_tac_gia = ?";
+            $sql = "DELETE FROM sach WHERE ma_sach = ?";
             $stmt = $con->prepare($sql);
-            $stmt->bind_param("s", $t->getMaTacGia());
-
+            $stmt->bind_param("i", $maSach);
             $stmt->execute();
             $ketQua = $stmt->affected_rows;
-
-            echo "Executed: $sql\n";
-            echo "Rows affected: " . $ketQua . "\n";
-
             JDBC::closeConnection($con);
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -120,29 +137,40 @@ class sachDAO implements DAOinterface {
         return $ketQua;
     }
 
-    public function deleteAll(array $arr): int {
+    public function deleteAll(array $arr): int
+    {
         $count = 0;
-        foreach ($arr as $tacGia) {
-            $count += $this->delete($tacGia);
+        foreach ($arr as $sach) {
+            $count += $this->delete($sach);
         }
         return $count;
     }
 
-    public function update($t): int {
+    public function update($sach): int
+    {
         $ketQua = 0;
         try {
             $con = JDBC::getConnection();
-
-            $sql = "UPDATE tacgia SET ten_tac_gia = ?, ngay_sinh = ?, tieu_su = ? WHERE ma_tac_gia = ?";
+            $sql = "UPDATE sach SET ten_sach = ?, ma_tac_gia = ?, ma_nxb = ?, ma_the_loai = ?, gia_mua = ?, gia_ban = ?, so_luong = ?, nam_xuat_ban = ?, mo_ta = ?, anh_bia = ?
+                    WHERE ma_sach = ?";
             $stmt = $con->prepare($sql);
-            $stmt->bind_param("ssss", $t->getTenTacGia(), $t->getNgaySinh(), $t->getTieuSu(), $t->getMaTacGia());
+            $stmt->bind_param(
+                "ssiiiiiissi",
+                $sach->getTenSach(),
+                $sach->getMaTacGia(),
+                $sach->getMaNXB(),
+                $sach->getMaTheLoai(),
+                $sach->getGiaMua(),
+                $sach->getGiaBan(),
+                $sach->getSoLuong(),
+                $sach->getNamXuatBan(),
+                $sach->getMoTa(),
+                $sach->getAnhBia(),
+                $sach->getMaSach()
+            );
 
             $stmt->execute();
             $ketQua = $stmt->affected_rows;
-
-            echo "Executed: $sql\n";
-            echo "Rows affected: " . $ketQua . "\n";
-
             JDBC::closeConnection($con);
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -151,7 +179,8 @@ class sachDAO implements DAOinterface {
         return $ketQua;
     }
 
-    public function checkMaTacGia($maTacGia): bool {
+    public function checkMaTacGia($maTacGia): bool
+    {
         $ketQua = false;
         try {
             $con = JDBC::getConnection();
@@ -173,5 +202,51 @@ class sachDAO implements DAOinterface {
 
         return $ketQua;
     }
+
+    public function timKiemSach($tukhoa)
+    {
+        $ketqua = [];
+        try {
+            $con = JDBC::getConnection();
+            $sql = "SELECT sach.*, tacgia.ten AS ten_tac_gia
+        FROM sach 
+        JOIN tacgia ON sach.ma_tac_gia = tacgia.ma_tac_gia
+        WHERE sach.ten_sach LIKE ? OR tacgia.ten LIKE ?";
+
+            $stmt = $con->prepare($sql);
+            $keyword = "%$tukhoa%";
+            $stmt->bind_param("ss", $keyword, $keyword);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            while($row = $result->fetch_assoc()) {
+                $ketqua[] = $row;
+            }
+
+            JDBC::closeConnection($con);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        return $ketqua;
+    }
+    public function getBookById($maSach) {
+        // Kết nối với cơ sở dữ liệu (đảm bảo đã có kết nối từ DBUtil.php hoặc nơi nào đó)
+        $conn = JDBC::getConnection();
+        $sql = "SELECT sach.*, tacgia.ten AS ten_tacgia, theloai.the_loai, nxb.ten AS ten_nxb
+        FROM sach
+        JOIN tacgia ON sach.ma_tac_gia = tacgia.ma_tac_gia
+        JOIN theloai ON sach.ma_the_loai = theloai.ma_the_loai
+        JOIN nxb ON sach.ma_nxb = nxb.ma_nxb
+        WHERE sach.ma_sach = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $maSach); // Binds the ma_sach as an integer parameter
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc(); // Trả về thông tin sách dưới dạng mảng
+        } else {
+            return null; // Nếu không tìm thấy sách, trả về null
+        }
+    }
 }
-?>

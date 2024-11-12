@@ -196,7 +196,7 @@ unset($_SESSION['success'], $_SESSION['error']);
                     ?>
                     <tr>
                         <td>
-                            <img src="assets/images/<?php echo htmlspecialchars($anh_bia); ?>" alt="<?php echo htmlspecialchars($ten_sach); ?>" width="50">
+                            <img src="/admin/ql_sach/sach/<?php echo htmlspecialchars($anh_bia); ?>" alt="<?php echo htmlspecialchars($ten_sach); ?>" width="50">
                         </td>
                         <td><?php echo htmlspecialchars($ten_sach); ?></td>
                         <td><?php echo number_format($gia_ban, 0, ',', '.'); ?> VND</td>
