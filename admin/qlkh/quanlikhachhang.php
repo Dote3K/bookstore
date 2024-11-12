@@ -1,6 +1,6 @@
 <?php
 require '../../connect.php';
-require '../../checker/kiemtra_admin.php';
+//require '../../checker/kiemtra_admin.php';
 
 // Xử lý tìm kiếm và lọc theo vai trò
 $search_query = '';
