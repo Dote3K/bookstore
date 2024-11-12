@@ -99,7 +99,12 @@
                     <div class="card-body text-center">
                         <h5 class="card-title"><?php echo htmlspecialchars($sach->getTenSanPham()); ?></h5>
                         <p class="card-text"><?php echo htmlspecialchars($sach->getGiaBan()); ?></p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
+                        <form action="view/add_to_cart.php" method="post">
+                            <input type="hidden" name="ma_sach" value="<?php echo htmlspecialchars($sach->getMaSanPham()); ?>">
+                            <label for="so_luong_<?php echo htmlspecialchars($sach->getMaSanPham()); ?>">Số lượng:</label>
+                            <input type="number" name="so_luong" id="so_luong_<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" value="1" min="1" max="100" required>
+                            <button type="submit">Thêm vào giỏ</button>
+                        </form>
                     </div>
                 </div>
             </div>

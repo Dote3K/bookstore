@@ -103,9 +103,9 @@ class DonHangController
             echo "Không thể chuyển trạng thái từ '$trangThaiHienTai' sang '$trangThaiMoi->value'.";
         }
 
-        header("Location: /bookstore/DonHangRouter.php?action=list");
+        header("Location: DonHangRouter.php?action=list");
         exit();
-        require '/bookstore/view/listOrderAll.php';
+        require 'view/listOrderAll.php';
     }
     
 }
