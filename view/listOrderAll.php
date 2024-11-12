@@ -82,6 +82,12 @@ require 'checker/kiemtra_admin.php'; // Đảm bảo rằng admin đã đăng nh
                                         case 'DANG_CHO':
                                             echo 'Đang chờ';
                                             break;
+                                        case 'CHO_THANH_TOAN':
+                                            echo 'Chờ thanh toán';
+                                            break;
+                                        case 'DA_THANH_TOAN':
+                                            echo 'Đã thanh toán';
+                                            break;
                                         case 'DA_XAC_NHAN':
                                             echo 'Đã xác nhận';
                                             break;
@@ -104,6 +110,8 @@ require 'checker/kiemtra_admin.php'; // Đảm bảo rằng admin đã đăng nh
 
                                         <select name="trangThai" class="form-select form-select-sm" style="width: auto;">
                                             <?php if ($donHang->getTrangThai() === 'DANG_CHO') : ?>
+                                                <option value="DA_XAC_NHAN">Đã xác nhận</option>
+                                            <?php elseif ($donHang->getTrangThai() === 'DA_THANH_TOAN') : ?>
                                                 <option value="DA_XAC_NHAN">Đã xác nhận</option>
                                             <?php elseif ($donHang->getTrangThai() === 'DA_XAC_NHAN') : ?>
                                                 <option value="DANG_GIAO">Đang giao</option>

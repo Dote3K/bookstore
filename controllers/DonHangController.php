@@ -80,6 +80,7 @@ class DonHangController
 
         $allowedTransitions = [
             TrangThaiDonHang::DANG_CHO->value => TrangThaiDonHang::DA_XAC_NHAN->value,
+            TrangThaiDonHang::DA_THANH_TOAN->value => TrangThaiDonHang::DA_XAC_NHAN->value,
             TrangThaiDonHang::DA_XAC_NHAN->value => TrangThaiDonHang::DANG_GIAO->value,
             TrangThaiDonHang::DANG_GIAO->value => TrangThaiDonHang::DA_GIAO->value,
         ];

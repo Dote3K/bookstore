@@ -1,5 +1,4 @@
 <?php
-// checkout.php
 require_once '../checker/kiemtra_login.php';
 require '../connect.php';
 
@@ -141,6 +140,7 @@ unset($_SESSION['success'], $_SESSION['error']);
         <?php endif; ?>
 
         <form action="process_checkout.php" method="post">
+            <!-- Thông tin giao hàng -->
             <div class="form-section">
                 <h2 class="mb-3">Thông tin giao hàng</h2>
                 <div class="mb-3">
@@ -184,6 +184,7 @@ unset($_SESSION['success'], $_SESSION['error']);
                 </div>
             </div>
 
+            <!-- Thông tin đơn hàng -->
             <div class="form-section">
                 <h2 class="mb-3">Thông tin đơn hàng</h2>
                 <div class="table-responsive order-summary">
@@ -225,6 +226,18 @@ unset($_SESSION['success'], $_SESSION['error']);
                         </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Phương thức thanh toán -->
+            <div class="form-section">
+                <h2 class="mb-3">Phương thức thanh toán</h2>
+                <div class="mb-3">
+                    <label for="phuong_thuc_thanh_toan" class="form-label"><strong>Chọn phương thức thanh toán:</strong></label>
+                    <select class="form-select" id="phuong_thuc_thanh_toan" name="phuong_thuc_thanh_toan" required>
+                        <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+                        <option value="Chuyển khoản ngân hàng">Chuyển khoản ngân hàng</option>
+                    </select>
                 </div>
             </div>
 
