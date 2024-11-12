@@ -1,27 +1,60 @@
 <?php
+session_start();
 require_once '../model/donhang.php'; 
 require_once '../DAO/donhangDAO.php';
-require_once '../DAO/khachHangDAO.php'; 
+require_once '../DAO/sachDAO.php';
+require_once '../DAO/khachhangDAO.php';
 
-session_start();
 
+
+// Kiểm tra đăng nhập
 if (!isset($_SESSION['ma_khach_hang'])) {
     header('Location: login.php');
     exit;
 }
-$selected_books = isset($_POST['selected_books']) ? $_POST['selected_books'] : [];
 
-if (isset($_SESSION['total_cost'])) {
-    $total_cost = $_SESSION['total_cost'];
-    echo "Tổng tiền: " . $total_cost;
+// Kiểm tra xem có dữ liệu selected_books trong session hoặc form gửi lên không
+if (isset($_SESSION['selected_books'])) {
+    $selected_books = $_SESSION['selected_books'];
+} elseif (isset($_POST['selected_books'])) {
+    $selected_books = $_POST['selected_books'];
+    $_SESSION['selected_books'] = $selected_books;  // Lưu lại vào session để sử dụng sau này
 } else {
-    echo "<p>Không có thông tin về tổng tiền.</p>";
+    echo "Không có sản phẩm nào được chọn.";
+    exit;
 }
 
-$maKhachHang = $_SESSION['ma_khach_hang']; 
-$donHangDAO = new donHangDAO();
-$donHangs = $donHangDAO->selectByMaKhachHang($maKhachHang);
 
+
+// Lấy thông tin đơn hàng từ session
+$order_id = $_SESSION['order_id'] ?? null;
+$total_cost = $_SESSION['total_cost'] ?? null;
+$ma_khach_hang = $_SESSION['ma_khach_hang'];
+
+// Khởi tạo đối tượng DAO
+$sachDAO = new sachDAO();
+$donHangDAO = new donHangDAO();
+$khachHangDAO = new khachHangDAO();
+
+try {
+    // Hiển thị thông tin các sản phẩm đã chọn
+    // echo "<h2>Sản phẩm đã chọn</h2>";
+    // foreach ($selected_books as $book_id) {
+    //     $book_info = $sachDAO->getBookById($book_id); 
+    //     if ($book_info) {
+    //         echo "<p>Tên sách: " . htmlspecialchars($book_info['ten_sach']) . "</p>";
+    //         echo "<p>Giá: " . htmlspecialchars($book_info['gia_ban']). "</p>";
+    //     } else {
+    //         echo "<p>Không tìm thấy thông tin sách với mã: $book_id</p>";
+    //     }
+    // }
+
+    // Lấy danh sách đơn hàng theo mã khách hàng
+    $donHangs = $donHangDAO->selectByMaKhachHang($ma_khach_hang);
+
+} catch (Exception $e) {
+    echo "<p>Đã xảy ra lỗi: " . $e->getMessage() . "</p>";
+}
 ?>
 
 <!DOCTYPE html>
@@ -154,16 +187,15 @@ $donHangs = $donHangDAO->selectByMaKhachHang($maKhachHang);
             </thead>
             <tbody>
                 <?php foreach ($donHangs as $donHang): 
-                        $khachHangDAO = new KhachHangDAO();
-                        $tenKhachHang = $khachHangDAO->getCustomerNameById($donHang->getMaKhachHang());
-                    ?>
+                    $tenKhachHang = $khachHangDAO->getCustomerNameById($donHang->getMaKhachHang());
+                ?>
                 <tr>
                     <td><?php echo htmlspecialchars($donHang->getMaDonHang(), ENT_QUOTES, 'UTF-8'); ?></td>
                     <td><?php echo htmlspecialchars($tenKhachHang, ENT_QUOTES, 'UTF-8'); ?></td>
                     <td><?php echo date('d-m-Y', strtotime($donHang->getNgayDatHang())); ?></td>
                     <td><?php echo htmlspecialchars($donHang->getDiaChiNhanHang(), ENT_QUOTES, 'UTF-8'); ?></td>
                     <td><?php echo htmlspecialchars($donHang->getTrangThai(), ENT_QUOTES, 'UTF-8'); ?></td>
-                    <td><?php echo htmlspecialchars($donHang->getTong(), ENT_QUOTES, 'UTF-8'); ?> </td>
+                    <td><?php echo number_format($donHang->getTong(), 0, ',', '.') . " VND"; ?></td>
                     <td>
                         <a
                             href="orderDetails.php?ma_don_hang=<?php echo htmlspecialchars($donHang->getMaDonHang(), ENT_QUOTES, 'UTF-8'); ?>">Xem

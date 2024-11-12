@@ -184,6 +184,8 @@ class DonHangDAO implements DAOInterface
                 $row['dia_chi_nhan_hang'],
                 $row['giam_gia']
             );
+        } else {
+            throw new Exception("Không tìm thấy đơn hàng với mã: " . $id);
         }
 
         $stmt->close();
@@ -197,20 +199,41 @@ class DonHangDAO implements DAOInterface
         // Thêm ngày đặt hàng sử dụng hàm NOW() trong MySQL để lấy ngày và giờ hiện tại
         $ngay_dat_hang = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại từ PHP
 
-        $sql = "INSERT INTO donhang (ma_khach_hang, tong, dia_chi_nhan_hang, giam_gia, trang_thai, ngay_dat_hang) 
-                VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO donhang (ma_khach_hang, tong, dia_chi_nhan_hang, trang_thai, ngay_dat_hang) 
+                VALUES (?, ?, ?, ?, ?)";
 
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("idssss", $ma_khach_hang, $tong, $dia_chi_nhan_hang, $giam_gia, $trang_thai, $ngay_dat_hang);
-        $stmt->execute();
+        if ($stmt === false) {
+            echo "Error preparing statement: " . $conn->error;
+            return false;
+        }
+        $stmt->bind_param("idsss", $ma_khach_hang, $tong, $dia_chi_nhan_hang, $trang_thai, $ngay_dat_hang);
+        if (!$stmt->execute()) {
+            echo "Error executing statement: " . $stmt->error;
+            $stmt->close();
+            JDBC::closeConnection($conn);
+            return false;
+        }
         $stmt->close();
+        JDBC::closeConnection($conn);
+        return true;
     }
 
     public function getLastOrderId() {
         $conn = JDBC::getConnection();
         $sql = "SELECT LAST_INSERT_ID() AS order_id";
+        
         $result = $conn->query($sql);
+    if ($result) {
         $row = $result->fetch_assoc();
+        $result->free();  // Free result set
+        JDBC::closeConnection($conn);
         return $row['order_id'];
+    } else {
+        echo "Error retrieving last order ID: " . $conn->error;
+        JDBC::closeConnection($conn);
+        return null;
     }
+    }
+    
 }

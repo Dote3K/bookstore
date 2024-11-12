@@ -3,7 +3,6 @@ require_once '../checker/kiemtra_login.php';
 require_once '../DAO/sachDAO.php';
 require_once '../DAO/donhangDAO.php';
 
-
 if(!isset($_SESSION['ma_khach_hang'])) {
     header("Location: login.php");
     exit();
@@ -39,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
             $_SESSION['selected_books'][$ma_sach] = $so_luong;
         }
     }
+    $_SESSION['selected_books'] = $selected_books;
 }
 // Chuyển hướng sau khi xác nhận thanh toán
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
@@ -46,35 +46,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
     $dia_chi_nhan_hang = $_POST['dia_chi_nhan_hang'] ?? '';
     $giam_gia = $_POST['giam_gia'] ?? 0;
 
-
-    $total_cost = 0;
-    if (isset($_SESSION['selected_books']) && !empty($_SESSION['selected_books'])) {
-        foreach ($_SESSION['selected_books'] as $ma_sach => $so_luong) {
-            $thongTinChiTiet = $sachDAO->getBookById($ma_sach);
-            if ($thongTinChiTiet) {
-                $gia_ban = $thongTinChiTiet['gia_ban'];
-                $total_cost += $gia_ban * $so_luong;
-            }
-        }
-    } else {
-        echo "Không có sản phẩm nào trong giỏ hàng!";
-        exit;
-    }
-    $total_cost -= $giam_gia;
-    $_SESSION['total_cost'] = $total_cost;
-    $trang_thai = 'DANG_CHO';
+    $total_cost = calculateTotalCost($selected_books, $sachDAO);
+    $_SESSION['total_cost'] = $total_cost - $giam_gia;
 
     $donHangDAO = new DonHangDAO();
-    $donHangDAO->addOrder($ma_khach_hang, $total_cost, $dia_chi_nhan_hang, $giam_gia, $trang_thai);
+    $donHangDAO->addOrder($ma_khach_hang, $_SESSION['total_cost'], $dia_chi_nhan_hang, $giam_gia, 'DANG_CHO');
 
-    $order_id = $donHangDAO->getLastOrderId();
-    $_SESSION['order_id'] = $order_id;
-    $_SESSION['order_books'] = $_SESSION['selected_books'];
-
-    unset($_SESSION['selected_books']);
-    header("Location: orderStatus.php?order_id=".$order_id);
+    header("Location: orderStatus.php");
     exit();
 }
+
+function calculateTotalCost($selected_books, $sachDAO) {
+    $total_cost = 0;
+    foreach ($selected_books as $ma_sach => $so_luong) {
+        $thongTinChiTiet = $sachDAO->getBookById($ma_sach);
+        if ($thongTinChiTiet) {
+            $gia_ban = $thongTinChiTiet['gia_ban'];
+            $total_cost += $gia_ban * $so_luong;
+        }
+    }
+    return $total_cost;
+}
+
+    // unset($_SESSION['selected_books']);
+    // header("Location: orderStatus.php");
+    // exit();
+// }
 
 // Xóa các session `ma_sach_home` và `selected_books`
 if (isset($_GET['action']) && $_GET['action'] === 'unset_sessions') {
@@ -82,14 +79,15 @@ if (isset($_GET['action']) && $_GET['action'] === 'unset_sessions') {
     echo "Sessions cleared";
     exit;
 }
-?>
+ ?>
+
 <!-- Xóa session khi chuyển trang -->
-<script>
+<!--script>
 window.addEventListener('beforeunload', function() {
     // Gửi yêu cầu AJAX đến cùng `checkout.php` để xóa session
     navigator.sendBeacon('checkout.php?action=unset_sessions');
 });
-</script>
+</script-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -216,7 +214,6 @@ window.addEventListener('beforeunload', function() {
 
             foreach ($selected_books as $ma_sach) {
                 $thongTinChiTiet = $sachDAO->getBookById($ma_sach);
-
                 if ($thongTinChiTiet) {
                     $anh_bia = htmlspecialchars($thongTinChiTiet['anh_bia'] ?? 'default_image.jpg');
                     $ten_sach = htmlspecialchars($thongTinChiTiet['ten_sach'] ?? 'Tên sách không có');
@@ -225,7 +222,7 @@ window.addEventListener('beforeunload', function() {
                     $nha_xuat_ban = htmlspecialchars($thongTinChiTiet['ten_nxb'] ?? 'Chưa có thông tin nhà xuất bản');
                     $gia_ban = htmlspecialchars($thongTinChiTiet['gia_ban'] ?? 'Chưa có giá');
                     $mo_ta = htmlspecialchars($thongTinChiTiet['mo_ta'] ?? 'Chưa có mô tả');
-                    $so_luong = $thongTinChiTiet['so_luong'] ?? 0;
+                    $so_luong = $thongTinChiTiet['so_luong'] ?? 1;
 
                     // Hiển thị thông tin sách đã chọn dưới phần header
                     echo '<div class="card mb-4">';
@@ -252,7 +249,7 @@ window.addEventListener('beforeunload', function() {
                     echo '</div>';
 
                     // Tính tổng tiền cho các sách
-                    $total_cost += $gia_ban * 1; // Giả sử số lượng là 1 cho mỗi cuốn sách trong giỏ
+                    $total_cost += $gia_ban * 1; 
                 }
             }
 
@@ -275,14 +272,14 @@ window.addEventListener('beforeunload', function() {
 
         <script>
         function updateTotalCost() {
-            let totalCost = 0;
+            let total_cost = 0;
             document.querySelectorAll('.quantity-input').forEach(input => {
                 let quantity = parseInt(input.value) || 1;
                 let price = parseFloat(input.closest('.card-body').querySelector('.book-price').getAttribute(
                     'data-price')) || 0;
-                totalCost += quantity * price;
+                total_cost += quantity * price;
             });
-            document.getElementById('total_cost').textContent = "Tổng tiền: " + totalCost;
+            document.getElementById('total_cost').textContent = "Tổng tiền: " + total_cost;
         }
         </script>
 
