@@ -181,7 +181,7 @@ unset($_SESSION['success'], $_SESSION['error']);
                     let tongTien = 0;
                     document.querySelectorAll('.so-luong-input').forEach(function(input) {
                         let soLuong = parseInt(input.value);
-                        // Lấy giá bán từ cột thứ 3 (giá bán)
+                        // Lấy giá bán từ bảng
                         let giaBanText = input.parentElement.parentElement.querySelector('td:nth-child(3)').innerText;
                         let giaBan = parseInt(giaBanText.replace(/\./g, '').replace(' VND', ''));
                         let tongSanPham = soLuong * giaBan;

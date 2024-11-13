@@ -22,14 +22,14 @@ if (!$khach_hang) {
     exit;
 }
 
-// Cập nhật giỏ hàng với số lượng mới từ form giỏ hàng
+// cập nhật giỏ hàng với số lượng mới từ form giỏ hàng
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['so_luong']) && is_array($_POST['so_luong'])) {
         foreach ($_POST['so_luong'] as $ma_sach => $so_luong) {
             $ma_sach = (int)$ma_sach;
             $so_luong = (int)$so_luong;
             if ($ma_sach > 0 && $so_luong > 0) {
-                // Kiểm tra số lượng tồn kho
+                // kiểm tra sl trong db
                 $stmt = $conn->prepare("SELECT so_luong FROM sach WHERE ma_sach = ?");
                 $stmt->bind_param("i", $ma_sach);
                 $stmt->execute();
