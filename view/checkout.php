@@ -202,9 +202,9 @@ unset($_SESSION['success'], $_SESSION['error']);
                         <?php
                         $tong_tien = 0;
                         foreach ($_SESSION['cart'] as $ma_sach => $item):
-                            $ten_sach = isset($item['ten_sach']) ? $item['ten_sach'] : 'N/A';
-                            $gia_ban = isset($item['gia_ban']) ? $item['gia_ban'] : 0;
-                            $anh_bia = isset($item['anh_bia']) ? $item['anh_bia'] : 'default.jpg';
+                            $ten_sach = isset($item['ten_sach']);
+                            $gia_ban = isset($item['gia_ban']);
+                            $anh_bia = isset($item['anh_bia']);
                             $so_luong = isset($item['so_luong']) ? $item['so_luong'] : 1;
                             $tong_tien_san_pham = $gia_ban * $so_luong;
                             $tong_tien += $tong_tien_san_pham;
@@ -229,7 +229,7 @@ unset($_SESSION['success'], $_SESSION['error']);
                 </div>
             </div>
 
-            <!-- Phương thức thanh toán -->
+
             <div class="form-section">
                 <h2 class="mb-3">Phương thức thanh toán</h2>
                 <div class="mb-3">

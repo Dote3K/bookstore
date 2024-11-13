@@ -132,11 +132,10 @@ unset($_SESSION['success'], $_SESSION['error']);
                         <?php
                         $tong_tien = 0;
                         foreach ($_SESSION['cart'] as $ma_sach => $item):
-                            // Kiểm tra xem các khóa cần thiết có tồn tại không
-                            $ten_sach = isset($item['ten_sach']) ? $item['ten_sach'] : 'N/A';
-                            $gia_ban = isset($item['gia_ban']) ? $item['gia_ban'] : 0;
-                            $anh_bia = isset($item['anh_bia']) ? $item['anh_bia'] : 'default.jpg';
-                            $so_luong = isset($item['so_luong']) ? $item['so_luong'] : 1;
+                            $ten_sach = isset($item['ten_sach']);
+                            $gia_ban = isset($item['gia_ban']);
+                            $anh_bia = isset($item['anh_bia']);
+                            $so_luong = isset($item['so_luong']);
                             $tong_tien_san_pham = $gia_ban * $so_luong;
                             $tong_tien += $tong_tien_san_pham;
                             ?>
