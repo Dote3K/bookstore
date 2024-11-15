@@ -1,7 +1,7 @@
 <!-- sidebar.php -->
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 200px; height: 100vh;">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-        <span class="fs-4">Admin</span>
+        <span class="fs-4">Trang quản lý</span>
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
@@ -46,5 +46,11 @@
             </a>
         </li>
     </ul>
-    <hr>
+
+    <div class="mt-auto">
+        <hr>
+        <a href="/index.php" class="nav-link link-dark" style="font-size: 14px;">
+            <i class="fas fa-home"></i> Về trang chủ
+        </a>
+    </div>
 </div>
