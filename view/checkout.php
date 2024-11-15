@@ -22,14 +22,14 @@ if (!$khach_hang) {
     exit;
 }
 
-// cập nhật giỏ hàng với số lượng mới từ form giỏ hàng
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+// Cập nhật giỏ hàng với số lượng mới từ form giỏ hàng
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['check_discount_code'])) {
     if (isset($_POST['so_luong']) && is_array($_POST['so_luong'])) {
         foreach ($_POST['so_luong'] as $ma_sach => $so_luong) {
             $ma_sach = (int)$ma_sach;
             $so_luong = (int)$so_luong;
             if ($ma_sach > 0 && $so_luong > 0) {
-                // kiểm tra sl trong db
+                // Kiểm tra số lượng trong cơ sở dữ liệu
                 $stmt = $conn->prepare("SELECT so_luong FROM sach WHERE ma_sach = ?");
                 $stmt->bind_param("i", $ma_sach);
                 $stmt->execute();
@@ -52,13 +52,63 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $thong_bao_thanh_cong = isset($_SESSION['success']) ? $_SESSION['success'] : '';
 $thong_bao_loi = isset($_SESSION['error']) ? $_SESSION['error'] : '';
 unset($_SESSION['success'], $_SESSION['error']);
+
+// Xử lý mã giảm giá nếu người dùng nhấn nút "Kiểm tra"
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['check_discount_code'])) {
+    $ma_giam_gia_code = isset($_POST['ma_giam_gia']) ? trim($_POST['ma_giam_gia']) : '';
+    if (!empty($ma_giam_gia_code)) {
+        // Kiểm tra mã giảm giá trong cơ sở dữ liệu
+        $stmt = $conn->prepare("SELECT * FROM ma_giam_gia WHERE ma_giam = ? AND trang_thai = 'kich_hoat' AND (ngay_bat_dau IS NULL OR ngay_bat_dau <= NOW()) AND (ngay_ket_thuc IS NULL OR ngay_ket_thuc >= NOW()) AND (so_lan_su_dung_toi_da IS NULL OR so_lan_da_su_dung < so_lan_su_dung_toi_da)");
+        $stmt->bind_param("s", $ma_giam_gia_code);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $ma_giam_gia = $result->fetch_assoc();
+
+        if ($ma_giam_gia) {
+            // Mã giảm giá hợp lệ
+            // Tính tổng tiền giỏ hàng
+            $tong = 0;
+            foreach ($_SESSION['cart'] as $item) {
+                $tong += $item['gia_ban'] * $item['so_luong'];
+            }
+            // Kiểm tra giá trị tối thiểu của đơn hàng
+            if ($ma_giam_gia['tong_don_hang_toi_thieu'] === null || $tong >= $ma_giam_gia['tong_don_hang_toi_thieu']) {
+                // Tính giá trị giảm
+                if ($ma_giam_gia['loai_giam_gia'] == 'phan_tram') {
+                    $giam_gia = $tong * ($ma_giam_gia['gia_tri_giam'] / 100);
+                } else {
+                    $giam_gia = $ma_giam_gia['gia_tri_giam'];
+                }
+                // Lưu thông tin giảm giá vào session
+                $_SESSION['discount'] = [
+                    'ma_giam_gia_id' => $ma_giam_gia['ma'],
+                    'ma_giam_gia_code' => $ma_giam_gia['ma_giam'],
+                    'giam_gia' => $giam_gia
+                ];
+                $_SESSION['success'] = "Mã giảm giá đã được áp dụng.";
+            } else {
+                $_SESSION['error'] = "Đơn hàng chưa đạt giá trị tối thiểu để áp dụng mã giảm giá.";
+                unset($_SESSION['discount']);
+            }
+        } else {
+            // Mã giảm giá không hợp lệ
+            $_SESSION['error'] = "Mã giảm giá không hợp lệ hoặc đã hết hạn.";
+            unset($_SESSION['discount']);
+        }
+    } else {
+        $_SESSION['error'] = "Vui lòng nhập mã giảm giá.";
+        unset($_SESSION['discount']);
+    }
+    // Chuyển hướng về checkout.php để hiển thị thông báo
+    header('Location: checkout.php');
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="vi">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Store - Thanh toán</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -139,7 +189,7 @@ unset($_SESSION['success'], $_SESSION['error']);
             </div>
         <?php endif; ?>
 
-        <form action="process_checkout.php" method="post">
+        <form action="" method="post">
             <!-- Thông tin giao hàng -->
             <div class="form-section">
                 <h2 class="mb-3">Thông tin giao hàng</h2>
@@ -153,9 +203,11 @@ unset($_SESSION['success'], $_SESSION['error']);
                     <label for="gioi_tinh" class="form-label"><strong>Giới tính:</strong></label>
                     <select class="form-select" id="gioi_tinh" name="gioi_tinh" required>
                         <option value="Nam" <?php echo ($khach_hang['gioi_tinh'] == 'Nam') ? 'selected' : ''; ?>>
-                            Nam</option>
+                            Nam
+                        </option>
                         <option value="Nữ" <?php echo ($khach_hang['gioi_tinh'] == 'Nữ') ? 'selected' : ''; ?>>
-                            Nữ</option>
+                            Nữ
+                        </option>
                     </select>
                 </div>
 
@@ -202,9 +254,9 @@ unset($_SESSION['success'], $_SESSION['error']);
                         <?php
                         $tong_tien = 0;
                         foreach ($_SESSION['cart'] as $ma_sach => $item):
-                            $ten_sach = isset($item['ten_sach']);
-                            $gia_ban = isset($item['gia_ban']);
-                            $anh_bia = isset($item['anh_bia']);
+                            $ten_sach = isset($item['ten_sach']) ? $item['ten_sach'] : '';
+                            $gia_ban = isset($item['gia_ban']) ? $item['gia_ban'] : 0;
+                            $anh_bia = isset($item['anh_bia']) ? $item['anh_bia'] : '';
                             $so_luong = isset($item['so_luong']) ? $item['so_luong'] : 1;
                             $tong_tien_san_pham = $gia_ban * $so_luong;
                             $tong_tien += $tong_tien_san_pham;
@@ -224,12 +276,42 @@ unset($_SESSION['success'], $_SESSION['error']);
                             <td colspan="4" class="text-end"><strong>Tổng cộng:</strong></td>
                             <td><strong><?php echo number_format($tong_tien, 0, ',', '.'); ?> VND</strong></td>
                         </tr>
+                        <?php
+                        if (isset($_SESSION['discount'])) {
+                            $giam_gia = $_SESSION['discount']['giam_gia'];
+                            $tong_tien_sau_giam = $tong_tien - $giam_gia;
+                            if ($tong_tien_sau_giam < 0) {
+                                $tong_tien_sau_giam = 0;
+                            }
+                            ?>
+                            <tr>
+                                <td colspan="4" class="text-end"><strong>Giảm giá (<?php echo htmlspecialchars($_SESSION['discount']['ma_giam_gia_code']); ?>):</strong></td>
+                                <td><strong>- <?php echo number_format($giam_gia, 0, ',', '.'); ?> VND</strong></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="text-end"><strong>Tổng thanh toán:</strong></td>
+                                <td><strong><?php echo number_format($tong_tien_sau_giam, 0, ',', '.'); ?> VND</strong></td>
+                            </tr>
+                            <?php
+                        }
+                        ?>
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Nhập mã giảm giá -->
+                <div class="mb-3">
+                    <label for="ma_giam_gia" class="form-label"><strong>Mã giảm giá:</strong></label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="ma_giam_gia" name="ma_giam_gia"
+                               placeholder="Nhập mã giảm giá nếu có"
+                               value="<?php echo isset($_SESSION['discount']['ma_giam_gia_code']) ? htmlspecialchars($_SESSION['discount']['ma_giam_gia_code']) : ''; ?>">
+                        <button type="submit" name="check_discount_code" class="btn btn-primary">Kiểm tra</button>
+                    </div>
+                </div>
             </div>
 
-
+            <!-- Phương thức thanh toán -->
             <div class="form-section">
                 <h2 class="mb-3">Phương thức thanh toán</h2>
                 <div class="mb-3">
@@ -241,7 +323,7 @@ unset($_SESSION['success'], $_SESSION['error']);
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-success w-100">
+            <button type="submit" class="btn btn-success w-100" formaction="process_checkout.php">
                 <i class="fas fa-check-circle"></i> Đặt hàng
             </button>
         </form>
@@ -259,5 +341,4 @@ unset($_SESSION['success'], $_SESSION['error']);
     </div>
 </footer>
 </body>
-
 </html>

@@ -32,7 +32,7 @@ class KhachHangController {
             $khachHang->setMatKhauMaHoa($matKhau);
             
             if ($this->khachHangDAO->insert($khachHang) > 0) {
-                header("Location: loginRouter.php");
+                header("Location: KhachHangRouter.php?action=login");
                 exit();
             } else {
                 $_SESSION['error'] = "Đăng ký không thành công!";
@@ -52,7 +52,7 @@ class KhachHangController {
     
             if (empty($tenDangNhap) || empty($matKhau)) {
                 $_SESSION['error'] = "Tên đăng nhập và mật khẩu không được để trống!";
-                header("Location: view/login.php");
+                header("Location: KhachHangRouter.php?action=login");
                 exit();
             }
     
@@ -70,13 +70,13 @@ class KhachHangController {
                 }
     
                 $_SESSION['error'] = "Tên đăng nhập hoặc mật khẩu không đúng!";
-                header("Location: view/login.php");
+                header("Location: KhachHangRouter.php?action=login");
                 exit();
                 
             } catch (Exception $e) {
                 error_log("Login error: " . $e->getMessage());
                 $_SESSION['error'] = "Có lỗi xảy ra trong quá trình đăng nhập!";
-                header("Location: view/login.php");
+                header("Location: KhachHangRouter.php?action=login");
                 exit();
             }
         }

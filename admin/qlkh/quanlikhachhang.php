@@ -76,9 +76,7 @@ if (isset($_GET['search']) || isset($_GET['role'])) {
             <!-- Header -->
             <header class="header d-flex justify-content-between align-items-center">
                 <h1>Quản lý khách hàng</h1>
-                <div class="nav-links">
-                    <a href="../../home.php" class="btn btn-secondary">👤 Tài khoản</a>
-                </div>
+
             </header>
 
             <!-- Form tìm kiếm và lọc -->

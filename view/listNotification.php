@@ -22,6 +22,7 @@ session_start();
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
         integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
 <style>
@@ -161,7 +162,7 @@ session_start();
                     </div>
                 </div>
             <?php else: ?>
-                <a class="nav-link" href="/bookstore/loginRouter.php">
+                <a class="nav-link" href="/KhachHangRouter.php?action=login">
                     <i class="fa fa-user"></i> Tài khoản
                 </a>
             <?php endif; ?>

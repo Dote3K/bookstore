@@ -53,9 +53,7 @@ require '../../../checker/kiemtra_admin.php';
             <!-- Header -->
             <header class="header d-flex justify-content-between align-items-center">
                 <h1>Thông tin Thể Loại</h1>
-                <div class="nav-links">
-                    <a href="../../../home.php" class="btn btn-secondary">👤 Tài khoản</a>
-                </div>
+
             </header>
 
             <!-- Nội dung trang -->

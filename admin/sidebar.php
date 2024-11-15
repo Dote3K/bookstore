@@ -40,6 +40,11 @@
                 Quản lý sách
             </a>
         </li>
+        <li>
+            <a href="/admin/qlmagiamgia/show_ma_giam_gia.php" class="nav-link link-dark">
+                Quản lý mã giảm giá
+            </a>
+        </li>
     </ul>
     <hr>
 </div>
