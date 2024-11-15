@@ -1,1 +1,4 @@
 /admin/ql_sach/sach/anhbia/
+/view/order.php
+/view/process_checkout.php
+/view/sepay_webhook.php
