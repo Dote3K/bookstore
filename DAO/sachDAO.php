@@ -11,7 +11,12 @@ class sachDAO implements DAOinterface
         try {
             $con = JDBC::getConnection();
 
-            $sql = "SELECT * FROM sach";
+            $sql = "SELECT sach.*, tacgia.ten AS ten_tac_gia, theloai.the_loai, nxb.ten AS ten_nxb
+        FROM sach
+        JOIN tacgia ON sach.ma_tac_gia = tacgia.ma_tac_gia
+        JOIN theloai ON sach.ma_the_loai = theloai.ma_the_loai
+        JOIN nxb ON sach.ma_nxb = nxb.ma_nxb
+        WHERE sach.so_luong > 0";
             $stmt = $con->prepare($sql);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -28,9 +33,12 @@ class sachDAO implements DAOinterface
                 $namxuatban = $row['nam_xuat_ban'];
                 $mo_ta = $row['mo_ta'];
                 $anh_bia = $row['anh_bia'];
+                $ten_tac_gia = $row['ten_tac_gia'];
+                $ten_nxb = $row['ten_nxb'];
+                $the_loai = $row['the_loai'];
 
 
-                $ketQua[] = new sach($masach, $tensach, $tacgia, $ma_nxb, $matheloai, $gia_mua, $gia_ban, $so_luong, $namxuatban, $mo_ta, $anh_bia);
+                $ketQua[] = new sach($masach, $tensach, $tacgia, $ma_nxb, $matheloai, $gia_mua, $gia_ban, $so_luong, $namxuatban, $mo_ta, $anh_bia, $ten_tac_gia, $ten_nxb, $the_loai);
             }
 
             JDBC::closeConnection($con);
@@ -65,7 +73,10 @@ class sachDAO implements DAOinterface
                     $row['so_luong'],
                     $row['nam_xuat_ban'],
                     $row['mo_ta'],
-                    $row['anh_bia']
+                    $row['anh_bia'],
+                    $row['ten_tac_gia'],
+                    $row['ten_nxb'],
+                    $row['the_loai']
                 );
             }
 

@@ -126,7 +126,11 @@
                 <div class="card h-100">
                     <img src="admin/ql_sach/sach/<?php echo htmlspecialchars($sach->getThemAnh()); ?>" class="card-img-top" alt="Book">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title"><?php echo htmlspecialchars($sach->getTenSanPham()); ?></h5>
+                        <h5 class="card-title">
+                            <a style="color: #ff6b6b" href="#" data-bs-toggle="modal" data-bs-target="#bookModal<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" class="text-decoration-none">
+                                <?php echo htmlspecialchars($sach->getTenSanPham()); ?>
+                            </a>
+                        </h5>
                         <p class="card-text text-success fw-bold"><?php echo htmlspecialchars(number_format($sach->getGiaBan(), 0, ',', '.')); ?> VNĐ</p>
                         <form action="view/add_to_cart.php" method="post" class="mt-auto">
                             <input type="hidden" name="ma_sach" value="<?php echo htmlspecialchars($sach->getMaSanPham()); ?>">
@@ -138,6 +142,46 @@
                                 <i class="fas fa-cart-plus"></i> Thêm vào giỏ
                             </button>
                         </form>
+                    </div>
+                </div>
+            </div>
+<!--        Modal-->
+            <div class="modal fade" id="bookModal<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" tabindex="-1" aria-labelledby="bookModalLabel<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="bookModalLabel<?php echo htmlspecialchars($sach->getMaSanPham()); ?>"><?php echo htmlspecialchars($sach->getTenSanPham()); ?></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img src="admin/ql_sach/sach/<?php echo htmlspecialchars($sach->getThemAnh()); ?>" class="img-fluid" alt="Book">
+                                </div>
+                                <div class="col-md-8">
+                                    <h5>Giá Bán: <span class="text-success fw-bold"><?php echo htmlspecialchars(number_format($sach->getGiaBan(), 0, ',', '.')); ?> VNĐ</span></h5>
+                                    <p><strong>Kho:</strong> <?php echo htmlspecialchars($sach->getSoluong()); ?></p>
+                                    <p><strong>Tác Giả:</strong> <?php echo htmlspecialchars($sach->getTen_tac_gia()); ?></p>
+                                    <p><strong>Năm xuất bản:</strong> <?php echo htmlspecialchars($sach->getNamxuatban()); ?></p>
+                                    <p><strong>Nhà Xuất Bản:</strong> <?php echo htmlspecialchars($sach->getTen_nxb()); ?></p>
+                                    <p><strong>Thể Loại:</strong> <?php echo htmlspecialchars($sach->getThe_loai()); ?></p>
+                                    <p><strong>Mô Tả:</strong> <?php echo htmlspecialchars($sach->getMoTa()); ?></p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="view/add_to_cart.php" method="post" class="w-100">
+                                <input type="hidden" name="ma_sach" value="<?php echo htmlspecialchars($sach->getMaSanPham()); ?>">
+                                <div class="mb-3">
+                                    <label for="so_luong_modal_<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" class="form-label">Số lượng:</label>
+                                    <input type="number" class="form-control" name="so_luong" id="so_luong_modal_<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" value="1" min="1" max="100" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-cart-plus"></i> Thêm vào giỏ
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

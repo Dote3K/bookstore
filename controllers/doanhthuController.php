@@ -4,8 +4,8 @@ include __DIR__ .  '/../DAO/doanhthu_DAO.php';
 class doanhthufunction {
     private $DAO;
 
-    public function __construct($db) {
-        $this->doanhthuDAO = new doanhthuDAO($db);
+    public function __construct($conn) {
+        $this->doanhthuDAO = new doanhthuDAO($conn);
     }
 
     public function doanhThuNgay($date) {
