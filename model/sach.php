@@ -28,7 +28,7 @@ class sach {
         $soLuong,
         $namXuatBan,
         $moTa,
-        $themAnh
+        $themAnh,
     ) {
         $this->maSanPham = $maSanPham;
         $this->tenSanPham = $tenSanPham;

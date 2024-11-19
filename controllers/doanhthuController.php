@@ -6,8 +6,13 @@ class doanhthufunction {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     public function __construct($db) {
         $this->DAO = new doanhthuDAO($db);
+=======
+    public function __construct($conn) {
+        $this->doanhthuDAO = new doanhthuDAO($conn);
+>>>>>>> 597d457140ad2cbb3a5897917d0a74529418d322
 =======
     public function __construct($conn) {
         $this->doanhthuDAO = new doanhthuDAO($conn);
