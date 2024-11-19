@@ -11,14 +11,18 @@ class sach {
     private $theLoai;
     private $moTa;
     private $themAnh;
+    private $ten_tac_gia;
+    private $ten_nxb;
+    private $the_loai;
+
 
     // Constructor
     public function __construct(
         $maSanPham,
         $tenSanPham,
-        $tacGia,
-        $nhaXuatBan,
-        $theLoai,
+        $ten_tac_gia,
+        $ten_nxb,
+        $the_loai,
         $giamua,
         $giaBan,
         $soLuong,
@@ -28,9 +32,9 @@ class sach {
     ) {
         $this->maSanPham = $maSanPham;
         $this->tenSanPham = $tenSanPham;
-        $this->tacGia = $tacGia;
-        $this->nhaXuatBan = $nhaXuatBan;
-        $this->theLoai = $theLoai;
+        $this->ten_tac_gia = $ten_tac_gia;
+        $this->ten_nxb = $ten_nxb;
+        $this->the_loai = $the_loai;
         $this->giamua = $giamua;
         $this->giaBan = $giaBan;
         $this->soLuong = $soLuong;
@@ -126,6 +130,21 @@ class sach {
 
     public function setThemAnh($themAnh) {
         $this->themAnh = $themAnh;
+    }
+    public function getTen_tac_gia() {
+        return $this->ten_tac_gia;
+    }
+    public function setTen_tac_gia($ten_tac_gia) {
+        $this->ten_tac_gia = $ten_tac_gia;
+    }
+    public function getTen_nxb() {
+        return $this->ten_nxb;
+    }
+    public function setTen_nxb($ten_nxb) {
+        $this->ten_nxb = $ten_nxb;
+    }
+    public function getThe_loai() {
+        return $this->the_loai;
     }
 }
 ?>

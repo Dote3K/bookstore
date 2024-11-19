@@ -36,8 +36,9 @@ class DonHangController
         $maKhachHang = $_SESSION['ma_khach_hang'];
         $donHangs = $this->donHangDAO->selectByMaKhachHang($maKhachHang);
 
-        require 'view/listOrderUser.php';
+        require 'C:/Users/Acer/Documents/GitHub/bookstore/view/listOrderUser.php';
     }
+    
 
 
     public function delete()
@@ -56,9 +57,9 @@ class DonHangController
         } else {
             echo "Xóa đơn hàng không thành công.";
         }
-        header("Location: listOrderUserRouter.php");
+        header("Location: DonHangRouter.php?action=listOrderUser");
         exit();
-        require '../view/listOrderUser.php';
+        require 'C:/Users/Acer/Documents/GitHub/bookstore/view/listOrderUser.php';
     }
 
 
@@ -108,5 +109,6 @@ class DonHangController
         exit();
         require 'view/listOrderAll.php';
     }
+
     
 }

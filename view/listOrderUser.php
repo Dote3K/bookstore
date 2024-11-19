@@ -71,7 +71,7 @@
                             <td><?php echo $donHang->getDiaChiNhanHang(); ?></td>
                             <td><?php echo $donHang->getTrangThai(); ?></td>
                             <td>
-                                <form action="../DonHangRouter.php?action=delete" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này không?');">
+                                <form action="/DonHangRouter.php?action=delete" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này không?');">
                                     <input type="hidden" name="maDonHang" value="<?php echo $donHang->getMaDonHang(); ?>">
                                     <button type="submit" class="btn btn-danger">Hủy</button>
                                 </form>

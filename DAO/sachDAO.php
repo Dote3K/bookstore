@@ -11,7 +11,12 @@ class sachDAO implements DAOinterface
         try {
             $con = JDBC::getConnection();
 
-            $sql = "SELECT * FROM sach";
+            $sql = "SELECT sach.*, tacgia.ten AS ten_tac_gia, theloai.the_loai, nxb.ten AS ten_nxb
+        FROM sach
+        JOIN tacgia ON sach.ma_tac_gia = tacgia.ma_tac_gia
+        JOIN theloai ON sach.ma_the_loai = theloai.ma_the_loai
+        JOIN nxb ON sach.ma_nxb = nxb.ma_nxb
+        WHERE sach.so_luong > 0";
             $stmt = $con->prepare($sql);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -28,9 +33,12 @@ class sachDAO implements DAOinterface
                 $namxuatban = $row['nam_xuat_ban'];
                 $mo_ta = $row['mo_ta'];
                 $anh_bia = $row['anh_bia'];
+                $ten_tac_gia = $row['ten_tac_gia'];
+                $ten_nxb = $row['ten_nxb'];
+                $the_loai = $row['the_loai'];
 
 
-                $ketQua[] = new sach($masach, $tensach, $tacgia, $ma_nxb, $matheloai, $gia_mua, $gia_ban, $so_luong, $namxuatban, $mo_ta, $anh_bia);
+                $ketQua[] = new sach($masach, $tensach, $tacgia, $ma_nxb, $matheloai, $gia_mua, $gia_ban, $so_luong, $namxuatban, $mo_ta, $anh_bia, $ten_tac_gia, $ten_nxb, $the_loai);
             }
 
             JDBC::closeConnection($con);
@@ -65,7 +73,10 @@ class sachDAO implements DAOinterface
                     $row['so_luong'],
                     $row['nam_xuat_ban'],
                     $row['mo_ta'],
-                    $row['anh_bia']
+                    $row['anh_bia'],
+                    $row['ten_tac_gia'],
+                    $row['ten_nxb'],
+                    $row['the_loai']
                 );
             }
 
@@ -219,7 +230,7 @@ class sachDAO implements DAOinterface
             $stmt->execute();
             $result = $stmt->get_result();
 
-            while($row = $result->fetch_assoc()) {
+            while ($row = $result->fetch_assoc()) {
                 $ketqua[] = $row;
             }
 
@@ -229,7 +240,8 @@ class sachDAO implements DAOinterface
         }
         return $ketqua;
     }
-    public function getBookById($maSach) {
+    public function getBookById($maSach)
+    {
         // Kết nối với cơ sở dữ liệu (đảm bảo đã có kết nối từ DBUtil.php hoặc nơi nào đó)
         $conn = JDBC::getConnection();
         $sql = "SELECT sach.*, tacgia.ten AS ten_tacgia, theloai.the_loai, nxb.ten AS ten_nxb
@@ -249,4 +261,55 @@ class sachDAO implements DAOinterface
             return null; // Nếu không tìm thấy sách, trả về null
         }
     }
+    public function selectByPage($start, $end)
+    {
+        $conn = JDBC::getConnection();
+        $sql = "SELECT * from sach ORDER BY ma_sach LIMIT ?,?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $start, $end);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $sachs = [];
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $sach = new sach(
+                    $row['ma_sach'],
+                    $row['ten_sach'],
+                    $row['ma_tac_gia'],
+                    $row['ma_nxb'],
+                    $row['ma_the_loai'],
+                    $row['gia_mua'],
+                    $row['gia_ban'],
+                    $row['so_luong'],
+                    $row['nam_xuat_ban'],
+                    $row['mo_ta'],
+                    $row['anh_bia']
+                );
+                $sachs[] = $sach;
+            }
+        }
+        $stmt->close();
+        JDBC::closeConnection($conn);
+        return $sachs;
+    }
+    public function getTotalBook()
+    {
+        $total = 0;
+        $conn = JDBC::getConnection();
+        $sql = "SELECT COUNT(*) as total FROM sach";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $total = $row['total']; 
+        }
+    
+        $stmt->close();
+        JDBC::closeConnection($conn);
+        return $total; 
+    }
+    
 }

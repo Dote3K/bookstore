@@ -1,38 +1,43 @@
 <?php
-include __DIR__ .  '/../DAO/doanhthu_DAO.php';
+require_once 'C:/Users/Acer/Documents/GitHub/bookstore/DAO/doanhthu_DAO.php';
 
 class doanhthufunction {
     private $DAO;
 
+<<<<<<< HEAD
     public function __construct($db) {
-        $this->doanhthuDAO = new doanhthuDAO($db);
+        $this->DAO = new doanhthuDAO($db);
+=======
+    public function __construct($conn) {
+        $this->doanhthuDAO = new doanhthuDAO($conn);
+>>>>>>> 597d457140ad2cbb3a5897917d0a74529418d322
     }
 
     public function doanhThuNgay($date) {
-        return $this->doanhthuDAO->getDoanhThuNgay($date);
+        return $this->DAO->getDoanhThuNgay($date);
     }
 
     public function chiTietDoanhThuThang($month, $year) {
-        return $this->doanhthuDAO->getChiTietDoanhThuThang($month, $year);
+        return $this->DAO->getChiTietDoanhThuThang($month, $year);
     }
     public function doanhThuThang($month, $year) {
-        return $this->doanhthuDAO->getDoanhThuThang($month, $year);
+        return $this->DAO->getDoanhThuThang($month, $year);
     }
 
     public function chiTietDoanhThuNam($yearonly) {
-        return $this->doanhthuDAO->getChiTietDoanhThuNam($yearonly);
+        return $this->DAO->getChiTietDoanhThuNam($yearonly);
     }
     public function doanhThuNam($yearonly) {
-        return $this->doanhthuDAO->getDoanhThuNam($yearonly);
+        return $this->DAO->getDoanhThuNam($yearonly);
     }
     public function bestSellerNgay($date){
-        return $this->doanhthuDAO->getBestSellerNgay($date);
+        return $this->DAO->getBestSellerNgay($date);
     }
     public function bestSellerThang($month, $year) {
-        return $this->doanhthuDAO->getBestSellerThang($month, $year);
+        return $this->DAO->getBestSellerThang($month, $year);
     }
     public function bestSellerNam($yearonly) {
-        return $this->doanhthuDAO->getBestSellerNam($yearonly);
+        return $this->DAO->getBestSellerNam($yearonly);
     }
 }
 ?>
