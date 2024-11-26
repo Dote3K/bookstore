@@ -10,8 +10,8 @@ class doanhthuDAO{
         $sql = "
         SELECT 
     DATE(dh.ngay_dat_hang) AS ngay_dat_hang,
-    SUM(s.gia_ban * ctdh.so_luong) as doanh_thu,
-    SUM((s.gia_ban - s.gia_mua) * ctdh.so_luong) - dh.giam_gia AS loi_nhuan,
+    SUM(dh.tong) as doanh_thu,
+    SUM(dh.tong - (s.gia_mua * ctdh.so_luong)) AS loi_nhuan,
     SUM(ctdh.so_luong) AS so_luong,
     COUNT(DISTINCT ctdh.ma_don_hang) AS so_don
 FROM 
@@ -29,15 +29,15 @@ GROUP BY
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $date);
         $stmt->execute();
-        return $result = $stmt->get_result();
+        return $stmt->get_result();
 
     }
     public function getChiTietDoanhThuThang($month, $year){
         $sql = "
         SELECT 
     DATE(dh.ngay_dat_hang) AS ngay_dat_hang,
-    SUM(s.gia_ban * ctdh.so_luong) as doanh_thu,
-    SUM((s.gia_ban - s.gia_mua) * ctdh.so_luong) - dh.giam_gia AS loi_nhuan,
+    SUM(dh.tong) as doanh_thu,
+    SUM(dh.tong - (s.gia_mua * ctdh.so_luong)) AS loi_nhuan,
     SUM(ctdh.so_luong) AS so_luong,
     COUNT(DISTINCT ctdh.ma_don_hang) AS so_don
 FROM 
@@ -57,7 +57,7 @@ GROUP BY
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("ii", $month, $year);
         $stmt->execute();
-        return $result = $stmt->get_result();
+        return $stmt->get_result();
 
     }
     public function getChiTietDoanhThuNam($yearonly){
@@ -65,8 +65,8 @@ GROUP BY
         $sql = "
         SELECT 
     DATE(dh.ngay_dat_hang) AS ngay_dat_hang,
-    SUM(s.gia_ban * ctdh.so_luong) as doanh_thu,
-    SUM((s.gia_ban - s.gia_mua) * ctdh.so_luong) - dh.giam_gia AS loi_nhuan,
+    SUM(dh.tong) as doanh_thu,
+    SUM(dh.tong - (s.gia_mua * ctdh.so_luong)) AS loi_nhuan,
     SUM(ctdh.so_luong) AS so_luong,
     COUNT(DISTINCT ctdh.ma_don_hang) AS so_don
 FROM 
@@ -84,21 +84,15 @@ GROUP BY
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $yearonly);
         $stmt->execute();
-        return $result = $stmt->get_result();
+        return $stmt->get_result();
 
     }
     public function getDoanhThuThang($month, $year)
     {
         $sql = "SELECT 
     MONTH(dh.ngay_dat_hang) AS ngay_dat_hang,
-    SUM(s.gia_ban * ctdh.so_luong) as doanh_thu,
-    SUM((s.gia_ban - s.gia_mua) * ctdh.so_luong) - (
-        SELECT SUM(giam_gia) 
-        FROM donhang 
-        WHERE trang_thai = 'DA_GIAO' 
-        AND MONTH(dh.ngay_dat_hang) = ?
-        AND YEAR(ngay_dat_hang) = ?
-    ) AS loi_nhuan,
+    SUM(dh.tong) as doanh_thu,
+    SUM(dh.tong - (s.gia_mua * ctdh.so_luong)) AS loi_nhuan,
     SUM(ctdh.so_luong) AS so_luong,
     COUNT(DISTINCT ctdh.ma_don_hang) AS so_don
     FROM 
@@ -115,20 +109,15 @@ GROUP BY
     MONTH(dh.ngay_dat_hang);";
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("iiii", $month, $year, $month, $year);
+        $stmt->bind_param("ii", $month, $year);
         $stmt->execute();
-        return $result = $stmt->get_result();
+        return $stmt->get_result();
     }
     public function getDoanhThuNam($yearonly){
         $sql ="SELECT  
     YEAR(dh.ngay_dat_hang) AS ngay_dat_hang,
-    SUM(s.gia_ban * ctdh.so_luong) AS doanh_thu,
-    SUM((s.gia_ban - s.gia_mua) * ctdh.so_luong) - (
-        SELECT SUM(giam_gia) 
-        FROM donhang 
-        WHERE trang_thai = 'DA_GIAO' 
-        AND YEAR(ngay_dat_hang) = ?
-    ) AS loi_nhuan,
+    SUM(dh.tong) AS doanh_thu,
+    SUM(dh.tong - (s.gia_mua * ctdh.so_luong)) AS loi_nhuan,
     SUM(ctdh.so_luong) AS so_luong,
     COUNT(DISTINCT ctdh.ma_don_hang) AS so_don
 FROM 
@@ -143,9 +132,9 @@ WHERE
 GROUP BY
     YEAR(dh.ngay_dat_hang);";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ii", $yearonly, $yearonly);
+        $stmt->bind_param("i",  $yearonly);
         $stmt->execute();
-        return $result = $stmt->get_result();
+        return $stmt->get_result();
     }
     public function getBestSellerNgay($date){
         $sql = "SELECT 
@@ -169,7 +158,7 @@ ORDER BY
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $date);
         $stmt->execute();
-        return $result = $stmt->get_result();
+        return $stmt->get_result();
     }
     public function getBestSellerThang($month, $year){
         $sql = "SELECT 
@@ -193,7 +182,7 @@ ORDER BY
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("ii", $month, $year);
         $stmt->execute();
-        return $result = $stmt->get_result();
+        return $stmt->get_result();
     }
     public function getBestSellerNam($yearonly){
         $sql = "SELECT 
@@ -216,6 +205,6 @@ ORDER BY
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $yearonly);
         $stmt->execute();
-        return $result = $stmt->get_result();
+        return $stmt->get_result();
     }
 }

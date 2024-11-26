@@ -4,7 +4,7 @@ require '../connect.php';
 
 if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
     $_SESSION['error'] = "Giỏ hàng của bạn đang trống!";
-    header('Location: cart.php');
+    header('Location: /view/cart.php');
     exit;
 }
 
@@ -19,7 +19,7 @@ $khach_hang = $result->fetch_assoc();
 
 if (!$khach_hang) {
     $_SESSION['error'] = "Không tìm thấy thông tin khách hàng!";
-    header('Location: cart.php');
+    header('Location: /view/cart.php');
     exit;
 }
 
@@ -79,12 +79,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $ma_giam_gia_id = $ma_giam_gia['ma'];
                 } else {
                     $_SESSION['error'] = "Đơn hàng chưa đạt giá trị tối thiểu để áp dụng mã giảm giá.";
-                    header('Location: checkout.php');
+                    header('Location: /view/checkout.php');
                     exit;
                 }
             } else {
                 $_SESSION['error'] = "Mã giảm giá không hợp lệ hoặc đã hết hạn.";
-                header('Location: checkout.php');
+                header('Location: /view/checkout.php');
                 exit;
             }
         }
@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             unset($_SESSION['cart']);
 
             $_SESSION['success'] = "Đơn hàng của bạn đã được đặt thành công!";
-            header('Location: cart.php');
+            header('Location: /view/cart.php');
             exit;
         } else {
             // gửi thông báo chờ thanh toán
@@ -165,18 +165,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $_SESSION['success'] = "Đơn hàng của bạn đã được tạo và đang chờ thanh toán.";
 
-            header("Location: order.php?id=$ma_don_hang");
+            header("Location: /view/order.php?id=$ma_don_hang");
             exit;
         }
     } catch (Exception $e) {
         // rollback và báo lỗi nếu có lỗi
         $conn->rollback();
         $_SESSION['error'] = "Đã xảy ra lỗi trong quá trình xử lý đơn hàng: " . $e->getMessage();
-        header('Location: cart.php');
+        header('Location: /view/cart.php');
         exit;
     }
 } else {
-    header('Location: cart.php');
+    header('Location: /view/cart.php');
     exit;
 }
 ?>
