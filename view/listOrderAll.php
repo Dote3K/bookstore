@@ -65,7 +65,7 @@ require 'checker/kiemtra_admin.php'; // Đảm bảo rằng admin đã đăng nh
                         <th>Trạng Thái</th>
                         <th>Địa Chỉ Nhận Hàng</th>
                         <th>Giảm Giá</th>
-                        <th>Thao tác</th>
+                        <th colspan="2">Thao tác</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -119,10 +119,12 @@ require 'checker/kiemtra_admin.php'; // Đảm bảo rằng admin đã đăng nh
                                                 <option value="DA_GIAO">Đã giao</option>
                                             <?php endif; ?>
                                         </select>
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            <i class="fas fa-sync-alt"></i>
-                                            Cập nhật
-                                        </button>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-sync-alt"></i>
+                                        Cập nhật
+                                    </button>
                                     </form>
                                 </td>
 

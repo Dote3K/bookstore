@@ -3,7 +3,7 @@
 require_once '../checker/kiemtra_login.php';
 require '../connect.php';
 
-// Khởi tạo biến để lưu thông báo thành công hoặc lỗi
+// lưu thông báo thành công hoặc lỗi
 $thong_bao_thanh_cong = isset($_SESSION['success']) ? $_SESSION['success'] : '';
 $thong_bao_loi = isset($_SESSION['error']) ? $_SESSION['error'] : '';
 unset($_SESSION['success'], $_SESSION['error']);
@@ -151,7 +151,7 @@ unset($_SESSION['success'], $_SESSION['error']);
                                 </td>
                                 <td class="tong-tien-san-pham"><?php echo number_format($tong_tien_san_pham, 0, ',', '.'); ?> VND</td>
                                 <td>
-                                    <a href="remove_from_cart.php?ma_sach=<?php echo htmlspecialchars($ma_sach); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này không?');">
+                                    <a href="../DAO/remove_from_cart.php?ma_sach=<?php echo htmlspecialchars($ma_sach); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này không?');">
                                         <i class="fas fa-trash-alt"></i> Xóa
                                     </a>
                                 </td>
@@ -171,7 +171,7 @@ unset($_SESSION['success'], $_SESSION['error']);
                 </div>
             </form>
             <script>
-                // Hàm định dạng số với dấu chấm phân cách hàng nghìn
+                // định dạng số với dấu chấm phân cách hàng nghìn
                 function formatNumber(num) {
                     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
                 }
@@ -181,7 +181,7 @@ unset($_SESSION['success'], $_SESSION['error']);
                     let tongTien = 0;
                     document.querySelectorAll('.so-luong-input').forEach(function(input) {
                         let soLuong = parseInt(input.value);
-                        // Lấy giá bán từ cột thứ 3 (giá bán)
+                        // Lấy giá bán
                         let giaBanText = input.parentElement.parentElement.querySelector('td:nth-child(3)').innerText;
                         let giaBan = parseInt(giaBanText.replace(/\./g, '').replace(' VND', ''));
                         let tongSanPham = soLuong * giaBan;
@@ -189,11 +189,11 @@ unset($_SESSION['success'], $_SESSION['error']);
                         // Cập nhật tổng tiền sản phẩm
                         input.parentElement.parentElement.querySelector('.tong-tien-san-pham').innerText = formatNumber(tongSanPham) + ' VND';
                     });
-                    // Cập nhật tổng tiền đơn hàng với thẻ <strong>
+                    // Cập nhật tổng tiền đơn hàng
                     document.getElementById('tong-tien').innerHTML = '<strong>' + formatNumber(tongTien) + ' VND</strong>';
                 }
 
-                // Thêm sự kiện 'input' cho tất cả các trường số lượng
+                // tính tổng mo
                 document.querySelectorAll('.so-luong-input').forEach(function(input) {
                     input.addEventListener('input', tinhTong);
                 });

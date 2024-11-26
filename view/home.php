@@ -132,7 +132,7 @@
                             </a>
                         </h5>
                         <p class="card-text text-success fw-bold"><?php echo htmlspecialchars(number_format($sach->getGiaBan(), 0, ',', '.')); ?> VNĐ</p>
-                        <form action="view/add_to_cart.php" method="post" class="mt-auto">
+                        <form action="DAO/add_to_cart.php" method="post" class="mt-auto">
                             <input type="hidden" name="ma_sach" value="<?php echo htmlspecialchars($sach->getMaSanPham()); ?>">
                             <div class="mb-3">
                                 <label for="so_luong_<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" class="form-label">Số lượng:</label>
