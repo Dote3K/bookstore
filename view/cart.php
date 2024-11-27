@@ -85,6 +85,15 @@ unset($_SESSION['success'], $_SESSION['error']);
             background-color: #5a6268;
             color: #ffffff;
         }
+
+        .btn-primary:hover {
+            background-color: #e60000 !important;
+            border-color: #e60000 !important;
+        }
+
+        .btn-primary {
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
     </style>
 </head>
 

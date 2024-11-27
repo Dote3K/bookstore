@@ -84,6 +84,21 @@
             text-decoration: none;
         }
 
+        .btn-primary:hover {
+            background-color: #e60000 !important;
+            border-color: #e60000 !important;
+        }
+
+        .btn-primary {
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #fff;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 576px) {
             .carousel-item img {
@@ -110,15 +125,15 @@
             <div class="carousel-item active">
                 <img src="https://media.newyorker.com/photos/59ee325f1685003c9c28c4ad/4:3/w_4992,h_3744,c_limit/Heller-Kirkus-Reviews.jpg" class="d-block w-100" alt="Books">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>Explore Our Collection</h5>
-                    <p>Find your next favorite book today!</p>
+                    <h5>Hãy khám phá kho sách của chúng tôi</h5>
+                    <p>Tìm cuốn sách yêu thích tiếp theo của bạn ngay hôm nay</p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTleNea0dn5nmkoLkI-ba2cUQWNV0iNspw5UTVSg8Z8sgc2rf8qMsvb9iJCt6qXBipTp28&usqp=CAU" class="d-block w-100" alt="Reading">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Best Sellers</h5>
-                    <p>Discover the top-rated books of the season.</p>
+                    <p>Không biết mua gì? Hãy mua một quyển sách best seller.</p>
                 </div>
             </div>
         </div>
@@ -134,7 +149,7 @@
 
     <!-- Book Section -->
     <div class="container my-5">
-        <h2 class="text-center text-primary mb-4">Featured Books</h2>
+        <h2 class="text-center text-primary mb-4">Sách nổi bật</h2>
         <div class="row">
             <?php foreach ($sachs as $sach): ?>
                 <div class="col-lg-4 col-md-6 mb-4">
