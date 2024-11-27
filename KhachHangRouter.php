@@ -22,3 +22,4 @@ if (isset($_GET['action'])) {
 } else {
     echo "No action specified!";
 }
+?>

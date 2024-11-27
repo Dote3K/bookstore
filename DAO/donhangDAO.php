@@ -9,7 +9,7 @@ class DonHangDAO implements DAOInterface
     public function selectAll(): array
     {
         $conn = JDBC::getConnection();
-        $sql = "SELECT * FROM donhang";
+        $sql = "SELECT * FROM donhang ORDER BY ngay_dat_hang DESC";
         $result = $conn->query($sql);
 
         if (!$result) {
@@ -112,7 +112,7 @@ class DonHangDAO implements DAOInterface
     public function selectByMaKhachHang($maKhachHang): array
     {
         $conn = JDBC::getConnection();
-        $sql = "SELECT * FROM donhang WHERE ma_khach_hang = ?";
+        $sql = "SELECT * FROM donhang WHERE ma_khach_hang = ?  ORDER BY ngay_dat_hang DESC";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $maKhachHang);
         $stmt->execute();

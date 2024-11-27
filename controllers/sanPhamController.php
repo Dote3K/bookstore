@@ -22,6 +22,5 @@ class sanPhamController {
 
         require 'view/home.php';
     }
-    
    
 }

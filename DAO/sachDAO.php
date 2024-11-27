@@ -214,32 +214,7 @@ class sachDAO implements DAOinterface
         return $ketQua;
     }
 
-    public function timKiemSach($tukhoa)
-    {
-        $ketqua = [];
-        try {
-            $con = JDBC::getConnection();
-            $sql = "SELECT sach.*, tacgia.ten AS ten_tac_gia
-        FROM sach 
-        JOIN tacgia ON sach.ma_tac_gia = tacgia.ma_tac_gia
-        WHERE sach.ten_sach LIKE ? OR tacgia.ten LIKE ?";
-
-            $stmt = $con->prepare($sql);
-            $keyword = "%$tukhoa%";
-            $stmt->bind_param("ss", $keyword, $keyword);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            while ($row = $result->fetch_assoc()) {
-                $ketqua[] = $row;
-            }
-
-            JDBC::closeConnection($con);
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
-        return $ketqua;
-    }
+   
     public function getBookById($maSach)
     {
         // Kết nối với cơ sở dữ liệu (đảm bảo đã có kết nối từ DBUtil.php hoặc nơi nào đó)
@@ -311,5 +286,48 @@ class sachDAO implements DAOinterface
         JDBC::closeConnection($conn);
         return $total; 
     }
-    
+    public function searchBooks($keyword, $start = 0, $limit = 12) {
+    $conn = JDBC::getConnection();
+    $sql = "
+        SELECT 
+            s.ma_sach,
+            s.ten_sach, 
+            s.anh_bia,
+            s.gia_ban,
+            tg.ten AS ten_tac_gia, 
+            tl.the_loai 
+        FROM sach s
+        JOIN tacgia tg ON s.ma_tac_gia = tg.ma_tac_gia
+        JOIN theloai tl ON s.ma_the_loai = tl.ma_the_loai
+        WHERE 
+            s.ten_sach LIKE ? OR 
+            tg.ten LIKE ? OR 
+            tl.the_loai LIKE ?
+        LIMIT ?, ?
+    ";
+
+    try {
+        $stmt = $conn->prepare($sql);
+        
+        $searchKeyword = "%" . $keyword . "%";
+        $stmt->bind_param("sssii", $searchKeyword, $searchKeyword, $searchKeyword, $start, $limit);
+        
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        $books = [];
+        
+        while ($row = $result->fetch_assoc()) {
+            $books[] = $row;
+        }
+        
+        $stmt->close();
+        $conn->close();
+        
+        return $books;
+    } catch (Exception $e) {
+        error_log("Search Books Error: " . $e->getMessage());
+        return [];
+    }
+}
 }

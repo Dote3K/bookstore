@@ -41,7 +41,7 @@ class NotificationDAO implements DAOinterface
 
         $con = JDBC::getConnection();
 
-        $sql = "SELECT * FROM notifications WHERE ma_khach_hang = ?";
+        $sql = "SELECT * FROM notifications WHERE ma_khach_hang = ? ORDER BY created_at DESC";
         $stmt = $con->prepare($sql);
         $stmt->bind_param("i", $maKhachHang);
         $stmt->execute();
