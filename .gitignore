@@ -1,4 +1,4 @@
 /admin/ql_sach/sach/anhbia/
 /view/order.php
-/view/sepay_webhook.php
+/DAO/webhook.php
 /view/check_order_status.php

@@ -6,21 +6,22 @@ require '../../checker/kiemtra_admin.php';
 <head>
     <meta charset="UTF-8">
     <title>Thống kê doanh thu</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <style>
-        /* Các style tùy chỉnh */
         #form1, #form2, #form3 {
             display: none;
         }
         .table thead {
-            background-color: #4da6ff; /* Màu xanh lam nhạt */
+            background-color: #4da6ff;
             color: white;
         }
         .sidebar {
             background-color: #f8f9fa;
+        }
+        .header {
+            background-color: #e9ecef;
+            padding: 10px;
         }
     </style>
     <script>
@@ -42,14 +43,17 @@ require '../../checker/kiemtra_admin.php';
         </nav>
         <!-- Nội dung chính -->
         <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4 text-center">
-            <h1 class="mt-4">Thống kê doanh thu</h1>
+            <header class="header d-flex justify-content-between align-items-center">
+                <h1>Thông tin Sách</h1>
+
+            </header>
             <div class="btn-group mt-3" role="group">
                 <button type="button" class="btn btn-primary" onclick="showForm('form1')">Doanh thu theo ngày</button>
                 <button type="button" class="btn btn-primary" onclick="showForm('form2')">Doanh thu theo tháng</button>
                 <button type="button" class="btn btn-primary" onclick="showForm('form3')">Doanh thu theo năm</button>
             </div>
 
-            <!-- Form chọn ngày -->
+
             <div id="form1" class="mt-3">
                 <form method="get" action="" class="mx-auto" style="max-width: 400px;">
                     <div class="mb-3">
@@ -60,7 +64,7 @@ require '../../checker/kiemtra_admin.php';
                 </form>
             </div>
 
-            <!-- Form chọn tháng -->
+
             <div id="form2" class="mt-3">
                 <form method="get" action="" class="mx-auto" style="max-width: 400px;">
                     <div class="mb-3">
@@ -101,7 +105,7 @@ require '../../checker/kiemtra_admin.php';
                 </form>
             </div>
 
-            <!-- Form chọn năm -->
+
             <div id="form3" class="mt-3">
                 <form method="get" action="" class="mx-auto" style="max-width: 400px;">
                     <div class="mb-3">

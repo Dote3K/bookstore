@@ -23,7 +23,6 @@ class DonHangController
         $donHangs = $this->donHangDAO->selectAll();
 
         require  'view/listOrderAll.php';
-        include 'admin/sidebar.php';
     }
     public function listOrderUser()
     {

@@ -323,7 +323,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['check_discount_code'])
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-success w-100" formaction="process_checkout.php">
+            <button type="submit" class="btn btn-success w-100" formaction="/DAO/process_checkout.php">
                 <i class="fas fa-check-circle"></i> Đặt hàng
             </button>
         </form>

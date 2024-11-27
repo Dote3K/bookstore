@@ -14,6 +14,6 @@ if (isset($_GET['ma_sach'])) {
     $_SESSION['error'] = "Dữ liệu không hợp lệ!";
 }
 
-header('Location: cart.php');
+header('Location: /view/cart.php');
 exit;
 ?>
