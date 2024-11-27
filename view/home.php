@@ -124,10 +124,10 @@
         <?php foreach ($sachs as $sach): ?>
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card h-100">
-                    <img src="admin/ql_sach/sach/<?php echo htmlspecialchars($sach->getThemAnh()); ?>" class="card-img-top" alt="Book">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">
                             <a style="color: #ff6b6b" href="#" data-bs-toggle="modal" data-bs-target="#bookModal<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" class="text-decoration-none">
+                                <img src="admin/ql_sach/sach/<?php echo htmlspecialchars($sach->getThemAnh()); ?>" class="card-img-top" alt="Book">
                                 <?php echo htmlspecialchars($sach->getTenSanPham()); ?>
                             </a>
                         </h5>
