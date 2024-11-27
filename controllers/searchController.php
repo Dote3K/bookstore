@@ -1,5 +1,5 @@
 <?php
-require_once 'C:/Users/Acer/Documents/GitHub/bookstore/DAO/sachDAO.php';
+require_once 'DAO/sachDAO.php';
 
 class searchController {
     private $sachDAO;

@@ -35,7 +35,7 @@ class DonHangController
         $maKhachHang = $_SESSION['ma_khach_hang'];
         $donHangs = $this->donHangDAO->selectByMaKhachHang($maKhachHang);
 
-        require 'C:/Users/Acer/Documents/GitHub/bookstore/view/listOrderUser.php';
+        require 'view/listOrderUser.php';
     }
     
 
@@ -58,7 +58,7 @@ class DonHangController
         }
         header("Location: DonHangRouter.php?action=listOrderUser");
         exit();
-        require 'C:/Users/Acer/Documents/GitHub/bookstore/view/listOrderUser.php';
+        require 'view/listOrderUser.php';
     }
 
 
