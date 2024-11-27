@@ -47,9 +47,7 @@ if (isset($_GET['search']) || isset($_GET['role'])) {
             background-color: #4da6ff; /* Màu xanh lam nhạt */
             color: white;
         }
-        .sidebar {
-            background-color: #f8f9fa;
-        }
+
         .header {
             background-color: #e9ecef;
             padding: 10px;

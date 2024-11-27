@@ -14,9 +14,6 @@ require 'checker/kiemtra_admin.php'; // Đảm bảo rằng admin đã đăng nh
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Các style tùy chỉnh */
-        .sidebar {
-            background-color: #f8f9fa;
-        }
         .table thead {
             background-color: #4da6ff; /* Màu xanh lam nhạt */
             color: white;

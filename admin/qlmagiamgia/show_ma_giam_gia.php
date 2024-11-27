@@ -14,9 +14,7 @@ require '../../checker/kiemtra_admin.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <style>
         /* Các style tùy chỉnh */
-        .sidebar {
-            background-color: #f8f9fa;
-        }
+
         .table thead {
             background-color: #4da6ff; /* Màu xanh lam nhạt */
             color: white;

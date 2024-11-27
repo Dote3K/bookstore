@@ -16,9 +16,6 @@ require '../../checker/kiemtra_admin.php';
             background-color: #4da6ff;
             color: white;
         }
-        .sidebar {
-            background-color: #f8f9fa;
-        }
         .header {
             background-color: #e9ecef;
             padding: 10px;
