@@ -218,7 +218,7 @@ unset($_SESSION['success'], $_SESSION['error']);
 <!-- Footer -->
 <footer class="footer text-center">
     <div class="container">
-        <p>&copy; 2023 BookStore. All Rights Reserved.</p>
+        <p>&copy; 2024 BookStore. All Rights Reserved.</p>
         <p>
             <a href="#">Privacy Policy</a> |
             <a href="#">Terms of Service</a>

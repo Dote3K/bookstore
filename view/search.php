@@ -14,9 +14,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
-        body {
+        html, body {
             background: linear-gradient(45deg, #ff9a9e, #fad0c4);
             color: #333;
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
         }
 
         .navbar {
@@ -65,11 +69,16 @@
             background-color: #333333;
             color: #ffffff;
             padding: 1.5rem 0;
+            margin-top: auto;
         }
 
         .footer a {
             color: #ffcc33;
             text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
         }
 
         .breadcrumb-item a {
@@ -358,10 +367,10 @@
 
 <footer class="footer text-center">
     <div class="container">
-        <p>&copy; 2023 BookStore. Tất cả quyền được bảo lưu.</p>
+        <p>&copy; 2024 BookStore. All Rights Reserved.</p>
         <p>
-            <a href="#">Chính sách bảo mật</a> |
-            <a href="#">Điều khoản dịch vụ</a>
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Service</a>
         </p>
     </div>
 </footer>
