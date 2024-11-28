@@ -99,6 +99,15 @@
             color: #fff;
         }
 
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            min-width: 300px;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 576px) {
             .carousel-item img {
@@ -113,60 +122,97 @@
 </head>
 
 <body>
-    <?php include 'header.php'; ?>
+<?php include 'header.php'; ?>
 
-    <!-- Carousel -->
-    <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="https://media.newyorker.com/photos/59ee325f1685003c9c28c4ad/4:3/w_4992,h_3744,c_limit/Heller-Kirkus-Reviews.jpg" class="d-block w-100" alt="Books">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Hãy khám phá kho sách của chúng tôi</h5>
-                    <p>Tìm cuốn sách yêu thích tiếp theo của bạn ngay hôm nay</p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTleNea0dn5nmkoLkI-ba2cUQWNV0iNspw5UTVSg8Z8sgc2rf8qMsvb9iJCt6qXBipTp28&usqp=CAU" class="d-block w-100" alt="Reading">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Best Sellers</h5>
-                    <p>Không biết mua gì? Hãy mua một quyển sách best seller.</p>
-                </div>
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Trước</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Tiếp theo</span>
-        </button>
+<!-- Carousel -->
+<div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
     </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://media.newyorker.com/photos/59ee325f1685003c9c28c4ad/4:3/w_4992,h_3744,c_limit/Heller-Kirkus-Reviews.jpg" class="d-block w-100" alt="Books">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Hãy khám phá kho sách của chúng tôi</h5>
+                <p>Tìm cuốn sách yêu thích tiếp theo của bạn ngay hôm nay</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTleNea0dn5nmkoLkI-ba2cUQWNV0iNspw5UTVSg8Z8sgc2rf8qMsvb9iJCt6qXBipTp28&usqp=CAU" class="d-block w-100" alt="Reading">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Best Sellers</h5>
+                <p>Không biết mua gì? Hãy mua một quyển sách best seller.</p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Trước</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Tiếp theo</span>
+    </button>
+</div>
 
-    <!-- Book Section -->
-    <div class="container my-5">
-        <h2 class="text-center text-primary mb-4">Sách nổi bật</h2>
-        <div class="row">
-            <?php foreach ($sachs as $sach): ?>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <img src="admin/ql_sach/sach/<?php echo htmlspecialchars($sach->getThemAnh()); ?>" class="card-img-top" alt="Book">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">
-                                <a style="color: #ff6b6b" href="#" data-bs-toggle="modal" data-bs-target="#bookModal<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" class="text-decoration-none">
-                                    <?php echo htmlspecialchars($sach->getTenSanPham()); ?>
-                                </a>
-                            </h5>
-                            <p class="card-text text-success fw-bold"><?php echo htmlspecialchars(number_format($sach->getGiaBan(), 0, ',', '.')); ?> VNĐ</p>
-                            <form action="DAO/add_to_cart.php" method="post" class="mt-auto">
+<!-- Book Section -->
+<div class="container my-5">
+    <h2 class="text-center text-primary mb-4">Sách nổi bật</h2>
+    <div class="row">
+        <?php foreach ($sachs as $sach): ?>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    <img src="admin/ql_sach/sach/<?php echo htmlspecialchars($sach->getThemAnh()); ?>" class="card-img-top" alt="Book">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">
+                            <a style="color: #ff6b6b" href="#" data-bs-toggle="modal" data-bs-target="#bookModal<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" class="text-decoration-none">
+                                <?php echo htmlspecialchars($sach->getTenSanPham()); ?>
+                            </a>
+                        </h5>
+                        <p class="card-text text-success fw-bold"><?php echo htmlspecialchars(number_format($sach->getGiaBan(), 0, ',', '.')); ?> VNĐ</p>
+                        <form action="DAO/add_to_cart.php" method="post" class="mt-auto">
+                            <input type="hidden" name="ma_sach" value="<?php echo htmlspecialchars($sach->getMaSanPham()); ?>">
+                            <div class="mb-3">
+                                <label for="so_luong_<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" class="form-label">Số lượng:</label>
+                                <input type="number" class="form-control" name="so_luong" id="so_luong_<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" value="1" min="1" max="100" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-cart-plus"></i> Thêm vào giỏ
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="bookModal<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" tabindex="-1" aria-labelledby="bookModalLabel<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="bookModalLabel<?php echo htmlspecialchars($sach->getMaSanPham()); ?>"><?php echo htmlspecialchars($sach->getTenSanPham()); ?></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img src="admin/ql_sach/sach/<?php echo htmlspecialchars($sach->getThemAnh()); ?>" class="img-fluid" alt="Book">
+                                </div>
+                                <div class="col-md-8">
+                                    <h5>Giá Bán: <span class="text-success fw-bold"><?php echo htmlspecialchars(number_format($sach->getGiaBan(), 0, ',', '.')); ?> VNĐ</span></h5>
+                                    <p><strong>Kho:</strong> <?php echo htmlspecialchars($sach->getSoluong()); ?></p>
+                                    <p><strong>Tác Giả:</strong> <?php echo htmlspecialchars($sach->getTen_tac_gia()); ?></p>
+                                    <p><strong>Năm xuất bản:</strong> <?php echo htmlspecialchars($sach->getNamxuatban()); ?></p>
+                                    <p><strong>Nhà Xuất Bản:</strong> <?php echo htmlspecialchars($sach->getTen_nxb()); ?></p>
+                                    <p><strong>Thể Loại:</strong> <?php echo htmlspecialchars($sach->getThe_loai()); ?></p>
+                                    <p><strong>Mô Tả:</strong> <?php echo htmlspecialchars($sach->getMoTa()); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="DAO/add_to_cart.php" method="post" class="w-100">
                                 <input type="hidden" name="ma_sach" value="<?php echo htmlspecialchars($sach->getMaSanPham()); ?>">
                                 <div class="mb-3">
-                                    <label for="so_luong_<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" class="form-label">Số lượng:</label>
-                                    <input type="number" class="form-control" name="so_luong" id="so_luong_<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" value="1" min="1" max="100" required>
+                                    <label for="so_luong_modal_<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" class="form-label">Số lượng:</label>
+                                    <input type="number" class="form-control" name="so_luong" id="so_luong_modal_<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" value="1" min="1" max="100" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100">
                                     <i class="fas fa-cart-plus"></i> Thêm vào giỏ
@@ -175,86 +221,54 @@
                         </div>
                     </div>
                 </div>
-                <!-- modal -->
-                <div class="modal fade" id="bookModal<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" tabindex="-1" aria-labelledby="bookModalLabel<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="bookModalLabel<?php echo htmlspecialchars($sach->getMaSanPham()); ?>"><?php echo htmlspecialchars($sach->getTenSanPham()); ?></h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <img src="admin/ql_sach/sach/<?php echo htmlspecialchars($sach->getThemAnh()); ?>" class="img-fluid" alt="Book">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h5>Giá Bán: <span class="text-success fw-bold"><?php echo htmlspecialchars(number_format($sach->getGiaBan(), 0, ',', '.')); ?> VNĐ</span></h5>
-                                        <p><strong>Kho:</strong> <?php echo htmlspecialchars($sach->getSoluong()); ?></p>
-                                        <p><strong>Tác Giả:</strong> <?php echo htmlspecialchars($sach->getTen_tac_gia()); ?></p>
-                                        <p><strong>Năm xuất bản:</strong> <?php echo htmlspecialchars($sach->getNamxuatban()); ?></p>
-                                        <p><strong>Nhà Xuất Bản:</strong> <?php echo htmlspecialchars($sach->getTen_nxb()); ?></p>
-                                        <p><strong>Thể Loại:</strong> <?php echo htmlspecialchars($sach->getThe_loai()); ?></p>
-                                        <p><strong>Mô Tả:</strong> <?php echo htmlspecialchars($sach->getMoTa()); ?></p>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <form action="view/add_to_cart.php" method="post" class="w-100">
-                                    <input type="hidden" name="ma_sach" value="<?php echo htmlspecialchars($sach->getMaSanPham()); ?>">
-                                    <div class="mb-3">
-                                        <label for="so_luong_modal_<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" class="form-label">Số lượng:</label>
-                                        <input type="number" class="form-control" name="so_luong" id="so_luong_modal_<?php echo htmlspecialchars($sach->getMaSanPham()); ?>" value="1" min="1" max="100" required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        <i class="fas fa-cart-plus"></i> Thêm vào giỏ
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-
-        <nav aria-label="Page navigation" class="mt-4">
-            <ul class="pagination justify-content-center">
-                <?php if ($current > 1): ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $current - 1; ?>" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                <?php endif; ?>
-
-                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                    <li class="page-item <?php echo ($i == $current) ? 'active' : ''; ?>">
-                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                    </li>
-                <?php endfor; ?>
-
-                <?php if ($current < $totalPages): ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $current + 1; ?>" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </nav>
+            </div>
+        <?php endforeach; ?>
     </div>
+</div>
 
-    <!-- Footer -->
-    <footer class="footer text-center">
-        <div class="container">
-            <p>&copy; 2023 BookStore. All Rights Reserved.</p>
-            <p>
-                <a href="#">Privacy Policy</a> |
-                <a href="#">Terms of Service</a>
-            </p>
-        </div>
-    </footer>
+<!-- toast -->
+<div class="toast" id="cartSuccessToast" data-bs-autohide="true" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+        <strong class="me-auto">Thông Báo</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+        Sản phẩm đã được thêm vào giỏ hàng thành công!
+    </div>
+</div>
+
+<footer class="footer text-center">
+    <div class="container">
+        <p>&copy; 2023 BookStore. All Rights Reserved.</p>
+        <p>
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Service</a>
+        </p>
+    </div>
+</footer>
+
+<!-- gửi form bằng ajax -->
+<script>
+    document.querySelectorAll('form[action="DAO/add_to_cart.php"]').forEach(function(form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // ngừng gửi form
+
+            // gửi form bằng cách fetch api bằng ajax
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            })
+                .then(response => response.text())
+                .then(data => {
+                    var toast = new bootstrap.Toast(document.getElementById('cartSuccessToast'));
+                    toast.show();
+                })
+                .catch(error => {
+                    console.error('Có lỗi xảy ra khi thêm vào giỏ:', error);
+                });
+        });
+    });
+</script>
 
 </body>
 

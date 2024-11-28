@@ -39,7 +39,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['error'] = "Dữ liệu không hợp lệ!";
     }
 }
-
-header('Location: ../index.php');
 exit;
-?>

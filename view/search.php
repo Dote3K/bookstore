@@ -11,8 +11,8 @@
             integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
             integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
         body {
             background: linear-gradient(45deg, #ff9a9e, #fad0c4);
@@ -23,8 +23,7 @@
             background: linear-gradient(45deg, #ff6b6b, #ffcc33);
         }
 
-        .navbar-brand,
-        .navbar-nav .nav-link {
+        .navbar-brand, .navbar-nav .nav-link {
             color: #ffffff !important;
             font-weight: bold;
         }
@@ -105,6 +104,15 @@
                 height: 200px;
             }
         }
+
+        /* Custom toast style */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050; /* Ensure it's above other content */
+            min-width: 250px;
+        }
     </style>
 </head>
 
@@ -176,7 +184,7 @@
                                 <p class="card-text">Tác giả: <?= htmlspecialchars($sach['ten_tac_gia']) ?></p>
                                 <p class="card-text">Thể loại: <?= htmlspecialchars($sach['the_loai']) ?></p>
                                 <p class="card-text text-success fw-bold"><?= number_format($sach['gia_ban'], 0, ',', '.') ?> VND</p>
-                                <form action="view/addCartSearch.php" method="POST" class="mt-auto">
+                                <form action="view/addCartSearch.php" method="POST" class="mt-auto add-to-cart-form">
                                     <input type="hidden" name="bookId" value="<?= $sach['ma_sach'] ?>">
                                     <input type="hidden" name="so_luong" value="1">
                                     <button type="submit" class="btn btn-primary w-100">
@@ -198,12 +206,24 @@
     </div>
 </div>
 
+<!-- Toast -->
+<div class="toast" id="cartSuccessToast" data-bs-autohide="true" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+        <strong class="me-auto">Thông Báo</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+        Sản phẩm đã được thêm vào giỏ hàng thành công!
+    </div>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const genreFilter = document.getElementById('genreFilter');
         const priceFilter = document.getElementById('priceFilter');
         const bookCardsContainer = document.getElementById('bookCardsContainer');
         const bookCards = Array.from(document.querySelectorAll('.book-card'));
+        const toast = new bootstrap.Toast(document.getElementById('cartSuccessToast'));
 
         genreFilter.addEventListener('change', applyFilters);
         priceFilter.addEventListener('change', applyFilters);
@@ -246,6 +266,25 @@
                 bookCardsContainer.innerHTML = noResultsHTML;
             }
         }
+    });
+    document.querySelectorAll('form[action="view/addCartSearch.php"]').forEach(function(form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // ngừng gửi form
+
+            // gửi form bằng cách fetch api bằng ajax
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            })
+                .then(response => response.text())
+                .then(data => {
+                    var toast = new bootstrap.Toast(document.getElementById('cartSuccessToast'));
+                    toast.show();
+                })
+                .catch(error => {
+                    console.error('Có lỗi xảy ra khi thêm vào giỏ:', error);
+                });
+        });
     });
 </script>
 
