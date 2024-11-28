@@ -99,7 +99,6 @@
             color: #fff;
         }
 
-        /* Toast Notification */
         .toast {
             position: fixed;
             top: 20px;
@@ -107,6 +106,35 @@
             z-index: 1050;
             min-width: 300px;
         }
+
+        .pagination .page-link {
+            background-color: #ff9999;
+            color: #ffffff;
+            border: 1px solid #ff6b6b;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #ff6666;
+            color: white;
+            border-color: #ff4b4b;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #d60000;
+            color: white;
+            border-color: #d60000;
+        }
+
+        .pagination .page-item .page-link {
+            color: white;
+        }
+
+        .pagination .page-item .page-link:disabled {
+            background-color: #f1f1f1;
+            color: #ccc;
+            border-color: #ddd;
+        }
+
 
         /* Responsive adjustments */
         @media (max-width: 576px) {
