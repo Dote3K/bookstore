@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sửa Thông Tin Khách Hàng</title>
+    <title>Sửa Thông Tin</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
@@ -107,16 +107,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             max-width: 600px;
         }
 
-        .btn-custom {
+        .btn-primary {
             background-color: #ff6b6b;
-            color: #ffffff;
             border: none;
             transition: background-color 0.3s;
         }
 
-        .btn-custom:hover {
-            background-color: #ff4b4b;
-            color: #ffffff;
+        .btn-primary:hover {
+            background-color: #e60000 !important;
+            border-color: #e60000 !important;
         }
 
         .alert-custom {
@@ -129,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php include '../view/header.php'; ?>
 
 <div class="container my-5">
-    <h2 class="text-center text-primary mb-4">Sửa Thông Tin Khách Hàng</h2>
+    <h2 class="text-center text-primary mb-4">Sửa Thông Tin</h2>
 
     <?php if (!empty($message)): ?>
         <div class="alert alert-danger alert-custom" role="alert">

@@ -85,16 +85,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             max-width: 600px;
         }
 
-        .btn-custom {
+        .btn-primary {
             background-color: #ff6b6b;
-            color: #ffffff;
             border: none;
             transition: background-color 0.3s;
         }
 
-        .btn-custom:hover {
-            background-color: #ff4b4b;
-            color: #ffffff;
+        .btn-primary:hover {
+            background-color: #e60000 !important;
+            border-color: #e60000 !important;
         }
 
         .alert-custom {

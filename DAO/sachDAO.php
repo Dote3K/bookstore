@@ -295,10 +295,16 @@ class sachDAO implements DAOinterface
             s.anh_bia,
             s.gia_ban,
             tg.ten AS ten_tac_gia, 
-            tl.the_loai 
+            tl.the_loai,
+            s.so_luong,
+            s.nam_xuat_ban,
+            nxb.ten AS ten_nxb,
+            s.mo_ta
+            
         FROM sach s
         JOIN tacgia tg ON s.ma_tac_gia = tg.ma_tac_gia
         JOIN theloai tl ON s.ma_the_loai = tl.ma_the_loai
+        JOIN nxb ON s.ma_nxb = nxb.ma_nxb
         WHERE 
             s.ten_sach LIKE ? OR 
             tg.ten LIKE ? OR 

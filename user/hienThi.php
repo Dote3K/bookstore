@@ -83,8 +83,8 @@ $result = $stmt->get_result();
         }
 
         .btn-custom:hover {
-            background-color: #ff4b4b;
-            color: #ffffff;
+            background-color: #ff4b4b !important;
+            color: #ffffff !important;
         }
 
         @media (max-width: 576px) {

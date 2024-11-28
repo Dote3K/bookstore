@@ -110,8 +110,45 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 1050; /* Ensure it's above other content */
+            z-index: 1050;
             min-width: 250px;
+        }
+
+        /* Styling for the search and filter section */
+        .search-filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        .form-select {
+            width: auto;
+            flex-grow: 0;
+            margin-right: 15px;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .search-filters {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-title {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
         }
     </style>
 </head>
@@ -124,30 +161,28 @@
         <div class="col-12 mb-4">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="<%=url%>/index.jsp">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/index.php">Trang chủ</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Tìm kiếm sản phẩm</li>
                 </ol>
             </nav>
         </div>
-        <h2 class="text-center text-primary mb-4">Kết quả tìm kiếm cho từ khóa "<?= htmlspecialchars($keyWord ?? '') ?>"</h2>
-    </div>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div class="d-flex gap-2">
-            <select class="form-select d-inline-block w-auto" id="genreFilter">
-                <option selected>Chọn thể loại</option>
-                <!-- Các thể loại sẽ được điền từ kết quả tìm kiếm -->
-            </select>
-            <select class="form-select d-inline-block w-auto" id="priceFilter">
-                <option selected>Chọn giá</option>
-                <option value="low">Giá: Từ thấp đến cao</option>
-                <option value="high">Giá: Từ cao đến thấp</option>
-            </select>
+        <div class="col-12 search-filters">
+            <h2 class="search-title">Kết quả tìm kiếm cho từ khóa "<?= htmlspecialchars($keyWord ?? '') ?>"</h2>
+            <div class="d-flex gap-3">
+                <select class="form-select" id="genreFilter">
+                    <option selected>Chọn thể loại</option>
+                    <!-- Các thể loại sẽ được điền từ kết quả tìm kiếm -->
+                </select>
+                <select class="form-select" id="priceFilter">
+                    <option selected>Chọn giá</option>
+                    <option value="low">Giá: Từ thấp đến cao</option>
+                    <option value="high">Giá: Từ cao đến thấp</option>
+                </select>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="container">
     <div class="row">
         <?php if (!empty($sachs)): ?>
             <?php
@@ -174,13 +209,17 @@
 
             <div class="row" id="bookCardsContainer">
                 <?php foreach ($sachs as $sach): ?>
-                    <div class="col-lg-4 col-md-6 mb-4 book-card" data-genre="<?= htmlspecialchars($sach['the_loai']) ?>"
-                         data-price="<?= $sach['gia_ban'] ?>">
+                    <div class="col-lg-4 col-md-6 mb-4 book-card" data-genre="<?= htmlspecialchars($sach['the_loai']) ?>" data-price="<?= $sach['gia_ban'] ?>">
                         <div class="card h-100">
                             <img src="admin/ql_sach/sach/<?= !empty($sach['anh_bia']) ? htmlspecialchars($sach['anh_bia']) : 'https://via.placeholder.com/150' ?>"
                                  class="card-img-top" alt="<?= htmlspecialchars($sach['ten_sach']) ?>">
                             <div class="card-body d-flex flex-column">
-                                <h5 class="card-title"><?= htmlspecialchars($sach['ten_sach']) ?></h5>
+                                <!-- Title with Modal Trigger -->
+                                <h5 class="card-title">
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#bookModal<?= htmlspecialchars($sach['ma_sach']); ?>" class="text-decoration-none" style="color: #ff6b6b;">
+                                        <?= htmlspecialchars($sach['ten_sach']) ?>
+                                    </a>
+                                </h5>
                                 <p class="card-text">Tác giả: <?= htmlspecialchars($sach['ten_tac_gia']) ?></p>
                                 <p class="card-text">Thể loại: <?= htmlspecialchars($sach['the_loai']) ?></p>
                                 <p class="card-text text-success fw-bold"><?= number_format($sach['gia_ban'], 0, ',', '.') ?> VND</p>
@@ -194,8 +233,56 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Modal for the current book -->
+                    <div class="modal fade" id="bookModal<?= htmlspecialchars($sach['ma_sach']); ?>" tabindex="-1" aria-labelledby="bookModalLabel<?= htmlspecialchars($sach['ma_sach']); ?>" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content">
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="bookModalLabel<?= htmlspecialchars($sach['ma_sach']); ?>">
+                                        <?= htmlspecialchars($sach['ten_sach']) ?>
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                                </div>
+
+                                <!-- Modal Body -->
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img src="admin/ql_sach/sach/<?= htmlspecialchars($sach['anh_bia']); ?>" class="img-fluid" alt="Book Cover">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h5>Giá Bán: <span class="text-success fw-bold"><?= htmlspecialchars(number_format($sach['gia_ban'], 0, ',', '.')); ?> VNĐ</span></h5>
+                                            <p><strong>Kho:</strong> <?= htmlspecialchars($sach['so_luong']); ?></p>
+                                            <p><strong>Tác Giả:</strong> <?= htmlspecialchars($sach['ten_tac_gia']); ?></p>
+                                            <p><strong>Năm Xuất Bản:</strong> <?= htmlspecialchars($sach['nam_xuat_ban']); ?></p>
+                                            <p><strong>Nhà Xuất Bản:</strong> <?= htmlspecialchars($sach['ten_nxb']); ?></p>
+                                            <p><strong>Thể Loại:</strong> <?= htmlspecialchars($sach['the_loai']); ?></p>
+                                            <p><strong>Mô Tả:</strong> <?= htmlspecialchars($sach['mo_ta']); ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Modal Footer with Add to Cart Form -->
+                                <div class="modal-footer">
+                                    <form action="DAO/add_to_cart.php" method="post" class="w-100">
+                                        <input type="hidden" name="ma_sach" value="<?= htmlspecialchars($sach['ma_sach']); ?>">
+                                        <div class="mb-3">
+                                            <label for="so_luong_modal_<?php echo htmlspecialchars($sach['ma_sach']); ?>" class="form-label">Số lượng:</label>
+                                            <input type="number" class="form-control" name="so_luong" id="so_luong_modal_<?php echo htmlspecialchars($sach['ma_sach']); ?>" value="1" min="1" max="100" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-cart-plus"></i> Thêm vào giỏ
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 <?php endforeach; ?>
             </div>
+
         <?php else: ?>
             <div class="col-12">
                 <div class="alert alert-warning text-center" role="alert">
@@ -266,25 +353,6 @@
                 bookCardsContainer.innerHTML = noResultsHTML;
             }
         }
-    });
-    document.querySelectorAll('form[action="view/addCartSearch.php"]').forEach(function(form) {
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // ngừng gửi form
-
-            // gửi form bằng cách fetch api bằng ajax
-            fetch(form.action, {
-                method: 'POST',
-                body: new FormData(form)
-            })
-                .then(response => response.text())
-                .then(data => {
-                    var toast = new bootstrap.Toast(document.getElementById('cartSuccessToast'));
-                    toast.show();
-                })
-                .catch(error => {
-                    console.error('Có lỗi xảy ra khi thêm vào giỏ:', error);
-                });
-        });
     });
 </script>
 
