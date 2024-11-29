@@ -232,9 +232,12 @@
                                 <p class="card-text">Tác giả: <?= htmlspecialchars($sach['ten_tac_gia']) ?></p>
                                 <p class="card-text">Thể loại: <?= htmlspecialchars($sach['the_loai']) ?></p>
                                 <p class="card-text text-success fw-bold"><?= number_format($sach['gia_ban'], 0, ',', '.') ?> VND</p>
-                                <form action="view/addCartSearch.php" method="POST" class="mt-auto add-to-cart-form">
-                                    <input type="hidden" name="bookId" value="<?= $sach['ma_sach'] ?>">
-                                    <input type="hidden" name="so_luong" value="1">
+                                <form action="DAO/add_to_cart.php" method="post" class="w-100">
+                                    <input type="hidden" name="ma_sach" value="<?= htmlspecialchars($sach['ma_sach']); ?>">
+                                    <div class="mb-3">
+                                        <label for="so_luong_modal_<?php echo htmlspecialchars($sach['ma_sach']); ?>" class="form-label">Số lượng:</label>
+                                        <input type="number" class="form-control" name="so_luong" id="so_luong_modal_<?php echo htmlspecialchars($sach['ma_sach']); ?>" value="1" min="1" max="100" required>
+                                    </div>
                                     <button type="submit" class="btn btn-primary w-100">
                                         <i class="fas fa-cart-plus"></i> Thêm vào giỏ
                                     </button>
@@ -363,7 +366,7 @@
             }
         }
     });
-    document.querySelectorAll('form[action="view/addCartSearch.php"]').forEach(function(form) {
+    document.querySelectorAll('form[action="DAO/add_to_cart.php"]').forEach(function(form) {
         form.addEventListener('submit', function(event) {
             event.preventDefault(); // ngừng gửi form
 

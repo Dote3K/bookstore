@@ -92,6 +92,8 @@ unset($_SESSION['success'], $_SESSION['error']);
         }
 
         .btn-primary {
+            background-color: #ff6b6b;
+            border: none;
             transition: background-color 0.3s ease, border-color 0.3s ease;
         }
     </style>
