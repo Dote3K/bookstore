@@ -119,6 +119,12 @@ session_start();
         border-radius: 100%;
         font-size: 12px;
     }
+    @media (min-width: 768px) {
+        .col-md-9 {
+            flex: 0 0 auto;
+            width: 100%;
+        }
+    }
 </style>
 
 
@@ -128,18 +134,6 @@ session_start();
         <div class="row">
             <!-- Left Sidebar -->
             <?php if (isset($_SESSION['tenDangNhap'])): ?>
-                <div class="col-md-3 bg-light p-3" style="padding-top: 20px; margin-top: 24px; margin-bottom: 0;">
-                    <div class="d-flex align-items-center mb-4">
-                        <img src="/api/placeholder/40/40" alt="User Avatar" class="user-avatar rounded-circle me-2">
-                        <div>
-                            <h5 class="mb-0"><?php echo htmlspecialchars($_SESSION['tenDangNhap']); ?></h5>
-                            <a href="#" class="text-decoration-none">Sửa Hồ Sơ</a>
-                        </div>
-                    </div>
-                    <ul class="nav flex-column">
-                        <li class="nav-item"><a class="nav-link" href="#">Thông Báo</a></li>
-                    </ul>
-                </div>
 
                 <!-- Main Content Area -->
                 <div class="col-md-9 p-3 bg-light" >
