@@ -37,7 +37,7 @@ class DonHangController
 
         require 'view/listOrderUser.php';
     }
-    
+
 
 
     public function delete()
@@ -108,6 +108,22 @@ class DonHangController
         exit();
         require 'view/listOrderAll.php';
     }
-
+    public function chiTietDonHang()
+    {
+        header('Content-Type: application/json'); 
     
+        if (!isset($_POST['maDonHang'])) {
+            echo json_encode(['error' => 'Mã đơn hàng không tồn tại.']);
+            exit;
+        }
+    
+        $maDonHang = $_POST['maDonHang'];
+        $chiTiet = $this->donHangDAO->selectDetailById($maDonHang);
+        if ($chiTiet) {
+            echo json_encode($chiTiet);
+        } else {
+            echo json_encode(['error' => 'Không tìm thấy chi tiết đơn hàng với mã: ' . $maDonHang]);
+        }
+        exit;
+    }
 }

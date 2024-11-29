@@ -20,6 +20,10 @@ if (isset($_GET['action'])) {
             $controller->updateStatus();
             break;
 
+        case 'chiTietDonHang': 
+            $controller->chiTietDonHang();
+            break;
+
 
         default:
             echo "Invalid action!";

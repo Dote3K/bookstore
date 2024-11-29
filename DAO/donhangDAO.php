@@ -187,5 +187,115 @@ class DonHangDAO implements DAOInterface
         JDBC::closeConnection($conn);
         return $donHang;
     }
-
+    
+    // public function selectDetailById ($maChiTiet) {
+    //     $ketQua = null;
+    //     try {
+    //         $con = JDBC::getConnection();
+    
+    //         $sql = "SELECT
+    //                     ctdh.so_luong,
+    //                     dh.tong AS tong_tien,
+    //                     dh.ngay_dat_hang,
+    //                     dh.trang_thai,
+    //                     dh.dia_chi_nhan_hang,
+    //                     s.ten_sach,
+    //                     kh.so_dien_thoai
+    //                 FROM chitietdonhang ctdh
+    //                 INNER JOIN donhang dh ON ctdh.ma_don_hang = dh.ma_don_hang
+    //                 INNER JOIN sach s ON ctdh.ma_sach = s.ma_sach
+    //                 INNER JOIN khachhang kh ON dh.ma_khach_hang = kh.ma_khach_hang
+    //                 WHERE dh.ma_don_hang = ?";  
+           
+    //         $stmt = $con->prepare($sql);
+    //         $stmt->bind_param("i", $maChiTiet);
+    //         $stmt->execute();
+    
+    //         $result = $stmt->get_result();
+    //         if ($row = $result->fetch_assoc()) {
+    //             $ketQua = [
+    //                 'soDienThoai'=> $row['so_dien_thoai'],
+    //                 'tenSach' => $row['ten_sach'],        
+    //                 'tongTien' => $row['tong_tien'],      
+    //                 'ngayDatHang' => $row['ngay_dat_hang'],
+    //                 'soLuong' => $row['so_luong'],    
+    //                 'trangThai' => $row['trang_thai'],  
+    //                 'diaChiNhanHang' => $row['dia_chi_nhan_hang']
+    //             ];
+    //         }
+    
+    //         JDBC::closeConnection($con);
+    //     } catch (Exception $e) {
+    //         echo $e->getMessage();
+    //     }
+    
+    //     return $ketQua;
+    // }
+    public function selectDetailById($maChiTiet) {
+        $ketQua = null;
+        $chiTietSach = [];
+        
+        try {
+            $con = JDBC::getConnection();
+    
+            // First query to get main order details
+            $sqlMain = "SELECT
+                            dh.ma_don_hang,
+                            dh.tong AS tong_tien,
+                            dh.ngay_dat_hang,
+                            dh.trang_thai,
+                            dh.dia_chi_nhan_hang,
+                            kh.so_dien_thoai
+                        FROM donhang dh
+                        INNER JOIN khachhang kh ON dh.ma_khach_hang = kh.ma_khach_hang
+                        WHERE dh.ma_don_hang = ?";
+            
+            $stmtMain = $con->prepare($sqlMain);
+            $stmtMain->bind_param("i", $maChiTiet);
+            $stmtMain->execute();
+            $resultMain = $stmtMain->get_result();
+            
+            if ($rowMain = $resultMain->fetch_assoc()) {
+                // Second query to get book details for this order
+                $sqlBooks = "SELECT 
+                                s.ten_sach, 
+                                ctdh.so_luong
+                             FROM chitietdonhang ctdh
+                             INNER JOIN sach s ON ctdh.ma_sach = s.ma_sach
+                             WHERE ctdh.ma_don_hang = ?";
+                
+                $stmtBooks = $con->prepare($sqlBooks);
+                $stmtBooks->bind_param("i", $maChiTiet);
+                $stmtBooks->execute();
+                $resultBooks = $stmtBooks->get_result();
+                
+                // Collect book details
+                while ($rowBook = $resultBooks->fetch_assoc()) {
+                    $chiTietSach[] = [
+                        'tenSach' => $rowBook['ten_sach'],
+                        'soLuong' => $rowBook['so_luong']
+                    ];
+                }
+                
+                // Prepare final result
+                $ketQua = [
+                    'maDonHang' => $rowMain['ma_don_hang'],
+                    'soDienThoai' => $rowMain['so_dien_thoai'],
+                    'tongTien' => $rowMain['tong_tien'],
+                    'ngayDatHang' => $rowMain['ngay_dat_hang'],
+                    'trangThai' => $rowMain['trang_thai'],
+                    'diaChiNhanHang' => $rowMain['dia_chi_nhan_hang'],
+                    'chiTietSach' => $chiTietSach,
+                    'tongSoLoaiSach' => count($chiTietSach),
+                    'tongSoLuongSach' => array_sum(array_column($chiTietSach, 'soLuong'))
+                ];
+            }
+    
+            JDBC::closeConnection($con);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    
+        return $ketQua;
+    }
 }
