@@ -132,7 +132,6 @@ session_start();
 <?php include 'header.php'; ?>
     <div class="container mt-5 wrapper" style="padding-top: 50px">
         <div class="row">
-            <!-- Left Sidebar -->
             <?php if (isset($_SESSION['tenDangNhap'])): ?>
 
                 <!-- Main Content Area -->
@@ -145,8 +144,18 @@ session_start();
                                     <div class="notification-item d-flex align-items-center">
                                         <div>
                                             <p class="mb-1"><?php echo htmlspecialchars($notification->getMessage());?></p>
+
+                                            <small class="text-muted">
+                                                <?php
+                                                $createdAt = $notification->getCreatedAt();
+                                                if (is_string($createdAt)) {
+                                                    $createdAt = new DateTime($createdAt);
+                                                }
+                                                echo $createdAt->format('d/m/Y H:i');
+                                                ?>
+                                            </small>
                                         </div>
-                                        <a href="#" class="ms-auto btn btn-sm btn-outline-primary">Xem Chi Tiết</a>
+                                        <a href="DonHangRouter.php?action=listOrderUser" class="ms-auto btn btn-sm btn-outline-primary">Xem Chi Tiết</a>
                                     </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
