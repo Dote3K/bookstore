@@ -363,6 +363,25 @@
             }
         }
     });
+    document.querySelectorAll('form[action="view/addCartSearch.php"]').forEach(function(form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // ngừng gửi form
+
+            // gửi form bằng cách fetch api bằng ajax
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            })
+                .then(response => response.text())
+                .then(data => {
+                    var toast = new bootstrap.Toast(document.getElementById('cartSuccessToast'));
+                    toast.show();
+                })
+                .catch(error => {
+                    console.error('Có lỗi xảy ra khi thêm vào giỏ:', error);
+                });
+        });
+    });
 </script>
 
 <footer class="footer text-center">
