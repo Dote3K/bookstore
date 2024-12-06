@@ -205,16 +205,6 @@ $trang_thai = $don_hang['trang_thai'];
                 location.reload();
                 });
             }
-            else if (data.trang_thai === "DA_HUY") {
-                // alert("Đơn hàng của bạn đã bị hủy.");
-                $("#modal-title").text("Thông báo");
-                $("#modal-body").text("Đơn hàng của bạn đã bị hủy.");
-                $("#statusModal").modal("show");
-                $("#statusModal").on('hidden.bs.modal', function () {
-                trang_thai = 'DA_HUY';
-                location.reload();
-                    });
-                }
             }
         });
         }
@@ -251,9 +241,8 @@ $trang_thai = $don_hang['trang_thai'];
                 ma_don_hang: <?php echo $ma_don_hang; ?>
             },
             success: function(response) {
-                    // alert("Đơn hàng của bạn đã bị hủy.");
                     $("#modal-title").text("Thông báo");
-                    $("#modal-body").text("Đơn hàng của bạn đã bị hủy.");
+                    $("#modal-body").text("Đơn hàng đã hết thời gian thanh toán và sẽ bị hủy.");
                     $("#statusModal").modal("show");
                     $("#statusModal").on('hidden.bs.modal', function () {
                         trang_thai = 'DA_HUY';
