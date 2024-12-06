@@ -311,10 +311,14 @@
                 method: 'POST',
                 body: new FormData(form)
             })
-                .then(response => response.text())
+                .then(response => response.json())
                 .then(data => {
-                    var toast = new bootstrap.Toast(document.getElementById('cartSuccessToast'));
-                    toast.show();
+                    if (data.success === true) {
+                        var toast = new bootstrap.Toast(document.getElementById('cartSuccessToast'));
+                        toast.show();
+                    } else {
+                        console.log('Không thành công: ', data.message);
+                    }
                 })
                 .catch(error => {
                     console.error('Có lỗi xảy ra khi thêm vào giỏ:', error);

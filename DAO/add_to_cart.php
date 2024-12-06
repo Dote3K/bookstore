@@ -33,16 +33,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             $_SESSION['success'] = "Đã thêm sản phẩm vào giỏ hàng!";
+            echo json_encode([
+                'success' => true,
+                'message' => 'Đã thêm sản phẩm vào giỏ hàng!',
+                'cart' => $_SESSION['cart']
+            ]);
         } else {
-            $_SESSION['error'] = "Sản phẩm không tồn tại hoặc đã hết hàng!";
+
+            //$_SESSION['error'] = "Sản phẩm không tồn tại hoặc đã hết hàng!";
+            echo json_encode([
+                'success' => false,
+                'message' => 'Sản phẩm không tồn tại hoặc đã hết hàng!'
+            ]);
         }
 
         $stmt->close();
     } else {
-        $_SESSION['error'] = "Dữ liệu không hợp lệ!";
+        //$_SESSION['error'] = "Dữ liệu không hợp lệ!";
+        echo json_encode([
+            'success' => false,
+            'message' => 'Dữ liệu không hợp lệ!'
+        ]);
     }
 }
 
-header('Location: ../index.php');
+//header('Location: ../index.php');
 exit;
 ?>

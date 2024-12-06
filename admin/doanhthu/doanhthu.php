@@ -41,7 +41,7 @@ require '../../checker/kiemtra_admin.php';
         <!-- Nội dung chính -->
         <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4 text-center">
             <header class="header d-flex justify-content-between align-items-center">
-                <h1>Thông tin Sách</h1>
+                <h1>Thống kê doanh thu</h1>
 
             </header>
             <div class="btn-group mt-3" role="group">

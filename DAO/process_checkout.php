@@ -108,63 +108,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute();
         $ma_don_hang = $stmt->insert_id;
 
-        //cập nhật kho và lưu chi tiết đơn hàng
+        foreach ($_SESSION['cart'] as $ma_sach => $item) {
+            // Thêm chi tiết đơn hàng
+            $stmt = $conn->prepare("INSERT INTO chitietdonhang (ma_don_hang, ma_sach, so_luong) VALUES (?, ?, ?)");
+            $stmt->bind_param("iii", $ma_don_hang, $ma_sach, $item['so_luong']);
+            $stmt->execute();
+
+            // cập nhật số lượng sách trong kho
+            $stmt = $conn->prepare("UPDATE sach SET so_luong = so_luong - ? WHERE ma_sach = ?");
+            $stmt->bind_param("ii", $item['so_luong'], $ma_sach);
+            $stmt->execute();
+        }
+
+        // b6. cập nhật số lần sử dụng mã giảm giá
+        if ($ma_giam_gia_id !== null) {
+            $stmt = $conn->prepare("UPDATE ma_giam_gia SET so_lan_da_su_dung = so_lan_da_su_dung + 1 WHERE ma = ?");
+            $stmt->bind_param("i", $ma_giam_gia_id);
+            $stmt->execute();
+        }
         if ($phuong_thuc_thanh_toan == 'COD') {
-            // b5. thêm chi tiết đơn hàng và cập nhật số lượng sách
-            foreach ($_SESSION['cart'] as $ma_sach => $item) {
-                // Thêm chi tiết đơn hàng
-                $stmt = $conn->prepare("INSERT INTO chitietdonhang (ma_don_hang, ma_sach, so_luong) VALUES (?, ?, ?)");
-                $stmt->bind_param("iii", $ma_don_hang, $ma_sach, $item['so_luong']);
-                $stmt->execute();
-
-                // cập nhật số lượng sách trong kho
-                $stmt = $conn->prepare("UPDATE sach SET so_luong = so_luong - ? WHERE ma_sach = ?");
-                $stmt->bind_param("ii", $item['so_luong'], $ma_sach);
-                $stmt->execute();
-            }
-
-            // b6. cập nhật số lần sử dụng mã giảm giá
-            if ($ma_giam_gia_id !== null) {
-                $stmt = $conn->prepare("UPDATE ma_giam_gia SET so_lan_da_su_dung = so_lan_da_su_dung + 1 WHERE ma = ?");
-                $stmt->bind_param("i", $ma_giam_gia_id);
-                $stmt->execute();
-            }
-
+            $thong_bao = "Đơn hàng #$ma_don_hang của bạn đã được đặt hàng thành công và đang chờ xử lý.";
+            $stmt = $conn->prepare("INSERT INTO notifications (ma_khach_hang, ma_don_hang, message, status) VALUES (?, ?, ?, 'Chua doc')");
+            $stmt->bind_param("iis", $ma_khach_hang, $ma_don_hang, $thong_bao);
+            $stmt->execute();
             $conn->commit();
-
             unset($_SESSION['cart']);
-
             $_SESSION['success'] = "Đơn hàng của bạn đã được đặt thành công!";
             header('Location: /view/cart.php');
             exit;
         } else {
-            // gửi thông báo chờ thanh toán
             $thong_bao = "Đơn hàng #$ma_don_hang của bạn đang chờ thanh toán qua chuyển khoản ngân hàng.";
             $stmt = $conn->prepare("INSERT INTO notifications (ma_khach_hang, ma_don_hang, message, status) VALUES (?, ?, ?, 'Chua doc')");
             $stmt->bind_param("iis", $ma_khach_hang, $ma_don_hang, $thong_bao);
             $stmt->execute();
-
-            // lưu thông tin đơn hàng vào giỏ hàng tạm
-            foreach ($_SESSION['cart'] as $ma_sach => $item) {
-                $stmt = $conn->prepare("INSERT INTO gio_hang_tam (ma_don_hang, ma_sach, so_luong) VALUES (?, ?, ?)");
-                $stmt->bind_param("iii", $ma_don_hang, $ma_sach, $item['so_luong']);
-                $stmt->execute();
-            }
-
-            // cập nhật số lần sử dụng mã giảm giá
-            if ($ma_giam_gia_id !== null) {
-                $stmt = $conn->prepare("UPDATE ma_giam_gia SET so_lan_da_su_dung = so_lan_da_su_dung + 1 WHERE ma = ?");
-                $stmt->bind_param("i", $ma_giam_gia_id);
-                $stmt->execute();
-            }
-
-            // lưu đơn hàng và thông báo
             $conn->commit();
-
             unset($_SESSION['cart']);
-
             $_SESSION['success'] = "Đơn hàng của bạn đã được tạo và đang chờ thanh toán.";
-
             header("Location: /view/order.php?id=$ma_don_hang");
             exit;
         }

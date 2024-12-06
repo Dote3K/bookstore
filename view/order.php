@@ -118,6 +118,11 @@ $trang_thai = $don_hang['trang_thai'];
     } elseif ($trang_thai == 'DA_HUY') { ?>
         <div class="alert alert-danger text-center">
             Đơn hàng của bạn đã bị hủy.
+            <?php
+            $stmt = $conn->prepare("DELETE FROM donhang WHERE ma_don_hang = ?");
+            $stmt->bind_param("i", $ma_don_hang);
+            $stmt->execute();
+            ?>
         </div>
     <?php } else { ?>
         <div class="alert alert-info text-center">
@@ -132,7 +137,9 @@ $trang_thai = $don_hang['trang_thai'];
                 <img src="<?php echo $qr_url; ?>" alt="QR Code" class="img-fluid mb-3" style="max-width: 300px;">
                 <p><div class="spinner-border spinner-border-sm" role="status">
                     <span class="visually-hidden">Chờ thanh toán...</span>
-                </div> Trạng thái: Chờ thanh toán....</p>
+                </div> Trạng thái: Chờ thanh toán....
+                </p>
+
             </div>
             <div class="col-md-6">
                 <h3>Thông tin chuyển khoản</h3>
@@ -162,6 +169,9 @@ $trang_thai = $don_hang['trang_thai'];
                 </table>
                 <div class="alert alert-warning">
                     <strong>Lưu ý:</strong> Vui lòng ghi đúng nội dung chuyển khoản để hệ thống tự động xác nhận.
+                    <div class="countdown" id="countdown">
+                        <!--dem nguoc -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -185,32 +195,80 @@ $trang_thai = $don_hang['trang_thai'];
         url: "check_order_status.php",
         dataType: "json",
         success: function (data) {
-        if (data.trang_thai === "DA_THANH_TOAN") {
-            // alert("Thanh toán thành công! Đơn hàng của bạn đang được xử lý.");
-            $("#modal-title").text("Thông báo");
-            $("#modal-body").text("Thanh toán thành công! Đơn hàng của bạn đang được xử lý.");
-            $("#statusModal").modal("show");
-            $("#statusModal").on('hidden.bs.modal', function () {
-            trang_thai = 'DA_THANH_TOAN';
-            location.reload();
-    });
-    } else if (data.trang_thai === "DA_HUY") {
-            // alert("Đơn hàng của bạn đã bị hủy.");
-            $("#modal-title").text("Thông báo");
-            $("#modal-body").text("Đơn hàng của bạn đã bị hủy.");
-            $("#statusModal").modal("show");
-            $("#statusModal").on('hidden.bs.modal', function () {
-            trang_thai = 'DA_HUY';
-            location.reload();
-    });
-    }
-    }
-    });
-    }
+            if (data.trang_thai === "DA_THANH_TOAN") {
+                // alert("Thanh toán thành công! Đơn hàng của bạn đang được xử lý.");
+                $("#modal-title").text("Thông báo");
+                $("#modal-body").text("Thanh toán thành công! Đơn hàng của bạn đang được xử lý.");
+                $("#statusModal").modal("show");
+                $("#statusModal").on('hidden.bs.modal', function () {
+                trang_thai = 'DA_THANH_TOAN';
+                location.reload();
+                });
+            }
+            else if (data.trang_thai === "DA_HUY") {
+                // alert("Đơn hàng của bạn đã bị hủy.");
+                $("#modal-title").text("Thông báo");
+                $("#modal-body").text("Đơn hàng của bạn đã bị hủy.");
+                $("#statusModal").modal("show");
+                $("#statusModal").on('hidden.bs.modal', function () {
+                trang_thai = 'DA_HUY';
+                location.reload();
+                    });
+                }
+            }
+        });
+        }
     }
         // Kiểm tra trạng thái đơn hàng mỗi 2 giây
         setInterval(check_order_status, 2000);
 </script>
+<script>
+    var madonhang = <?php echo $ma_don_hang; ?>;
+    if (!sessionStorage.getItem('startTime_' + madonhang)) {
+        sessionStorage.setItem('startTime_' + madonhang, Date.now());
+    }
+    var startTime = parseInt(sessionStorage.getItem('startTime_' + madonhang));
+    var countdownTime = 300000;
+    function updateCountdown() {
+        var currentTime = Date.now();
+        var timePassed = currentTime - startTime;
+        var timeRemaining = countdownTime - timePassed;
+        if (timeRemaining <= 0) {
+            clearInterval(countdownInterval);
+            document.getElementById("countdown").innerText = "Đơn hàng đã hết thời gian thanh toán và sẽ bị hủy.";
+            cancelOrder();
+        } else {
+            var minutes = Math.floor(timeRemaining / 60000);
+            var seconds = Math.floor((timeRemaining % 60000) / 1000);
+            document.getElementById("countdown").innerHTML = "Vui lòng thanh toán đơn hàng trong vòng <strong>" + minutes + ":" + (seconds < 10 ? '0' : '') + seconds + "</strong> để đơn hàng có thể được xử lý.";
+        }
+    }
+    function cancelOrder() {
+        $.ajax({
+            type: "POST",
+            url: "cancel_order.php",
+            data: {
+                ma_don_hang: <?php echo $ma_don_hang; ?>
+            },
+            success: function(response) {
+                    // alert("Đơn hàng của bạn đã bị hủy.");
+                    $("#modal-title").text("Thông báo");
+                    $("#modal-body").text("Đơn hàng của bạn đã bị hủy.");
+                    $("#statusModal").modal("show");
+                    $("#statusModal").on('hidden.bs.modal', function () {
+                        trang_thai = 'DA_HUY';
+                        location.reload();
+                    });
+            },
+            error: function() {
+                alert("Có lỗi xảy ra khi hủy đơn hàng.");
+            }
+        });
+    }
+    var countdownInterval = setInterval(updateCountdown, 1000);
+</script>
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
