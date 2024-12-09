@@ -3,7 +3,7 @@ require '../connect.php';
 
 // Chỉ cho phép POST và có order_id
 if ($_SERVER['REQUEST_METHOD'] != 'POST' || !isset($_POST['order_id'])) {
-    die('Invalid request');
+    die('Yêu cầu không hợp lệ');
 }
 
 $ma_don_hang = intval($_POST['order_id']);

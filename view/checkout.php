@@ -29,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['check_discount_code']
             $ma_sach = (int)$ma_sach;
             $so_luong = (int)$so_luong;
             if ($ma_sach > 0 && $so_luong > 0) {
-                // Kiểm tra số lượng trong cơ sở dữ liệu
                 $stmt = $conn->prepare("SELECT so_luong FROM sach WHERE ma_sach = ?");
                 $stmt->bind_param("i", $ma_sach);
                 $stmt->execute();
@@ -53,11 +52,11 @@ $thong_bao_thanh_cong = isset($_SESSION['success']) ? $_SESSION['success'] : '';
 $thong_bao_loi = isset($_SESSION['error']) ? $_SESSION['error'] : '';
 unset($_SESSION['success'], $_SESSION['error']);
 
-// Xử lý mã giảm giá nếu người dùng nhấn nút "Kiểm tra"
+// xử lý mã giảm giá nếu ấn kiểm tra
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['check_discount_code'])) {
     $ma_giam_gia_code = isset($_POST['ma_giam_gia']) ? trim($_POST['ma_giam_gia']) : '';
     if (!empty($ma_giam_gia_code)) {
-        // Kiểm tra mã giảm giá trong cơ sở dữ liệu
+        // kiểm tra mã trong cơ sở dữ liệu
         $stmt = $conn->prepare("SELECT * FROM ma_giam_gia WHERE ma_giam = ? AND trang_thai = 'kich_hoat' AND (ngay_bat_dau IS NULL OR ngay_bat_dau <= NOW()) AND (ngay_ket_thuc IS NULL OR ngay_ket_thuc >= NOW()) AND (so_lan_su_dung_toi_da IS NULL OR so_lan_da_su_dung < so_lan_su_dung_toi_da)");
         $stmt->bind_param("s", $ma_giam_gia_code);
         $stmt->execute();
@@ -65,21 +64,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['check_discount_code'])
         $ma_giam_gia = $result->fetch_assoc();
 
         if ($ma_giam_gia) {
-            // Mã giảm giá hợp lệ
-            // Tính tổng tiền giỏ hàng
+            // tính lại giá tiền giỏ hàng khi mã hợp lệ
             $tong = 0;
             foreach ($_SESSION['cart'] as $item) {
                 $tong += $item['gia_ban'] * $item['so_luong'];
             }
-            // Kiểm tra giá trị tối thiểu của đơn hàng
+            // kiểm tra giá trị tối thiểu và tính giá trị giảm
             if ($ma_giam_gia['tong_don_hang_toi_thieu'] === null || $tong >= $ma_giam_gia['tong_don_hang_toi_thieu']) {
-                // Tính giá trị giảm
                 if ($ma_giam_gia['loai_giam_gia'] == 'phan_tram') {
                     $giam_gia = $tong * ($ma_giam_gia['gia_tri_giam'] / 100);
                 } else {
                     $giam_gia = $ma_giam_gia['gia_tri_giam'];
                 }
-                // Lưu thông tin giảm giá vào session
+                // lưu thông tin giảm giá
                 $_SESSION['discount'] = [
                     'ma_giam_gia_id' => $ma_giam_gia['ma'],
                     'ma_giam_gia_code' => $ma_giam_gia['ma_giam'],
@@ -91,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['check_discount_code'])
                 unset($_SESSION['discount']);
             }
         } else {
-            // Mã giảm giá không hợp lệ
+            // mã giảm giá không hợp lệ
             $_SESSION['error'] = "Mã giảm giá không hợp lệ hoặc đã hết hạn.";
             unset($_SESSION['discount']);
         }
@@ -99,7 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['check_discount_code'])
         $_SESSION['error'] = "Vui lòng nhập mã giảm giá.";
         unset($_SESSION['discount']);
     }
-    // Chuyển hướng về checkout.php để hiển thị thông báo
     header('Location: checkout.php');
     exit;
 }
@@ -110,20 +106,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['check_discount_code'])
 <head>
     <meta charset="UTF-8">
     <title>Book Store - Thanh toán</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-    <!-- Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
             integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
     </script>
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
             integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
     </script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Custom Styles -->
     <style>
         body {
             background: linear-gradient(45deg, #ff9a9e, #fad0c4);
@@ -190,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['check_discount_code'])
         <?php endif; ?>
 
         <form action="" method="post">
-            <!-- Thông tin giao hàng -->
+            <!-- thông tin giao hàng -->
             <div class="form-section">
                 <h2 class="mb-3">Thông tin giao hàng</h2>
                 <div class="mb-3">
@@ -236,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['check_discount_code'])
                 </div>
             </div>
 
-            <!-- Thông tin đơn hàng -->
+            <!-- thông tin đơn hàng -->
             <div class="form-section">
                 <h2 class="mb-3">Thông tin đơn hàng</h2>
                 <div class="table-responsive order-summary">
@@ -254,10 +245,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['check_discount_code'])
                         <?php
                         $tong_tien = 0;
                         foreach ($_SESSION['cart'] as $ma_sach => $item):
-                            $ten_sach = isset($item['ten_sach']) ? $item['ten_sach'] : '';
-                            $gia_ban = isset($item['gia_ban']) ? $item['gia_ban'] : 0;
-                            $anh_bia = isset($item['anh_bia']) ? $item['anh_bia'] : '';
-                            $so_luong = isset($item['so_luong']) ? $item['so_luong'] : 1;
+                            $ten_sach = $item['ten_sach'] ?? 'Không tìm thấy tên sách';
+                            $gia_ban = $item['gia_ban'] ?? 0;
+                            $anh_bia = $item['anh_bia'] ?? '';
+                            $so_luong = $item['so_luong'] ?? 1;
                             $tong_tien_san_pham = $gia_ban * $so_luong;
                             $tong_tien += $tong_tien_san_pham;
                             ?>
@@ -299,7 +290,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['check_discount_code'])
                     </table>
                 </div>
 
-                <!-- Nhập mã giảm giá -->
+                <!-- form nhập mã giảm giá -->
                 <div class="mb-3">
                     <label for="ma_giam_gia" class="form-label"><strong>Mã giảm giá:</strong></label>
                     <div class="input-group">
@@ -311,7 +302,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['check_discount_code'])
                 </div>
             </div>
 
-            <!-- Phương thức thanh toán -->
+            <!-- phương thức thanh toán -->
             <div class="form-section">
                 <h2 class="mb-3">Phương thức thanh toán</h2>
                 <div class="mb-3">

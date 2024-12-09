@@ -33,7 +33,7 @@ if (!$khach_hang) {
     die('Không tìm thấy thông tin khách hàng.');
 }
 
-// Kiểm tra trạng thái đơn hàng
+
 $trang_thai = $don_hang['trang_thai'];
 
 ?>
@@ -42,11 +42,8 @@ $trang_thai = $don_hang['trang_thai'];
 <head>
     <meta charset="UTF-8">
     <title>Thanh toán đơn hàng #<?php echo $ma_don_hang; ?></title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome (Thêm dòng này để các icon hiển thị đúng) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Custom Styles (Same as home page) -->
     <style>
         body {
             background: linear-gradient(45deg, #ff9a9e, #fad0c4);
@@ -209,7 +206,7 @@ $trang_thai = $don_hang['trang_thai'];
         });
         }
     }
-        // Kiểm tra trạng thái đơn hàng mỗi 2 giây
+
         setInterval(check_order_status, 2000);
 </script>
 <script>

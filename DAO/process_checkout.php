@@ -10,7 +10,7 @@ if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
 
 $ma_khach_hang = $_SESSION['ma_khach_hang'];
 
-// Lấy thông tin khách hàng
+// lấy thông tin khách hàng
 $stmt = $conn->prepare("SELECT * FROM khachhang WHERE ma_khach_hang = ?");
 $stmt->bind_param("i", $ma_khach_hang);
 $stmt->execute();

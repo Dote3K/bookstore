@@ -166,8 +166,8 @@ require '../../checker/kiemtra_admin.php';
                                     <td>{$row['ngay_dat_hang']}</td>
                                     <td>{$row['so_don']}</td>
                                     <td>{$row['so_luong']}</td>
-                                    <td>{$row['doanh_thu']}</td>
-                                    <td>{$row['loi_nhuan']}</td>
+                                    <td>" . number_format($row['doanh_thu'], 0, ',', '.') . "</td>
+                                    <td>" . number_format($row['loi_nhuan'], 0, ',', '.') . "</td>
                                   </tr>";
                         }
                         echo "</tbody></table><br>";
@@ -194,8 +194,8 @@ require '../../checker/kiemtra_admin.php';
                                     <td>{$date_format}</td>
                                     <td>{$row['so_don']}</td>
                                     <td>{$row['so_luong']}</td>
-                                    <td>{$row['doanh_thu']}</td>
-                                    <td>{$row['loi_nhuan']}</td>
+                                    <td>" . number_format($row['doanh_thu'], 0, ',', '.') . "</td>
+                                    <td>" . number_format($row['loi_nhuan'], 0, ',', '.') . "</td>
                                   </tr>";
                     }
                     echo "</tbody></table></div>";

@@ -1,9 +1,7 @@
 <?php
-// cart.php
 require_once '../checker/kiemtra_login.php';
 require '../connect.php';
 
-// lưu thông báo thành công hoặc lỗi
 $thong_bao_thanh_cong = isset($_SESSION['success']) ? $_SESSION['success'] : '';
 $thong_bao_loi = isset($_SESSION['error']) ? $_SESSION['error'] : '';
 unset($_SESSION['success'], $_SESSION['error']);
@@ -15,20 +13,15 @@ unset($_SESSION['success'], $_SESSION['error']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Store - Giỏ hàng của bạn</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-    <!-- Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
             integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
     </script>
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
             integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
     </script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Custom Styles -->
     <style>
         body {
             background: linear-gradient(45deg, #ff9a9e, #fad0c4);
@@ -143,11 +136,10 @@ unset($_SESSION['success'], $_SESSION['error']);
                         <?php
                         $tong_tien = 0;
                         foreach ($_SESSION['cart'] as $ma_sach => $item):
-                            // Kiểm tra xem các khóa cần thiết có tồn tại không
-                            $ten_sach = isset($item['ten_sach']) ? $item['ten_sach'] : 'N/A';
-                            $gia_ban = isset($item['gia_ban']) ? $item['gia_ban'] : 0;
-                            $anh_bia = isset($item['anh_bia']) ? $item['anh_bia'] : 'default.jpg';
-                            $so_luong = isset($item['so_luong']) ? $item['so_luong'] : 1;
+                            $ten_sach = $item['ten_sach'] ?? 'Không tìm thấy tên sách';
+                            $gia_ban = $item['gia_ban'] ?? 0;
+                            $anh_bia = $item['anh_bia'] ?? 'default.jpg';
+                            $so_luong = $item['so_luong'] ?? 1;
                             $tong_tien_san_pham = $gia_ban * $so_luong;
                             $tong_tien += $tong_tien_san_pham;
                             ?>
@@ -187,24 +179,24 @@ unset($_SESSION['success'], $_SESSION['error']);
                     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
                 }
 
-                // Hàm tính tổng đơn hàng
+                // tính tổng đơn hàng
                 function tinhTong() {
                     let tongTien = 0;
                     document.querySelectorAll('.so-luong-input').forEach(function(input) {
                         let soLuong = parseInt(input.value);
-                        // Lấy giá bán
+                        // lấy giá bán
                         let giaBanText = input.parentElement.parentElement.querySelector('td:nth-child(3)').innerText;
                         let giaBan = parseInt(giaBanText.replace(/\./g, '').replace(' VND', ''));
                         let tongSanPham = soLuong * giaBan;
                         tongTien += tongSanPham;
-                        // Cập nhật tổng tiền sản phẩm
+                        // cập nhật tổng tiền của sp
                         input.parentElement.parentElement.querySelector('.tong-tien-san-pham').innerText = formatNumber(tongSanPham) + ' VND';
                     });
-                    // Cập nhật tổng tiền đơn hàng
+                    // cập nhật tổng tiền của cả đơn hàng
                     document.getElementById('tong-tien').innerHTML = '<strong>' + formatNumber(tongTien) + ' VND</strong>';
                 }
 
-                // tính tổng mo
+                // tính tổng mỗi khi thay đổi số lượng
                 document.querySelectorAll('.so-luong-input').forEach(function(input) {
                     input.addEventListener('input', tinhTong);
                 });
