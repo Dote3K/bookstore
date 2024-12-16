@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['check_discount_code']
             $ma_sach = (int)$ma_sach;
             $so_luong = (int)$so_luong;
             if ($ma_sach > 0 && $so_luong > 0) {
-                $stmt = $conn->prepare("SELECT so_luong FROM sach WHERE ma_sach = ?");
+                $stmt = $conn->prepare("SELECT ten_sach, so_luong FROM sach WHERE ma_sach = ?");
                 $stmt->bind_param("i", $ma_sach);
                 $stmt->execute();
                 $result = $stmt->get_result();
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['check_discount_code']
                 if ($sach && $sach['so_luong'] >= $so_luong) {
                     $_SESSION['cart'][$ma_sach]['so_luong'] = $so_luong;
                 } else {
-                    $_SESSION['error'] = "Số lượng yêu cầu cho sản phẩm ID $ma_sach vượt quá số lượng có sẵn!";
+                    $_SESSION['error'] = "Số lượng yêu cầu cho cuốn sách \"" . $sach['ten_sach'] . "\" vượt quá số lượng có sẵn! ( Còn lại: ".$sach['so_luong']." )";
                     header('Location: cart.php');
                     exit;
                 }

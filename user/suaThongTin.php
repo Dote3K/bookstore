@@ -7,8 +7,6 @@ $message = '';
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    // Kiểm tra nếu id có hợp lệ (số nguyên dương)
-    if (filter_var($id, FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]])) {
         $sql = "SELECT * FROM khachhang WHERE ma_khach_hang=?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $id);
@@ -20,11 +18,6 @@ if (isset($_GET['id'])) {
             header('Location: hienThi.php');
             exit();
         }
-    } else {
-        // Nếu id không hợp lệ, chuyển hướng về trang hiển thị
-        header('Location: hienThi.php');
-        exit();
-    }
 } else {
     // Nếu không có id, chuyển hướng về trang hiển thị
     header('Location: hienThi.php');
