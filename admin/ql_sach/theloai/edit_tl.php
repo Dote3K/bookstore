@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("location: show_the_loai.php");
         exit();
     } else {
-        echo "<div class='alert alert-danger text-center'>Lỗi: " . $conn->error . "</div>";
+        echo "<div class='bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4' role='alert'>Lỗi: " . $conn->error . "</div>";
     }
 }
 ?>
@@ -24,62 +24,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chỉnh sửa thông tin thể loại</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <style>
-        /* Các style tùy chỉnh */
-
-        .header {
-            background-color: #e9ecef;
-            padding: 10px;
-        }
-        .header .nav-links a {
-            margin-right: 15px;
-            text-decoration: none;
-            color: #333;
-        }
-        .header .nav-links a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Heroicons -->
+    <script src="https://cdn.jsdelivr.net/npm/@heroicons/react@1.0.5/outline/index.min.js"></script>
 </head>
-<body>
-<div class="container-fluid">
-    <div class="row">
+<body class="bg-gray-100">
+    <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
-        <nav class="col-md-2 d-none d-md-block sidebar">
-            <?php include '../../sidebar.php'; ?>
-        </nav>
-        <!-- Nội dung chính -->
-        <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4">
-            <!-- Header -->
-            <header class="header d-flex justify-content-between align-items-center">
-                <h1>Chỉnh sửa thông tin thể loại</h1>
+        <?php include '../../sidebar.php'; ?>
 
+        <!-- Main content -->
+        <div class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 ml-64">
+            <!-- Topbar -->
+            <header class="bg-white shadow-sm z-10">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-2xl font-semibold text-gray-900">Chỉnh sửa thông tin thể loại</h1>
+                </div>
             </header>
 
-            <!-- Nội dung trang -->
-            <div class="container mt-4">
-                <form method="post">
-                    <div class="mb-3">
-                        <label for="ma_the_loai" class="form-label">Mã Thể Loại</label>
-                        <input type="text" name="ma_the_loai" id="ma_the_loai" class="form-control" value="<?= htmlspecialchars($theloai['ma_the_loai']); ?>" readonly>
-                    </div>
+            <!-- Page content -->
+            <main class="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                    <form method="post" class="p-6 space-y-6">
+                        <div>
+                            <label for="ma_the_loai" class="block text-sm font-medium text-gray-700">Mã Thể Loại</label>
+                            <input type="text" name="ma_the_loai" id="ma_the_loai" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2 border bg-gray-100" value="<?= htmlspecialchars($theloai['ma_the_loai']); ?>" readonly>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="the_loai" class="form-label">Tên Thể Loại</label>
-                        <input type="text" name="the_loai" id="the_loai" class="form-control" value="<?= htmlspecialchars($theloai['the_loai']); ?>" required>
-                    </div>
+                        <div>
+                            <label for="the_loai" class="block text-sm font-medium text-gray-700">Tên Thể Loại</label>
+                            <input type="text" name="the_loai" id="the_loai" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2 border" value="<?= htmlspecialchars($theloai['the_loai']); ?>" required>
+                        </div>
 
-                    <button type="submit" class="btn btn-primary">Cập Nhật</button>
-                    <a href="show_the_loai.php" class="btn btn-secondary">Trở về trang quản lý thể loại</a>
-                </form>
-            </div>
-        </main>
+                        <div class="flex justify-between pt-4">
+                            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Cập Nhật
+                            </button>
+                            <a href="show_the_loai.php" class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Trở về trang quản lý thể loại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
     </div>
-</div>
 </body>
 </html>

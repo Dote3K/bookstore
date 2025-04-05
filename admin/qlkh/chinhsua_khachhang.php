@@ -47,98 +47,89 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chỉnh sửa khách hàng</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <style>
-        /* Các style tùy chỉnh */
-
-        .header {
-            background-color: #e9ecef;
-            padding: 10px;
-        }
-        .header .nav-links a {
-            margin-right: 15px;
-            text-decoration: none;
-            color: #333;
-        }
-        .header .nav-links a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Heroicons -->
+    <script src="https://cdn.jsdelivr.net/npm/@heroicons/react@1.0.5/outline/index.min.js"></script>
 </head>
-<body>
-<div class="container-fluid">
-    <div class="row">
+<body class="bg-gray-100">
+    <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
-        <nav class="col-md-2 d-none d-md-block sidebar">
-            <?php include '../sidebar.php'; ?>
-        </nav>
-        <!-- Nội dung chính -->
-        <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4">
-            <!-- Header -->
-            <header class="header d-flex justify-content-between align-items-center">
-                <h1>Chỉnh sửa khách hàng</h1>
+        <?php include '../sidebar.php'; ?>
 
+        <!-- Main content -->
+        <div class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 ml-64">
+            <!-- Topbar -->
+            <header class="bg-white shadow-sm z-10">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-2xl font-semibold text-gray-900">Chỉnh sửa khách hàng</h1>
+                </div>
             </header>
 
-            <!-- Nội dung trang -->
-            <div class="container mt-4">
-                <form method="POST">
-                    <div class="mb-3">
-                        <label for="ten_dang_nhap" class="form-label">Tên đăng nhập:</label>
-                        <input type="text" name="ten_dang_nhap" id="ten_dang_nhap" class="form-control" value="<?php echo htmlspecialchars($row['ten_dang_nhap']); ?>" required>
-                    </div>
+            <!-- Page content -->
+            <main class="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                    <form method="POST" class="p-6 space-y-6">
+                        <div>
+                            <label for="ten_dang_nhap" class="block text-sm font-medium text-gray-700">Tên đăng nhập:</label>
+                            <input type="text" name="ten_dang_nhap" id="ten_dang_nhap" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2 border" value="<?php echo htmlspecialchars($row['ten_dang_nhap']); ?>" required>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="ho_va_ten" class="form-label">Họ và tên:</label>
-                        <input type="text" name="ho_va_ten" id="ho_va_ten" class="form-control" value="<?php echo htmlspecialchars($row['ho_va_ten']); ?>" required>
-                    </div>
+                        <div>
+                            <label for="ho_va_ten" class="block text-sm font-medium text-gray-700">Họ và tên:</label>
+                            <input type="text" name="ho_va_ten" id="ho_va_ten" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2 border" value="<?php echo htmlspecialchars($row['ho_va_ten']); ?>" required>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email:</label>
-                        <input type="email" name="email" id="email" class="form-control" value="<?php echo htmlspecialchars($row['email']); ?>" required>
-                    </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
+                            <input type="email" name="email" id="email" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2 border" value="<?php echo htmlspecialchars($row['email']); ?>" required>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="so_dien_thoai" class="form-label">Số điện thoại:</label>
-                        <input type="text" name="so_dien_thoai" id="so_dien_thoai" class="form-control" value="<?php echo htmlspecialchars($row['so_dien_thoai']); ?>" required>
-                    </div>
+                        <div>
+                            <label for="so_dien_thoai" class="block text-sm font-medium text-gray-700">Số điện thoại:</label>
+                            <input type="text" name="so_dien_thoai" id="so_dien_thoai" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2 border" value="<?php echo htmlspecialchars($row['so_dien_thoai']); ?>" required>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="dia_chi" class="form-label">Địa chỉ:</label>
-                        <input type="text" name="dia_chi" id="dia_chi" class="form-control" value="<?php echo htmlspecialchars($row['dia_chi']); ?>">
-                    </div>
+                        <div>
+                            <label for="dia_chi" class="block text-sm font-medium text-gray-700">Địa chỉ:</label>
+                            <input type="text" name="dia_chi" id="dia_chi" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2 border" value="<?php echo htmlspecialchars($row['dia_chi']); ?>">
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="dia_chi_nhan_hang" class="form-label">Địa chỉ nhận hàng:</label>
-                        <input type="text" name="dia_chi_nhan_hang" id="dia_chi_nhan_hang" class="form-control" value="<?php echo htmlspecialchars($row['dia_chi_nhan_hang']); ?>">
-                    </div>
+                        <div>
+                            <label for="dia_chi_nhan_hang" class="block text-sm font-medium text-gray-700">Địa chỉ nhận hàng:</label>
+                            <input type="text" name="dia_chi_nhan_hang" id="dia_chi_nhan_hang" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2 border" value="<?php echo htmlspecialchars($row['dia_chi_nhan_hang']); ?>">
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="dang_ky_nhan_ban_tin" class="form-label">Đăng ký nhận bản tin:</label>
-                        <select name="dang_ky_nhan_ban_tin" id="dang_ky_nhan_ban_tin" class="form-select">
-                            <option value="1" <?php if ($row['dang_ky_nhan_ban_tin'] == 1) echo 'selected'; ?>>Có</option>
-                            <option value="0" <?php if ($row['dang_ky_nhan_ban_tin'] == 0) echo 'selected'; ?>>Không</option>
-                        </select>
-                    </div>
+                        <div>
+                            <label for="dang_ky_nhan_ban_tin" class="block text-sm font-medium text-gray-700">Đăng ký nhận bản tin:</label>
+                            <select name="dang_ky_nhan_ban_tin" id="dang_ky_nhan_ban_tin" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <option value="1" <?php if ($row['dang_ky_nhan_ban_tin'] == 1) echo 'selected'; ?>>Có</option>
+                                <option value="0" <?php if ($row['dang_ky_nhan_ban_tin'] == 0) echo 'selected'; ?>>Không</option>
+                            </select>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="vai_tro" class="form-label">Vai trò:</label>
-                        <select name="vai_tro" id="vai_tro" class="form-select">
-                            <option value="khachhang" <?php if ($row['vai_tro'] == 'khachhang') echo 'selected'; ?>>Khách hàng</option>
-                            <option value="admin" <?php if ($row['vai_tro'] == 'admin') echo 'selected'; ?>>Admin</option>
-                        </select>
-                    </div>
+                        <div>
+                            <label for="vai_tro" class="block text-sm font-medium text-gray-700">Vai trò:</label>
+                            <select name="vai_tro" id="vai_tro" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <option value="khachhang" <?php if ($row['vai_tro'] == 'khachhang') echo 'selected'; ?>>Khách hàng</option>
+                                <option value="admin" <?php if ($row['vai_tro'] == 'admin') echo 'selected'; ?>>Admin</option>
+                            </select>
+                        </div>
 
-                    <button type="submit" class="btn btn-primary">Cập Nhật</button>
-                    <a href="quanlikhachhang.php" class="btn btn-secondary">Trở về trang quản lý khách hàng</a>
-                </form>
-            </div>
-        </main>
+                        <div class="flex justify-between pt-4">
+                            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Cập Nhật
+                            </button>
+                            <a href="quanlikhachhang.php" class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Trở về trang quản lý khách hàng
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
     </div>
-</div>
 </body>
 </html>

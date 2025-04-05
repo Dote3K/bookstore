@@ -19,10 +19,29 @@ class DonHangController
 
     public function list()
     {
+        // Apply filters if they exist
+        $filters = [];
+        
+        if (isset($_GET['status']) && !empty($_GET['status'])) {
+            $filters['trang_thai'] = $_GET['status'];
+        }
+        
+        if (isset($_GET['date_from']) && !empty($_GET['date_from'])) {
+            $filters['date_from'] = $_GET['date_from'];
+        }
+        
+        if (isset($_GET['date_to']) && !empty($_GET['date_to'])) {
+            $filters['date_to'] = $_GET['date_to'];
+        }
+        
+        // Get all orders or filtered orders
+        if (!empty($filters)) {
+            $donHangs = $this->donHangDAO->selectWithFilters($filters);
+        } else {
+            $donHangs = $this->donHangDAO->selectAll();
+        }
 
-        $donHangs = $this->donHangDAO->selectAll();
-
-        require  'view/listOrderAll.php';
+        require 'view/listOrderAll.php';
     }
     public function listOrderUser()
     {
@@ -49,16 +68,38 @@ class DonHangController
             return;
         }
         $maDonHang = $_POST['maDonHang'];
-        $result = $this->donHangDAO->deleteById($maDonHang);
+        
+        // Instead of deleting, update status to cancelled
+        $result = $this->donHangDAO->updateTrangThai($maDonHang, TrangThaiDonHang::DA_HUY->value);
 
         if ($result) {
-            echo "Đơn hàng đã được xóa thành công.";
+            // Notify customer about order cancellation
+            $donHang = $this->donHangDAO->selectById($maDonHang);
+            if ($donHang) {
+                $message = "Đơn hàng #$maDonHang của bạn đã bị hủy.";
+                $notification = new Notification(
+                    null,
+                    $donHang->getMaKhachHang(),
+                    $maDonHang,
+                    $message,
+                    EnumNotification::UNREAD
+                );
+                $notificationDAO = new NotificationDAO();
+                $notificationDAO->insert($notification);
+            }
+            
+            // Redirect based on user role
+            if (isset($_SESSION['vai_tro']) && $_SESSION['vai_tro'] === 'admin') {
+                header("Location: DonHangRouter.php?action=list");
+            } else {
+                header("Location: DonHangRouter.php?action=listOrderUser");
+            }
+            exit();
         } else {
-            echo "Xóa đơn hàng không thành công.";
+            echo "Hủy đơn hàng không thành công.";
+            header("Location: DonHangRouter.php?action=listOrderUser");
+            exit();
         }
-        header("Location: DonHangRouter.php?action=listOrderUser");
-        exit();
-        require 'view/listOrderUser.php';
     }
 
 
@@ -119,7 +160,16 @@ class DonHangController
     
         $maDonHang = $_POST['maDonHang'];
         $chiTiet = $this->donHangDAO->selectDetailById($maDonHang);
+        
+        // Add extra data for display
         if ($chiTiet) {
+            // Get order for additional info
+            $donHang = $this->donHangDAO->selectById($maDonHang);
+            if ($donHang) {
+                $chiTiet['maKhachHang'] = $donHang->getMaKhachHang();
+                $chiTiet['phuongThucThanhToan'] = $donHang->getPhuongThucThanhToan() ?? 'COD';
+            }
+            
             echo json_encode($chiTiet);
         } else {
             echo json_encode(['error' => 'Không tìm thấy chi tiết đơn hàng với mã: ' . $maDonHang]);

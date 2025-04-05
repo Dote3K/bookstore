@@ -10,6 +10,7 @@ class DonHang {
     private $trangThai;
     private $diaChiNhanHang;
     private $giamGia; 
+    private $phuongThucThanhToan;
 
     // Constructor
     
@@ -89,6 +90,15 @@ class DonHang {
 
     public function setGiamGia($giamGia) {
         $this->giamGia = $giamGia;
+    }
+
+    // Getter và Setter cho phuongThucThanhToan
+    public function getPhuongThucThanhToan() {
+        return $this->phuongThucThanhToan;
+    }
+
+    public function setPhuongThucThanhToan($phuongThucThanhToan) {
+        $this->phuongThucThanhToan = $phuongThucThanhToan;
     }
 }
 ?>

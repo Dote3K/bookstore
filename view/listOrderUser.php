@@ -18,112 +18,51 @@
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
             integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            background: linear-gradient(to right, #ffafbd, #ffc3a0);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
         }
 
         h1 {
+            color: #333;
+            padding: 20px;
             text-align: center;
-            margin-top: 20px;
-            color: #fff;
-        }
-
-        .table {
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        th {
-            background-color: #ff6f61;
-        }
-
-        td {
-            text-align: center;
-        }
-
-        /* Modal styles */
-        .modal-content {
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            background-color: #f9f9f9;
-        }
-
-        .modal-header {
-            background: linear-gradient(45deg, #ff6b6b, #ffcc33);
-            color: white;
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
-        }
-
-        .modal-footer {
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 12px;
-        }
-
-        .btn-close {
-            color: white;
-            opacity: 0.5;
-        }
-
-        .btn-close:hover {
-            opacity: 1;
-        }
-
-        .btn-outline-secondary, .btn-danger {
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .btn-outline-secondary:hover {
-            background-color: #ff6f61;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #d9534f;
-            color: white;
-        }
-
-        .table-striped tbody tr:nth-child(odd) {
-            background-color: #f9f9f9;
-        }
-
-        .table th, .table td {
-            vertical-align: middle;
-            padding: 12px;
-        }
-
-        .modal-body h5 {
-            color: #2c3e50;
-            font-weight: 600;
-        }
-
-        .modal-body p {
-            color: #34495e;
-        }
-
-        .modal-body .row {
             margin-bottom: 20px;
         }
 
-        /* Table details in modal */
+        table {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            border-radius: 5px;
+        }
+
+        thead {
+            background-color: #f7f7f7;
+        }
+
+        th, td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .modal-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #dee2e6;
+        }
+
         .table-details {
             margin-top: 20px;
         }
 
-        .modal-footer .btn-danger {
-            background-color: #ff6f61;
-            border-color: #ff6f61;
-        }
-
-        .modal-footer .btn-danger:hover {
-            background-color: #d9534f;
-        }
-
         .custom-btn {
-            color: #6e5494;
+            color: #ff6666;
             border-color: #d9a3c8;
             background-color: transparent;
             transition: all 0.3s ease; /* Thêm hiệu ứng chuyển đổi */
@@ -134,7 +73,17 @@
             color: white !important;
             border-color: #ff4b4b !important;
         }
-
+        
+        /* Fix horizontal scroll issue */
+        .table-responsive {
+            overflow-x: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .table th, .table td {
+                white-space: nowrap;
+            }
+        }
     </style>
 </head>
 
@@ -142,92 +91,94 @@
 <?php include 'header.php'; ?>
 <h1>Danh sách đơn hàng</h1>
 <div class="container mt-4">
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Mã đơn hàng</th>
-            <th>Ngày đặt</th>
-            <th>Tổng tiền</th>
-            <th>Địa chỉ nhận hàng</th>
-            <th>Trạng thái</th>
-            <th>Thao tác</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php if (!empty($donHangs)): ?>
-            <?php foreach ($donHangs as $donHang): ?>
-                <tr>
-                    <td><?php echo $donHang->getMaDonHang(); ?></td>
-                    <td><?php echo $donHang->getNgayDatHang(); ?></td>
-                    <td><?php echo $donHang->getTong(); ?></td>
-                    <td><?php echo $donHang->getDiaChiNhanHang(); ?></td>
-                    <td><?php
-                        switch ($donHang->getTrangThai()) {
-                            case 'DANG_CHO':
-                                echo 'Đang chờ';
-                                break;
-                            case 'CHO_THANH_TOAN':
-                                echo 'Chờ thanh toán';
-                                break;
-                            case 'DA_THANH_TOAN':
-                                echo 'Đã thanh toán';
-                                break;
-                            case 'DA_XAC_NHAN':
-                                echo 'Đã xác nhận';
-                                break;
-                            case 'DANG_GIAO':
-                                echo 'Đang giao';
-                                break;
-                            case 'DA_GIAO':
-                                echo 'Đã giao';
-                                break;
-                            default:
-                                echo 'Không xác định';
-                        }
-                        ?></td>
-                    <td>
-                        <button type="button"
-                                class="ms-auto btn btn-sm btn-outline-primary btnChiTiet custom-btn"
-                                data-id="<?php echo $donHang->getMaDonHang(); ?>">
-                            Xem chi tiết
-                        </button>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php else: ?>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
             <tr>
-                <td colspan="5">Không có đơn hàng nào.</td>
+                <th>Mã đơn hàng</th>
+                <th>Ngày đặt</th>
+                <th>Tổng tiền</th>
+                <th>Địa chỉ nhận hàng</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
             </tr>
-        <?php endif; ?>
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+            <?php if (!empty($donHangs)): ?>
+                <?php foreach ($donHangs as $donHang): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($donHang->getMaDonHang()); ?></td>
+                        <td><?php echo htmlspecialchars($donHang->getNgayDatHang()); ?></td>
+                        <td><?php echo number_format($donHang->getTong(), 0, ',', '.'); ?>₫</td>
+                        <td><?php echo htmlspecialchars($donHang->getDiaChiNhanHang()); ?></td>
+                        <td><?php
+                            switch ($donHang->getTrangThai()) {
+                                case 'DANG_CHO':
+                                    echo 'Đang chờ';
+                                    break;
+                                case 'CHO_THANH_TOAN':
+                                    echo 'Chờ thanh toán';
+                                    break;
+                                case 'DA_THANH_TOAN':
+                                    echo 'Đã thanh toán';
+                                    break;
+                                case 'DA_XAC_NHAN':
+                                    echo 'Đã xác nhận';
+                                    break;
+                                case 'DANG_GIAO':
+                                    echo 'Đang giao';
+                                    break;
+                                case 'DA_GIAO':
+                                    echo 'Đã giao';
+                                    break;
+                                default:
+                                    echo 'Không xác định';
+                            }
+                            ?></td>
+                        <td>
+                            <button type="button"
+                                    class="ms-auto btn btn-sm btn-outline-primary btnChiTiet custom-btn"
+                                    data-id="<?php echo $donHang->getMaDonHang(); ?>">
+                                Xem chi tiết
+                            </button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="6">Không có đơn hàng nào.</td>
+                </tr>
+            <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 
-<!-- Modal -->
-<div class="modal fade" id="modalChiTietDonHang" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">Chi tiết đơn hàng</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="chiTietDonHangContent">
-                    <!-- Nội dung chi tiết đơn hàng sẽ được thêm vào đây -->
+    <!-- Modal -->
+    <div class="modal fade" id="modalChiTietDonHang" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Chi tiết đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <!-- Form xóa đơn hàng, sẽ được điền thông tin qua JavaScript -->
-                <form id="deleteForm" action="/DonHangRouter.php?action=delete" method="POST"
-                      onsubmit="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này không?');" style="display: none;">
-                    <input type="hidden" name="maDonHang" id="maDonHangToDelete">
-                    <button type="submit" class="btn btn-danger">Hủy đơn</button>
-                </form>
-                <button type="button"
-                        class="btn btn-secondary custom-btn"
-                        data-bs-dismiss="modal">
-                    Đóng
-                </button>
+                <div class="modal-body">
+                    <div id="chiTietDonHangContent">
+                        <!-- Nội dung chi tiết đơn hàng sẽ được thêm vào đây -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- Form xóa đơn hàng, sẽ được điền thông tin qua JavaScript -->
+                    <form id="deleteForm" action="/DonHangRouter.php?action=delete" method="POST"
+                          onsubmit="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này không?');" style="display: none;">
+                        <input type="hidden" name="maDonHang" id="maDonHangToDelete">
+                        <button type="submit" class="btn btn-danger">Hủy đơn</button>
+                    </form>
+                    <button type="button"
+                            class="btn btn-secondary custom-btn"
+                            data-bs-dismiss="modal">
+                        Đóng
+                    </button>
+                </div>
             </div>
         </div>
     </div>

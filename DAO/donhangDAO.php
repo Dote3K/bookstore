@@ -188,49 +188,6 @@ class DonHangDAO implements DAOInterface
         return $donHang;
     }
     
-    // public function selectDetailById ($maChiTiet) {
-    //     $ketQua = null;
-    //     try {
-    //         $con = JDBC::getConnection();
-    
-    //         $sql = "SELECT
-    //                     ctdh.so_luong,
-    //                     dh.tong AS tong_tien,
-    //                     dh.ngay_dat_hang,
-    //                     dh.trang_thai,
-    //                     dh.dia_chi_nhan_hang,
-    //                     s.ten_sach,
-    //                     kh.so_dien_thoai
-    //                 FROM chitietdonhang ctdh
-    //                 INNER JOIN donhang dh ON ctdh.ma_don_hang = dh.ma_don_hang
-    //                 INNER JOIN sach s ON ctdh.ma_sach = s.ma_sach
-    //                 INNER JOIN khachhang kh ON dh.ma_khach_hang = kh.ma_khach_hang
-    //                 WHERE dh.ma_don_hang = ?";  
-           
-    //         $stmt = $con->prepare($sql);
-    //         $stmt->bind_param("i", $maChiTiet);
-    //         $stmt->execute();
-    
-    //         $result = $stmt->get_result();
-    //         if ($row = $result->fetch_assoc()) {
-    //             $ketQua = [
-    //                 'soDienThoai'=> $row['so_dien_thoai'],
-    //                 'tenSach' => $row['ten_sach'],        
-    //                 'tongTien' => $row['tong_tien'],      
-    //                 'ngayDatHang' => $row['ngay_dat_hang'],
-    //                 'soLuong' => $row['so_luong'],    
-    //                 'trangThai' => $row['trang_thai'],  
-    //                 'diaChiNhanHang' => $row['dia_chi_nhan_hang']
-    //             ];
-    //         }
-    
-    //         JDBC::closeConnection($con);
-    //     } catch (Exception $e) {
-    //         echo $e->getMessage();
-    //     }
-    
-    //     return $ketQua;
-    // }
     public function selectDetailById($maChiTiet) {
         $ketQua = null;
         $chiTietSach = [];
@@ -245,7 +202,8 @@ class DonHangDAO implements DAOInterface
                             dh.ngay_dat_hang,
                             dh.trang_thai,
                             dh.dia_chi_nhan_hang,
-                            kh.so_dien_thoai
+                            kh.so_dien_thoai,
+                            dh.phuong_thuc_thanh_toan
                         FROM donhang dh
                         INNER JOIN khachhang kh ON dh.ma_khach_hang = kh.ma_khach_hang
                         WHERE dh.ma_don_hang = ?";
@@ -287,7 +245,8 @@ class DonHangDAO implements DAOInterface
                     'diaChiNhanHang' => $rowMain['dia_chi_nhan_hang'],
                     'chiTietSach' => $chiTietSach,
                     'tongSoLoaiSach' => count($chiTietSach),
-                    'tongSoLuongSach' => array_sum(array_column($chiTietSach, 'soLuong'))
+                    'tongSoLuongSach' => array_sum(array_column($chiTietSach, 'soLuong')),
+                    'phuongThucThanhToan' => $rowMain['phuong_thuc_thanh_toan']
                 ];
             }
     
@@ -297,5 +256,79 @@ class DonHangDAO implements DAOInterface
         }
     
         return $ketQua;
+    }
+
+    /**
+     * Selects orders with filters
+     * @param array $filters Filters to apply (trang_thai, date_from, date_to)
+     * @return array Array of DonHang objects
+     */
+    public function selectWithFilters($filters = []) {
+        $donHangs = [];
+        try {
+            $con = JDBC::getConnection();
+            
+            $sql = "SELECT * FROM donhang WHERE 1=1";
+            $params = [];
+            $types = "";
+            
+            // Add filter for order status
+            if (isset($filters['trang_thai']) && !empty($filters['trang_thai'])) {
+                $sql .= " AND trang_thai = ?";
+                $params[] = $filters['trang_thai'];
+                $types .= "s";
+            }
+            
+            // Add filter for date range - from date
+            if (isset($filters['date_from']) && !empty($filters['date_from'])) {
+                $sql .= " AND DATE(ngay_dat_hang) >= ?";
+                $params[] = $filters['date_from'];
+                $types .= "s";
+            }
+            
+            // Add filter for date range - to date
+            if (isset($filters['date_to']) && !empty($filters['date_to'])) {
+                $sql .= " AND DATE(ngay_dat_hang) <= ?";
+                $params[] = $filters['date_to'];
+                $types .= "s";
+            }
+            
+            // Order by date, newest first
+            $sql .= " ORDER BY ngay_dat_hang DESC";
+            
+            $stmt = $con->prepare($sql);
+            
+            if (!empty($params)) {
+                $stmt->bind_param($types, ...$params);
+            }
+            
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            while ($row = $result->fetch_assoc()) {
+                $donHang = new DonHang(
+                    $row['ma_don_hang'],
+                    $row['ma_khach_hang'],
+                    $row['tong'],
+                    $row['ngay_dat_hang'],
+                    $row['trang_thai'],
+                    $row['dia_chi_nhan_hang'],
+                    $row['giam_gia'] ?? 0
+                );
+                
+                // Set payment method if available in database
+                if (isset($row['phuong_thuc_thanh_toan'])) {
+                    $donHang->setPhuongThucThanhToan($row['phuong_thuc_thanh_toan']);
+                }
+                
+                $donHangs[] = $donHang;
+            }
+            
+            JDBC::closeConnection($con);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        
+        return $donHangs;
     }
 }
