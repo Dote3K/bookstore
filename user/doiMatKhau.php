@@ -42,20 +42,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Store - Đổi Mật Khẩu</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <!-- Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-            integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
     </script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-            integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
     </script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -109,61 +110,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
+
 <body>
-<?php include '../view/header.php'; ?>
+    <?php include '../view/header.php'; ?>
 
-<div class="container my-5">
-    <h2 class="text-center text-primary mb-4">Đổi Mật Khẩu</h2>
+    <div class="container my-5">
+        <h2 class="text-center text-primary mb-4">Đổi Mật Khẩu</h2>
 
-    <?php if (!empty($message)): ?>
-        <div class="alert alert-<?php echo $message_type; ?> alert-dismissible fade show alert-custom" role="alert">
-            <?php echo htmlspecialchars($message); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <?php if (!empty($message)): ?>
+            <div class="alert alert-<?php echo $message_type; ?> alert-dismissible fade show alert-custom" role="alert">
+                <?php echo htmlspecialchars($message); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+
+        <div class="card p-4">
+            <form method="POST" action="">
+                <!-- Mật khẩu hiện tại -->
+                <div class="mb-3">
+                    <label for="matKhauHienTai" class="form-label"><strong>Mật khẩu hiện tại:</strong></label>
+                    <input type="password" class="form-control" id="matKhauHienTai" name="matKhauHienTai" required>
+                </div>
+
+                <!-- Mật khẩu mới -->
+                <div class="mb-3">
+                    <label for="matKhauMoi" class="form-label"><strong>Mật khẩu mới:</strong></label>
+                    <input type="password" class="form-control" id="matKhauMoi" name="matKhauMoi" required>
+                </div>
+
+                <!-- Xác nhận mật khẩu mới -->
+                <div class="mb-3">
+                    <label for="xacNhanMatKhauMoi" class="form-label"><strong>Xác nhận mật khẩu mới:</strong></label>
+                    <input type="password" class="form-control" id="xacNhanMatKhauMoi" name="xacNhanMatKhauMoi" required>
+                </div>
+
+                <!-- Nút Submit và Hủy -->
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-key"></i> Đổi Mật Khẩu
+                    </button>
+                    <a href="hienThi.php" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Quay Lại
+                    </a>
+                </div>
+            </form>
         </div>
-    <?php endif; ?>
-
-    <div class="card p-4">
-        <form method="POST" action="">
-            <!-- Mật khẩu hiện tại -->
-            <div class="mb-3">
-                <label for="matKhauHienTai" class="form-label"><strong>Mật khẩu hiện tại:</strong></label>
-                <input type="password" class="form-control" id="matKhauHienTai" name="matKhauHienTai" required>
-            </div>
-
-            <!-- Mật khẩu mới -->
-            <div class="mb-3">
-                <label for="matKhauMoi" class="form-label"><strong>Mật khẩu mới:</strong></label>
-                <input type="password" class="form-control" id="matKhauMoi" name="matKhauMoi" required>
-            </div>
-
-            <!-- Xác nhận mật khẩu mới -->
-            <div class="mb-3">
-                <label for="xacNhanMatKhauMoi" class="form-label"><strong>Xác nhận mật khẩu mới:</strong></label>
-                <input type="password" class="form-control" id="xacNhanMatKhauMoi" name="xacNhanMatKhauMoi" required>
-            </div>
-
-            <!-- Nút Submit và Hủy -->
-            <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-key"></i> Đổi Mật Khẩu
-                </button>
-                <a href="hienThi.php" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Quay Lại
-                </a>
-            </div>
-        </form>
     </div>
-</div>
 
-<!-- Footer -->
-<footer class="footer text-center">
-    <div class="container">
-        <p>&copy; 2024 BookStore. All Rights Reserved.</p>
-        <p>
-            <a href="#">Privacy Policy</a> |
-            <a href="#">Terms of Service</a>
-        </p>
-    </div>
-</footer>
+    <!-- Footer -->
+    <footer class="footer text-center">
+        <div class="container">
+            <p>&copy; 2024 BookStore. All Rights Reserved.</p>
+            <p>
+                <a href="#">Privacy Policy</a> |
+                <a href="#">Terms of Service</a>
+            </p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"></script>
 </body>
+
 </html>

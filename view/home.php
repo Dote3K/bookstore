@@ -300,16 +300,14 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS & Popper -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"></script>
     <!-- gửi form bằng ajax -->
     <script>
         document.querySelectorAll('form[action="DAO/add_to_cart.php"]').forEach(function(form) {
             form.addEventListener('submit', function(event) {
-                event.preventDefault(); // ngừng gửi form
+                event.preventDefault();
 
-                // gửi form bằng cách fetch api bằng ajax
                 fetch(form.action, {
                         method: 'POST',
                         body: new FormData(form)

@@ -1,9 +1,8 @@
 <?php
-
 require_once __DIR__ . '/connect.php';
-
 session_start();
 
+// Autoload
 spl_autoload_register(function ($class) {
     foreach (
         [
@@ -19,9 +18,16 @@ spl_autoload_register(function ($class) {
 });
 
 
-require_once __DIR__ . '/ChatRouter.php';
-(new ChatRouter())->run();
+$requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-require_once __DIR__ . '/controllers/sanPhamController.php';
+
+if ($requestUri === '/chat/respond') {
+    require_once __DIR__ . '/ChatRouter.php';
+    (new ChatRouter())->run();
+    exit;
+}
+
+
+require_once 'controllers/sanPhamController.php';
 $ctrl = new sanPhamController();
 $ctrl->homeProduct();

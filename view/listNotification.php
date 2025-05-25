@@ -28,14 +28,14 @@ session_start();
 <style>
     body {
 
-        background: linear-gradient(to right, #fbc2eb, #a6c1ee); 
+        background: linear-gradient(to right, #fbc2eb, #a6c1ee);
         color: #333;
         margin: 0;
         padding: 0;
     }
 
     .wrapper {
-        background: linear-gradient(135deg, #f9c0c0, #a1c4fd); 
+        background: linear-gradient(135deg, #f9c0c0, #a1c4fd);
         border-radius: 10px;
         padding: 20px;
     }
@@ -87,13 +87,14 @@ session_start();
         font-weight: 600;
         font-size: 1.8rem;
     }
+
     .navbar {
         background: linear-gradient(45deg, #ff6b6b, #ffcc33);
     }
 
     .navbar-brand,
     .navbar-nav .nav-link {
-        color: #ffffff ;
+        color: #ffffff;
     }
 
     .navbar-brand:hover,
@@ -119,6 +120,7 @@ session_start();
         border-radius: 100%;
         font-size: 12px;
     }
+
     @media (min-width: 768px) {
         .col-md-9 {
             flex: 0 0 auto;
@@ -129,13 +131,13 @@ session_start();
 
 
 <body>
-<?php include 'header.php'; ?>
+    <?php include 'header.php'; ?>
     <div class="container mt-5 wrapper" style="padding-top: 50px">
         <div class="row">
             <?php if (isset($_SESSION['tenDangNhap'])): ?>
 
                 <!-- Main Content Area -->
-                <div class="col-md-9 p-3 bg-light" >
+                <div class="col-md-9 p-3 bg-light">
                     <div id="notifications" class="content-section" style="display: block;">
                         <h3 style="text-align: center">Thông Báo</h3>
                         <div class="notification-list">
@@ -143,7 +145,7 @@ session_start();
                                 <?php foreach ($notifications as $notification): ?>
                                     <div class="notification-item d-flex align-items-center">
                                         <div>
-                                            <p class="mb-1"><?php echo htmlspecialchars($notification->getMessage());?></p>
+                                            <p class="mb-1"><?php echo htmlspecialchars($notification->getMessage()); ?></p>
 
                                             <small class="text-muted">
                                                 <?php
@@ -171,6 +173,8 @@ session_start();
             <?php endif; ?>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"></script>
 </body>
 
 </html>
