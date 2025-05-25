@@ -1,0 +1,12 @@
+{
+    "entities": [],
+    "intents": [
+        {
+            "confidence": 0.9996048581996233,
+            "id": "1384991492586633",
+            "name": "greeting"
+        }
+    ],
+    "text": "hello",
+    "traits": []
+}
